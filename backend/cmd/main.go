@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "momo/config"
 
 func main() {
-	fmt.Println("MOMO Backend Start")
+	config.ConnectDB()
 }
