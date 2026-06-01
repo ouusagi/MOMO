@@ -32,3 +32,25 @@ func HashPassword(password string) (string, error) {
 즉 func 함수명(입력값 타입) (반환타입) {
     return 반환값
 }
+
+
+5. bcrypt.CompareHashAndPassword(hashed, password)
+                                  ↑ 1번   ↑ 2번
+                                  암호화된값  평문
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[]byte(password) → 문자열을 바이트로 변환 (bcrypt가 바이트만 받음)
+bcrypt.DefaultCost → 암호화 강도 (기본값 10, 높을수록 강하지만 느림)
+bcrypt.CompareHashAndPassword → DB에 저장된 암호화된 비밀번호랑 입력한 비밀번호를 비교해주는 함수
