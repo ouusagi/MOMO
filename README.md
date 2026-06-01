@@ -1,4 +1,3 @@
-
 ```
 momo
 ├─ .DS_Store
@@ -22,6 +21,8 @@ momo
 │  ├─ routes - API URL 관리
 │  │  └─ routes.go
 │  └─ utils - 공용 함수 관리 (bcrypt, JWT 생성 등)
+│  │    └─ bcrypt.go - 비밀번호 암호화/검증
+│  │    └─ jwt.go - jwt토큰 생성/검증
 ├─ docker
 ├─ docker-compose.yml
 ├─ docs
