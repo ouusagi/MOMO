@@ -46,11 +46,39 @@ func HashPassword(password string) (string, error) {
 
 
 
+## JWT 서명(Signature) 알고리즘 - HS256
+
+### 역할
+토큰의 페이로드 변조를 감지하는 서명(Signature) 알고리즘
+
+### 동작 방식
+- 로그인 성공 시 페이로드 + JWT_SECRET → HS256으로 서명(Signature) 생성
+- 이후 요청마다 토큰의 서명(Signature)을 다시 계산해서 비교
+- 일치 → 정상 요청
+- 불일치 → 변조된 토큰으로 판단, 요청 거절
+
+### 사용 이유
+- 서버가 1개인 프로젝트에 적합한 알고리즘
+- JWT_SECRET 없이는 올바른 서명(Signature)을 만들 수 없음
+- 페이로드를 변조하면 서명(Signature)이 달라져서 변조 감지 가능
+
+
+헤더:토큰 형식 정보
+페이로드:토큰안에 담긴 데이터
+시그니처:서버가 JWT_SECRET으로 생성한 전자 서명
+
+1. 담을 데이터 준비 (claims)
+2. 데이터로 토큰 생성 (NewWithClaims)
+3. 시크릿키로 서명해서 반환 (SignedString)
 
 
 
-
-
+## 각 메서드 & 함수 뜻 정의
 []byte(password) → 문자열을 바이트로 변환 (bcrypt가 바이트만 받음)
 bcrypt.DefaultCost → 암호화 강도 (기본값 10, 높을수록 강하지만 느림)
 bcrypt.CompareHashAndPassword → DB에 저장된 암호화된 비밀번호랑 입력한 비밀번호를 비교해주는 함수
+jwt.NewWithClaims → 토큰 만드는 함수
+claims          → 페이로드 만들기
+NewWithClaims   → 헤더 + 페이로드 합치기
+SignedString    → 서명(Signature) 붙여서 토큰 완성
+SignedString → 시크릿키로 토큰에 서명
