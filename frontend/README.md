@@ -73,6 +73,117 @@ func HashPassword(password string) (string, error) {
 
 
 
+# interface{}
+
+interface{}는 어떤 타입이든 담을 수 있는 만능 타입이다.
+
+예를 들어
+
+var data interface{}
+
+라고 선언하면
+
+data = 123
+data = "hello"
+data = true
+
+처럼 int, string, bool 등 어떤 타입의 값도 저장할 수 있다.
+
+하지만 interface{}는 어떤 타입이든 담을 수 있는 대신,
+Go는 실제로 어떤 타입이 들어있는지 알 수 없다.
+
+예를 들어
+
+var data interface{}
+data = 123
+
+fmt.Println(data + 1)
+
+처럼 사용하면 에러가 발생한다.
+
+왜냐하면 Go 입장에서는 data 안에 int가 들어있는지,
+string이 들어있는지 알 수 없기 때문이다.
+
+즉 interface{}는 값을 저장할 수는 있지만,
+사용하려면 실제 타입을 확인해야 한다.
+
+
+
+# 타입 단언 (Type Assertion)
+
+타입 단언은 interface{} 안에 들어있는 실제 타입을 확인하고 꺼내오는 기능이다.
+
+예를 들어
+
+var data interface{}
+data = 123
+
+num, ok := data.(int)
+
+라고 작성하면
+
+"data 안에 int가 들어있냐?"
+
+를 확인한다.
+
+만약 int가 들어있다면
+
+num = 123
+ok = true
+
+가 된다.
+
+반대로
+
+data = "hello"
+
+num, ok := data.(int)
+
+처럼 실제 타입이 int가 아니라면
+
+num = 0
+ok = false
+
+가 된다.
+
+즉 타입 단언은 interface{} 안에 들어있는 값을
+원래 타입으로 꺼내서 사용할 수 있게 해주는 기능이다.
+
+
+# Claims
+
+JWT에서 Payload를 Claims라고 부른다.
+
+Claims는 JWT 안에 저장되는 사용자 정보나 데이터이다.
+
+예시
+
+{
+  "user_id": 1,
+  "exp": 1750000000
+}
+
+JWT 라이브러리에서는 Payload를 Claims라는 이름으로 관리한다.
+
+따라서
+
+token.Claims
+
+는 JWT 안에 저장된 Payload를 의미한다.
+
+JWT를 검증한 후
+
+claims, ok := token.Claims.(jwt.MapClaims)
+
+와 같이 타입 단언을 통해 Claims(Payload)를 꺼내 사용할 수 있다.
+
+
+token 안에 원래 Claims(Payload)가 들어있는데,
+Claims는 인터페이스 형태라 바로 사용할 수 없어서
+jwt.MapClaims 타입으로 타입 단언을 하고,
+꺼낸 값을 claims 변수에 저장한 뒤 반환하는 것이다.
+
+
 ## 각 메서드 & 함수 뜻 정의
 []byte(password) → 문자열을 바이트로 변환 (bcrypt가 바이트만 받음)
 bcrypt.DefaultCost → 암호화 강도 (기본값 10, 높을수록 강하지만 느림)
@@ -82,3 +193,4 @@ claims          → 페이로드 만들기
 NewWithClaims   → 헤더 + 페이로드 합치기
 SignedString    → 서명(Signature) 붙여서 토큰 완성
 SignedString → 시크릿키로 토큰에 서명
+ParseWithClaims(검증할 토큰, 페이로드에 담을 형식, JWT 검증할 때 사용할 비밀키 함수) → 토큰을 분해하여 검증하는 함수
