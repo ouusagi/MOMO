@@ -30,12 +30,12 @@ func ValidateToken(tokenString string) (jwt.MapClaims, error) {
 	})
 
 	if err != nil {
-		log.Println("JWT 파싱 및 검증 실패")
+		log.Println("JWT 파싱 및 검증 실패:", err)
 		return nil, err
 	}
 
 	if !token.Valid {
-		log.Println("유효하지 않은 토큰")
+		log.Println("토큰 유효성 검사 실패")
 		return nil, errors.New("invalid token")
 	}
 
