@@ -194,3 +194,21 @@ NewWithClaims   → 헤더 + 페이로드 합치기
 SignedString    → 서명(Signature) 붙여서 토큰 완성
 SignedString → 시크릿키로 토큰에 서명
 ParseWithClaims(검증할 토큰, 페이로드에 담을 형식, JWT 검증할 때 사용할 비밀키 함수) → 토큰을 분해하여 검증하는 함수
+*gin.Context → 요청가 응답을 할 수 있게 해주는 객체
+ShouldBindJSON → 받은 JSON형태를 구조체형태로 변환시켜줌
+& → 원본 주소를 넘겨서 원본 자체를 수정하고 싶을 때
+함수에서 넘길 때 원본 수정 → & 필요
+내가 직접 원본 필드 수정 → & 불필요 (이미 원본)
+
+http.StatusBadRequest → 400 상태코드 (잘못된 요청)
+gin.H{} → 응답할 JSON 데이터 [응답을 보낼 땐 항상 (상태코드,응답데이터)]
+
+
+## 상태 코드
+http.StatusOK                  // 200 = 요청 성공
+http.StatusCreated             // 201 = 데이터 생성 성공
+http.StatusBadRequest          // 400 = 잘못된 요청
+http.StatusUnauthorized        // 401 = 인증 실패 (로그인 필요)
+http.StatusForbidden           // 403 = 접근 권한 없음
+http.StatusNotFound            // 404 = 요청한 리소스 없음
+http.StatusInternalServerError // 500 = 서버 내부 오류

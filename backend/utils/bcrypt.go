@@ -12,7 +12,7 @@ func HashPassword(password string) (string, error) {
 }
 
 // 패스워드 검증
-func CheckPassword(password string, hashed string) bool {
+func CheckPassword(hashed string, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password))
 	if err != nil {
 		return false
