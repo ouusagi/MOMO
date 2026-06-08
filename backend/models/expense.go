@@ -10,5 +10,5 @@ type Expense struct {
 	Amount    int
 	Category  string
 	Memo      string
-	createdAt time.Time
+	CreatedAt time.Time
 }

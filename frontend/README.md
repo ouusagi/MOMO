@@ -40,12 +40,6 @@ func HashPassword(password string) (string, error) {
 
 
 
-
-
-
-
-
-
 ## JWT 서명(Signature) 알고리즘 - HS256
 
 ### 역할
@@ -196,12 +190,25 @@ SignedString → 시크릿키로 토큰에 서명
 ParseWithClaims(검증할 토큰, 페이로드에 담을 형식, JWT 검증할 때 사용할 비밀키 함수) → 토큰을 분해하여 검증하는 함수
 *gin.Context → 요청가 응답을 할 수 있게 해주는 객체
 ShouldBindJSON → 받은 JSON형태를 구조체형태로 변환시켜줌
+
+http.StatusBadRequest → 400 상태코드 (잘못된 요청)
+gin.H{} → 응답할 JSON 데이터 [응답을 보낼 땐 항상 (상태코드,응답데이터)]
+
+
+## 포인터 사용법
 & → 원본 주소를 넘겨서 원본 자체를 수정하고 싶을 때
 함수에서 넘길 때 원본 수정 → & 필요
 내가 직접 원본 필드 수정 → & 불필요 (이미 원본)
 
-http.StatusBadRequest → 400 상태코드 (잘못된 요청)
-gin.H{} → 응답할 JSON 데이터 [응답을 보낼 땐 항상 (상태코드,응답데이터)]
+var input models.User  // 여기서 input 원본 선언
+// 내가 직접 접근 → 이미 원본이니까 & 불필요
+input.Password = hashed  // input 원본 바로 접근
+
+// 함수에 넘길 때 → & 붙여야 함수 안에서 원본 접근 가능
+c.ShouldBindJSON(&input)
+config.DB.Create(&input)
+
+
 
 
 ## 상태 코드
