@@ -75,7 +75,7 @@ func DeleteExpense(c *gin.Context) {
 	var expense models.Expense
 	id := c.Param("id")
 
-	// 지출 수정할 유저의 데이터 찾기
+	// 지출 삭제할 유저의 데이터 찾기
 	if err := config.DB.Where("id = ? AND user_id = ?", id, userID).First(&expense).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "지출 내역을 찾을 수 없습니다"})
 		return
