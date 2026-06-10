@@ -45,23 +45,23 @@ func GetExpense(c *gin.Context) {
 // 지출 수정
 func UpdateExpense(c *gin.Context) {
 	userID := c.MustGet("user_id").(uint)
-	var expenses models.Expense
+	var expense models.Expense
 	id := c.Param("id")
 
 	// 지출 수정할 유저의 데이터 찾기
-	if err := config.DB.Where("id = ? AND user_id = ?", id, userID).First(&expenses).Error; err != nil {
+	if err := config.DB.Where("id = ? AND user_id = ?", id, userID).First(&expense).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "지출 내역을 찾을 수 없습니다"})
 		return
 	}
 
 	// 수정 요청 데이터 구조체로 변환
-	if err := c.ShouldBindJSON(&expenses); err != nil {
+	if err := c.ShouldBindJSON(&expense); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "입력값이 올바르지 않습니다"})
 		return
 	}
 
 	// 지출 내역 수정
-	if err := config.DB.Save(&expenses).Error; err != nil {
+	if err := config.DB.Save(&expense).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "지출 내역 수정 실패"})
 		return
 	}
@@ -72,17 +72,17 @@ func UpdateExpense(c *gin.Context) {
 // 지출 삭제
 func DeleteExpense(c *gin.Context) {
 	userID := c.MustGet("user_id").(uint)
-	var expenses models.Expense
+	var expense models.Expense
 	id := c.Param("id")
 
 	// 지출 수정할 유저의 데이터 찾기
-	if err := config.DB.Where("id = ? AND user_id = ?", id, userID).First(&expenses).Error; err != nil {
+	if err := config.DB.Where("id = ? AND user_id = ?", id, userID).First(&expense).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "지출 내역을 찾을 수 없습니다"})
 		return
 	}
 
 	// 지출 삭제
-	if err := config.DB.Delete(&expenses).Error; err != nil {
+	if err := config.DB.Delete(&expense).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "지출 삭제 실패"})
 		return
 	}
