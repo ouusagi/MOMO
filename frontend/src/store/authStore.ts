@@ -1,12 +1,6 @@
 import { create } from "zustand"
 import api from "../api/axios"
-
-interface AuthState {
-    isAuthenticated: boolean
-    login: (loginID: string, password: string)=> Promise<void>
-    logout: ()=> void
-    signup: (loginID: string, userName: string, password: string, budget: number)=> Promise<void>
-}
+import type { AuthState } from "../types/auth"
 
 const useAuthStore = create<AuthState>((set) => ({
     isAuthenticated: !!localStorage.getItem('token'),
