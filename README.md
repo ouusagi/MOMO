@@ -63,4 +63,6 @@ momo
 ```
 
 ## 📝 企画
-<img width="500" alt="Wireframe" src="./docs/Wireframe.png" />
+| Flowchart | Wireframe |
+|---|---|
+|<img width="500" alt="Wireframe" src="./docs/Wireframe.png" />|<img width="500" alt="Flowchart" src="./docs/flow.png" />|
