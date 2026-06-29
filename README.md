@@ -47,7 +47,7 @@ momo
    │  ├─ components 
    │  │  ├─ common - 공용 컴포넌트 (Button, Modal, 카드박스 등)
    │  │  └─ layout - 레이아웃 컴포넌트 (Header, Footer 등)
-   │  ├─ hooks - 커스텀 훅 관리
+   │  ├─ hooks - 커스텀 훅 관리(useExpense.ts)
    │  ├─ index.css
    │  ├─ main.tsx
    │  ├─ pages - 페이지 컴포넌트 관리
