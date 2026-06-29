@@ -219,3 +219,49 @@ http.StatusUnauthorized        // 401 = 인증 실패 (로그인 필요)
 http.StatusForbidden           // 403 = 접근 권한 없음
 http.StatusNotFound            // 404 = 요청한 리소스 없음
 http.StatusInternalServerError // 500 = 서버 내부 오류
+
+
+## 로그인/회원가입/로그아웃 상태 흐름
+
+흐름 정리
+로그인 컴포넌트
+→ 아이디/비밀번호 입력받음
+→ authStore login(loginID, password) 호출
+        ↓
+authStore login 함수
+→ 파라미터로 받아서
+→ api.post('/api/login', { loginID, password })
+        ↓
+axios 인터셉터
+→ 토큰 없으니까 그냥 통과
+        ↓
+routes.go에서 '/api/login' 해당 url로 요청 확인 후 controllers.Login로 이동
+        ↓
+백엔드
+→ 아이디/비밀번호 검증
+→ 토큰 발급해서 반환 (반환 시 axois에서는 res로 반환함)
+        ↓
+authStore
+→ 토큰 localStorage 저장
+→ set({ isAuthenticated: true })
+        ↓
+로그인 컴포넌트
+→ 메인 페이지로 이동
+
+({}) 이렇게 객체를 괄호로 감싼 이유는 
+()=>{} 이렇게 감싸지 않고 사용할 시 함수 본문을 실행하겠다는 뜻으로
+({}) 이렇게 객체를 괄호로 감싸야 객체를 반환할 수 있고, 그 반환된 객체를 Zustand가 전역 상태로 만들기 때문
+
+()=>{}
+↓
+함수 본문
+
+()=>({})
+↓
+객체 반환
+
+반환된 객체
+↓
+Zustand Store 생성
+↓
+전역 상태 사용 가능
