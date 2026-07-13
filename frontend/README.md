@@ -265,3 +265,42 @@ authStore
 Zustand Store 생성
 ↓
 전역 상태 사용 가능
+
+
+## Tailwind css Props 문법
+버튼
+variant?: 스타일 지정 'primary' | 'outline' | 'back' 이름만 지정 후 그 이름으로 색상 지정
+onClick?: 실행 할 함수 지정 () => void
+children: 태그 안에 들어갈 내용 React.ReactNode
+disabled?: 비활성화 여부 boolean
+fullWidth?: 너비 꽉 채울지 여부 boolean
+type?: 무슨 타입인지 지정 'button' | 'submit' | 'reset'
+? 는 선택사항이라는 뜻 (안넣으면 기본값 사용)
+? = "이 props 안넣어도 돼" (선택사항 표시)
+
+
+## 이벤트 타입지정 공식
+(e: React.[이벤트종류]<[태그종류]>) => void
+
+이벤트 종류
+React.ChangeEvent    → 값이 변경될 때 (onChange)
+React.MouseEvent     → 마우스 클릭할 때 (onClick)
+React.FormEvent      → 폼 제출할 때 (onSubmit)
+React.KeyboardEvent  → 키보드 입력할 때 (onKeyDown)
+
+태그 종류
+<HTMLInputElement>    → input 태그
+<HTMLTextAreaElement> → textarea 태그
+<HTMLSelectElement>   → select 태그
+<HTMLFormElement>     → form 태그
+<HTMLButtonElement>   → button 태그
+
+결과
+// input onChange
+(e: React.ChangeEvent<HTMLInputElement>) => void
+
+// button onClick
+(e: React.MouseEvent<HTMLButtonElement>) => void
+
+// form onSubmit
+(e: React.FormEvent<HTMLFormElement>) => void

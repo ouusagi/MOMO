@@ -1,0 +1,39 @@
+
+
+interface CardProps {
+    onClick?: ()=> void
+    emoji: string
+    title:string
+    time: string
+    amount: number
+}
+
+
+const Card = ({onClick, emoji, title, time, amount = 0}:CardProps) => {
+
+
+    const CardBox = 'bg-[#FFFFFF] bg-opacity-65 rounded-xl p-4 cursor-pointer flex items-center gap-4 justify-between w-80'
+    const EmojiBox = 'bg-[#FFD9CE] rounded-xl flex items-center py-2 px-3'
+
+    return(
+        <div className={`${CardBox}`} onClick={onClick}>
+
+          <div className="flex items-center gap-3">
+            <div className={`${EmojiBox} text-2xl`}>
+                {emoji}
+            </div>
+
+            <div className="flex flex-col">
+                <span className="font-bold text-[#3D2C2C]">{title}</span>
+                <span className="font-light text-[#B89090]">{time}</span>
+            </div>
+          </div>
+
+            <div>
+                <span className="font-bold text-[#F47560]">-{amount.toLocaleString()} 円</span>
+            </div>
+        </div>
+    )
+}
+
+export default Card
