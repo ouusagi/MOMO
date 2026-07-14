@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { RouterProvider, useNavigate } from 'react-router-dom'
 import './App.css'
 import Button from './components/common/Button'
 import Card from './components/common/Card'
@@ -6,6 +6,8 @@ import Input from './components/common/Input'
 import NavBottom from './components/common/NavBottom'
 import CategoryIcon from './components/common/CategoryIcon'
 import { useState } from 'react'
+
+
 
 
 
@@ -19,7 +21,7 @@ function App() {
   
 
   return (
-    <div className='p-8 flex flex-col gap-4 bg-[#FFC4B3]'>
+    <div className='max-w-[430px] mx-auto min-h-screen'>
       {/* UI확인 테스트용 - 페이지 구현시 수정 후 사용 */}
       {/* <Button variant='primary' className='w-[350px] h-[58px]'>次へ→</Button>
       <Button variant='outline' className='w-[350px] h-[58px]' type='submit'>メイン画面へ移動</Button>
@@ -51,7 +53,6 @@ function App() {
       <CategoryIcon emoji='🎮' label='趣味' active={activeIcon === '趣味'} onClick={()=> setactiveIcon('趣味')}></CategoryIcon>
       <CategoryIcon emoji='＋' label='追加' onClick={()=> navigate('/add')}></CategoryIcon>
       </div> */}
-
     </div>
   )
 }
