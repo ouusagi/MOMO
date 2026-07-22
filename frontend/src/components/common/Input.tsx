@@ -3,7 +3,7 @@ import React from 'react'
 interface InputProps {
     type?: 'text' | 'password' | 'email' | 'number'
     placeholder?: string
-    value: string
+    value: string | number
     onChange:(e:React.ChangeEvent<HTMLInputElement>) => void
     label?: string
     error?: string
