@@ -4,14 +4,17 @@ import (
 	"momo/controllers"
 	"momo/middleware"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+	r.Use(cors.Default())
 
 	r.POST("/api/signup", controllers.Signup)
 	r.POST("/api/login", controllers.Login)
+	r.POST("/api/check-id", controllers.CheckUserID)
 
 	auth := r.Group("/api")
 

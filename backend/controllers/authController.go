@@ -18,6 +18,13 @@ func Signup(c *gin.Context) {
 		return
 	}
 
+	// 계정 중복 가입자 확인
+	var existingUser models.User
+	if err := config.DB.Where("login_id = ?", input.LoginID).First(&existingUser).Error; err == nil {
+		c.JSON(http.StatusConflict, gin.H{"error": "이미 사용중인 ID입니다"})
+		return
+	}
+
 	// 패스워드 암호화
 	hashed, err := utils.HashPassword(input.Password)
 	if err != nil {
@@ -27,8 +34,8 @@ func Signup(c *gin.Context) {
 
 	// 데이터 DB에 저장
 	input.Password = hashed
-	if err := config.DB.Create(&input); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "서버에 에러가 발생하였습니다"})
+	if err := config.DB.Create(&input).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
