@@ -15,6 +15,7 @@ func SetupRouter() *gin.Engine {
 	r.POST("/api/signup", controllers.Signup)
 	r.POST("/api/login", controllers.Login)
 	r.POST("/api/check-id", controllers.CheckUserID)
+	r.POST("/api/check-username", controllers.CheckUserNames)
 
 	auth := r.Group("/api")
 

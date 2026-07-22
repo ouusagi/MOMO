@@ -4,7 +4,7 @@ import Input from "../../components/common/Input"
 import Select from "../../components/common/Select"
 import { isValidUserName } from "../../utils/Validation"
 import { useState } from "react"
-
+import api from "../../api/axios"
 
 interface SignUpStep2Props {
     userName: string
@@ -26,7 +26,7 @@ const SignUpStep2 = ({userName, budget, setUserName, setBudget, onSubmit, onBack
         { value: 'USD', label: '🇺🇸 米ドル (USD)' },
         ]
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
         if(!userName){
             seterror('ユーザーネームを入力してください')
@@ -37,6 +37,13 @@ const SignUpStep2 = ({userName, budget, setUserName, setBudget, onSubmit, onBack
             seterror('ユーザー名は10文字以下で入力してください')
             return
         }
+
+        const res = await api.post('/api/check-username',{userName})
+        if(res.data.duplicate){
+            seterror("すでに登録されているユーザーネームです")
+            return
+        }
+
         seterror('')
         onSubmit()
     }
