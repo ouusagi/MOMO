@@ -60,7 +60,7 @@ func Login(c *gin.Context) {
 	}
 
 	// 패스워드 검증
-	if !utils.CheckPassword(input.Password, user.Password) {
+	if !utils.CheckPassword(user.Password, input.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "패스워드가 일치하지 않습니다"})
 		return
 	}

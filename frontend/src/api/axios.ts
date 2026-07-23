@@ -20,8 +20,11 @@ api.interceptors.request.use((config)=>{
 // 응답 인터셉터 - 에러 처리
 api.interceptors.response.use((res)=> res, (error)=>{
     if (error.response?.status === 401){
-        localStorage.removeItem("token")
-        window.location.href = "/login"
+        if (error.config?.url?.includes('/api/login')) {
+                return Promise.reject(error)
+            }
+            localStorage.removeItem("token")
+            window.location.href = "/login"
     }
     return Promise.reject(error)
 })
