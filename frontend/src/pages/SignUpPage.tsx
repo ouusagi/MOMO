@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"
 const SignUpPage = () => {
 
     const navigate = useNavigate()
-    const { signup } = useAuthStore()
+    const { signup, login } = useAuthStore()
     const [step, setstep] = useState(1)
     const [loginID, setLoginID] = useState('')
     const [password, setPassword] = useState('')
@@ -26,11 +26,21 @@ const SignUpPage = () => {
         }
     }
 
+    const autoLogin = async () => {
+        try {
+            await login(loginID, password)
+            console.log("로그인 성공")
+            navigate('/main')
+        } catch (error) {
+            console.log("로그인 실패:", error)
+        }
+    }
+
     return(
         <div className='w-full min-h-screen'>
             {step === 1 && <SignUpStep1 loginID={loginID} password={password} setLoginID={setLoginID} setPassword={setPassword} onNext={()=> setstep(2)}/>}
             {step === 2 && <SignUpStep2 userName={userName} budget={budget} setUserName={setUserName} setBudget={setBudget} onSubmit={handleSignup} onBack={()=> setstep(1)}/>}
-            {step === 3 && <SignUpStep3 userName={userName} onNext={()=> navigate('/')}/>}
+            {step === 3 && <SignUpStep3 userName={userName} onNext={autoLogin}/>}
         </div>
     )
 }
