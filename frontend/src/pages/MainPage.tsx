@@ -53,7 +53,7 @@ const MainPage = () => {
                     <div className='border-t border-[#F0D0C8] my-4'></div>
                     <div className='flex gap-3'>
                         <Button className="" variant='primary' fullWidth onClick={() => navigate('/add')}>+ Add</Button>
-                        <Button className="text-[#7E2929] bg-[#C48888]" variant='outline' fullWidth onClick={() => navigate('/all')}>🕐 History</Button>
+                        <Button className="" variant="history" fullWidth onClick={() => navigate('/all')}>🕐 History</Button>
                     </div>
                 </div>
 
