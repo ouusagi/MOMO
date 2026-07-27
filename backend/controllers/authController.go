@@ -75,3 +75,19 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 
 }
+
+func GetUser(c *gin.Context) {
+	userID := c.MustGet("user_id").(uint)
+
+	var user models.User
+	if err := config.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ユーザーが見つかりません"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"username": user.UserName,
+		"budget":   user.Budget,
+	})
+
+}

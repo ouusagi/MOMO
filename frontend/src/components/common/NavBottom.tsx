@@ -32,7 +32,7 @@ export default function NavBottom(){
     const navigate = useNavigate()
 
     return(
-      <nav className="w-full bg-white bg-opacity-80 pb-6 pt-4 rounded-xl">
+      <nav className="w-full bg-white bg-opacity-80 pb-6 pt-4">
             <div className="mx-auto flex max-w-md items-center justify-between px-6 gap-8">
                 <NavButton label='ホーム' onClick={()=> navigate("/")} active={location.pathname === "/"} emoji='🏠' className='text-white'></NavButton>
                 <NavButton label='プロフィール' onClick={()=> navigate("/profile")} active={location.pathname === "/profile"} emoji='👤' className='text-white'></NavButton>

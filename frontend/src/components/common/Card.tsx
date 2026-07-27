@@ -12,20 +12,20 @@ interface CardProps {
 const Card = ({onClick, emoji, title, time, amount = 0}:CardProps) => {
 
 
-    const CardBox = 'bg-[#FFFFFF] bg-opacity-65 rounded-xl p-4 cursor-pointer flex items-center gap-4 justify-between w-80'
+    const CardBox = 'bg-[#FFFFFF] bg-opacity-65 rounded-2xl p-4 cursor-pointer flex items-center gap-4 justify-between w-full'
     const EmojiBox = 'bg-[#FFD9CE] rounded-xl flex items-center py-2 px-3'
 
     return(
         <div className={`${CardBox}`} onClick={onClick}>
 
           <div className="flex items-center gap-3">
-            <div className={`${EmojiBox} text-2xl`}>
+            <div className={`${EmojiBox} text-xl`}>
                 {emoji}
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col text-left">
                 <span className="font-bold text-[#3D2C2C]">{title}</span>
-                <span className="font-light text-[#B89090]">{time}</span>
+                <span className="font-light text-[#B89090] text-sm">{time}</span>
             </div>
           </div>
 
