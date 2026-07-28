@@ -66,12 +66,14 @@ const MainPage = () => {
                             label={cat.label}
                             amount={0}
                             onClick={() => navigate('/all')}
+                            className="w-24 h-20"
                         />
                     ))}
                     <CategoryIcon
                         emoji='+'
                         label='詳細'
                         onClick={() => navigate('/all')}
+                        className="w-24 h-20"
                     />
                 </div>
 
