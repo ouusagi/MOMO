@@ -5,6 +5,7 @@ import { useState } from "react"
 import inputIcon from "../assets/inputicon.png"
 import DatePickerModal from "../components/common/DatePickerModal"
 import CategoryIcon from "../components/common/CategoryIcon"
+import { useCreateExpenses } from "../hooks/useExpense"
 
 
 const categories = [
@@ -22,25 +23,30 @@ const EnterDirectly = () => {
     const [amount, setAmount] = useState('')
     const [title, setTitle] = useState('')
     const [category, setCategory] = useState('')
+    const [memo, setMemo] = useState('')
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [isOpen, setIsOpen] = useState(false)
     const [error, setError] = useState('')
+    const { mutate: createExpense } = useCreateExpenses()
 
     const handleSave = () => {
         if(!title || !amount || !selectedDate || !category){
         setError("全ての項目を入力してください")
         return
     }
+    createExpense({ amount:Number(amount.replaceAll(',','')), title, category, memo, expenseDate:selectedDate.toISOString() }, 
+    {onSuccess: ()=> navigate('/main'), onError:()=> setError('保存に失敗しました')})
+    setError('')
     }
 
     return(
         <div className="w-full min-h-screen bg-[#FFC4B3] flex flex-col">
 
             {/* 헤더 */}
-            <div className='flex items-center justify-between px-6 pt-5 pb-4'>
+            <div className='flex items-center justify-between px-5 pt-5 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate('/main')}>←</Button>
                 <span className='text-[#3D2C2C] font-bold'>手動入力</span>
-                <span className='text-[#F47560] font-bold cursor-pointer'onClick={()=> {}}>完了</span>
+                <span className='text-[#F47560] font-bold cursor-pointer' onClick={handleSave}>完了</span>
             </div>
 
             <div className='flex flex-col gap-4 px-4'>
@@ -62,10 +68,13 @@ const EnterDirectly = () => {
                 </div>
 
                 {/* 가게명 */}
-                <Input className="font-bold" label='店名' type='text' placeholder='ドン・キホーテ' value={title} onChange={(e) => setTitle(e.target.value)}/>
+                <Input className="font-bold" label='店名' type='text' placeholder='スターバックス' value={title} onChange={(e) => setTitle(e.target.value)}/>
+
+                {/* 메모 */}
+                <Input className="font-bold" label='メモ（任意）' type='text' placeholder='ホワイトモカアーモンドミルク変更オーダー ☕' value={memo} onChange={(e) => setMemo(e.target.value)}/>
 
                 {/* 날짜 */}
-                <div className='bg-white bg-opacity-60 rounded-2xl px-4 py-3 flex items-center justify-between' onClick={()=> setIsOpen(true)}>
+                <div className='bg-white bg-opacity-60 rounded-2xl px-4 py-3 mt-3 flex items-center justify-between' onClick={()=> setIsOpen(true)}>
                     <div>
                         <p className='text-[#B89090] text-xs'>日付 (タップして編集)</p>
                         <p className='text-[#3D2C2C] font-bold text-sm'>{selectedDate.toLocaleDateString('ja-JP')}</p>
@@ -84,17 +93,16 @@ const EnterDirectly = () => {
                                 label={cat.label}
                                 active={category === cat.label}
                                 onClick={() => setCategory(cat.label)}
-                                className="w-20 h-20"
+                                className="w-20 h-16"
                             />
                         ))}
-                        <CategoryIcon emoji='+' label='' onClick={() => {}} className="w-20 h-20"/>
+                        <CategoryIcon emoji='+' label='' onClick={() => {}} className="w-20 h-16"/>
                     </div>
                 </div>
 
                 {error && <p className='text-red-500 text-sm text-center'>{error}</p>}
 
-                <Button className="mt-2" variant="outline" onClick={()=> navigate("/camera")}>レシート撮影 📸</Button>
-                <Button variant='primary' fullWidth onClick={handleSave} className='mt-2'>保存する</Button>
+                <Button className="mt-2" variant="primary" onClick={()=> navigate("/camera")}>レシート撮影 📸</Button>
 
             </div>
 

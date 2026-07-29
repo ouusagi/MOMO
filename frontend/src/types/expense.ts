@@ -3,7 +3,8 @@ export interface ExpenseInput {
     title: string
     amount: number
     category: string
-    memo: string
+    memo?: string
+    expenseDate: string
 }
 
 // backend → frontend: GET

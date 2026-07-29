@@ -4,14 +4,23 @@ import hero from "../assets/hero.png"
 import hero2 from "../assets/minimomo.png"
 import Button from "../components/common/Button"
 import { useGetUser } from "../hooks/useUser"
+import { useGetExpenses } from "../hooks/useExpense"
 import CategoryIcon from "../components/common/CategoryIcon"
 import NavBottom from "../components/common/NavBottom"
 import Card from "../components/common/Card"
 
-
 const MainPage = () => {
 
-    const { data, isLoading, error } = useGetUser()
+    const { data:UserData, isLoading:UserLoading, error:UserError } = useGetUser()
+    const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
+    const MonthTotalAmount = ExpensesData?.filter((expense)=> {
+        const date = new Date(expense.expenseDate)
+        const now = new Date()
+
+        return(
+            date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth()
+        )
+    }).reduce((total, item) => total + item.amount, 0) ?? 0;
     const navigate = useNavigate()
     const categories = [
         { emoji: '🍔', label: '食費' },
@@ -19,11 +28,11 @@ const MainPage = () => {
         { emoji: '🚇', label: '交通' },
     ]
 
-    if(isLoading){
+    if(ExpensesLoading || UserLoading){
         return <p>Loading...</p>
     }
 
-    if(error){
+    if(ExpensesError || UserError){
         return <p>エラーが発生しました</p>
     }
 
@@ -36,7 +45,7 @@ const MainPage = () => {
                     <div className='w-10 h-10 bg-[#FFB8A6] bg-opacity-50 rounded-full flex items-center justify-center'>
                         <img className="cursor-pointer" src={hero} alt="default_profile" />
                     </div>
-                    <span className='text-[#5A2D2A] font-medium text-lg'>Hi ! {data?.username} !</span>
+                    <span className='text-[#5A2D2A] font-medium text-lg'>Hi ! {UserData?.username} !</span>
                 </div>
                 <img src={bell} alt="alert_bell" className="cursor-pointer"/>
             </div>
@@ -48,7 +57,7 @@ const MainPage = () => {
                     <img src={hero2} alt='momo' className='absolute -top-7 -right-4 w-30 h-30' />
                     <div className='text-center mt-4'>
                         <p className='text-[#5A2D2A] font-bold'>今月の支出額</p>
-                        <p className='text-[#5A2D2A] font-bold text-3xl mt-1'>300,000円</p>
+                        <p className='text-[#5A2D2A] font-bold text-3xl mt-1'>{MonthTotalAmount.toLocaleString()}円</p>
                     </div>
                     <div className='border-t border-[#F0D0C8] my-4'></div>
                     <div className='flex gap-3'>

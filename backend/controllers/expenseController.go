@@ -39,7 +39,7 @@ func GetExpense(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "지출 조회 실패"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"expense": expenses})
+	c.JSON(http.StatusOK, gin.H{"expenses": expenses})
 }
 
 // 지출 수정

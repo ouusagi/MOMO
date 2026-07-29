@@ -4,10 +4,10 @@ import "time"
 
 // user_models
 type User struct {
-	ID        uint
-	LoginID   string
-	UserName  string
-	Password  string
-	CreatedAt time.Time
-	Budget    int
+	ID        uint      `json:"id"`
+	LoginID   string    `json:"loginId"`
+	UserName  string    `json:"userName"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"createdAt"`
+	Budget    int       `json:"budget"`
 }
