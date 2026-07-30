@@ -8,6 +8,7 @@ import { useGetExpenses } from "../hooks/useExpense"
 import CategoryIcon from "../components/common/CategoryIcon"
 import NavBottom from "../components/common/NavBottom"
 import Card from "../components/common/Card"
+import { categoryEmoji } from "../constants/categoryEmoji"
 
 const MainPage = () => {
 
@@ -21,6 +22,14 @@ const MainPage = () => {
             date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth()
         )
     }).reduce((total, item) => total + item.amount, 0) ?? 0;
+    const TodayExpenses = ExpensesData?.filter((expenses)=>{
+        const date = new Date(expenses.expenseDate)
+        const now = new Date()
+
+        return(
+            date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()
+        )
+    })
     const navigate = useNavigate()
     const categories = [
         { emoji: '🍔', label: '食費' },
@@ -101,12 +110,21 @@ const MainPage = () => {
                 <div className="w-full">
                     <div className='flex items-center justify-between mb-3 px-2'>
                         <span className='text-[#7A5555] font-bold'>今日の支出</span>
-                        <span className='text-[#F47560] text-sm cursor-pointer' onClick={() => navigate('/all')}>全て見る ›</span>
+                        <span className='text-[#F47560] text-sm cursor-pointer' onClick={() => navigate('/expensesall')}>全て見る ›</span>
                     </div>
 
-                    <div className='flex flex-col gap-3 text-center'>
-                        <Card emoji="☕" title="スターバックス" amount={30000} onClick={()=> {}} time="午前 15:45"/>
-                        <Card emoji="🍔" title="マクドナルド" amount={890} onClick={()=> {}} time="午前 08:31"/>
+                    <div className="flex flex-col gap-3 text-center">
+                    {TodayExpenses?.length === 0 ? (<p className="text-[#B89090] text-sm text-center pt-3">今日の支出はありません！</p>) : (TodayExpenses?.map((item, i)=>{
+                        return(
+                                <Card key={item.id}
+                                  title={item.title}
+                                  amount={item.amount}
+                                  time={item.expenseDate.slice(0,10)}
+                                  emoji={categoryEmoji[item.category] ?? "💰"}
+                                  onClick={()=> {}}
+                                />
+                        )
+                        }))}
                     </div>
                 </div>
 
