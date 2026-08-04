@@ -71,7 +71,7 @@ const MainPage = () => {
                     <div className='border-t border-[#F0D0C8] my-4'></div>
                     <div className='flex gap-3'>
                         <Button className="" variant='primary' fullWidth onClick={() => navigate('/add')}>+ Add</Button>
-                        <Button className="" variant="history" fullWidth onClick={() => navigate('/all')}>🕐 History</Button>
+                        <Button className="" variant="history" fullWidth onClick={() => navigate('/transactions')}>🕐 History</Button>
                     </div>
                 </div>
 
@@ -90,7 +90,7 @@ const MainPage = () => {
                     <CategoryIcon
                         emoji='+'
                         label='詳細'
-                        onClick={() => navigate('/all')}
+                        onClick={() => navigate('/transactions')}
                         className="w-24 h-20"
                     />
                 </div>
@@ -110,7 +110,7 @@ const MainPage = () => {
                 <div className="w-full">
                     <div className='flex items-center justify-between mb-3 px-2'>
                         <span className='text-[#7A5555] font-bold'>今日の支出</span>
-                        <span className='text-[#F47560] text-sm cursor-pointer' onClick={() => navigate('/expensesall')}>全て見る ›</span>
+                        <span className='text-[#F47560] text-sm cursor-pointer' onClick={() => navigate('/transactions')}>全て見る ›</span>
                     </div>
 
                     <div className="flex flex-col gap-3 text-center">

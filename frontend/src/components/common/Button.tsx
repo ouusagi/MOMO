@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface ButtonProps {
-    variant?: 'primary' | 'outline' | 'back' | 'history'
+    variant?: 'primary' | 'outline' | 'back' | 'history' | 'filter'
     onClick?: () => void                        
     children: React.ReactNode                   
     disabled?: boolean                         
@@ -17,7 +17,8 @@ const Button = ({ variant = 'primary', onClick, children, disabled = false, full
         primary: 'bg-[#F47560] text-white py-4 px-6 text-base shadow-md',
         outline: 'bg-white text-[#F47560] py-4 px-6 text-base',
         history: 'bg-[#C48888] text-[#7E2929] py-4 px-6 text-base',
-        back: 'bg-[rgba(255,255,255,0.55)] text-gray-500 w-10 h-10 flex items-center justify-center'
+        back: 'bg-[rgba(255,255,255,0.55)] text-gray-500 w-10 h-10 flex items-center justify-center',
+        filter: 'px-3.5 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-colors',
     }
     const widthStyle = fullWidth ? 'w-full' : ''
     const disabledStyle = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'

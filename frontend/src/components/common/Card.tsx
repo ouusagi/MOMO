@@ -4,12 +4,13 @@ interface CardProps {
     onClick?: ()=> void
     emoji: string
     title:string
-    time: string
+    time?: string
     amount: number
+    memo?: string
 }
 
 
-const Card = ({onClick, emoji, title, time, amount = 0}:CardProps) => {
+const Card = ({onClick, emoji, title, time, amount = 0, memo}:CardProps) => {
 
 
     const CardBox = 'bg-[#FFFFFF] bg-opacity-65 rounded-2xl p-4 cursor-pointer flex items-center gap-4 justify-between w-full'
@@ -25,11 +26,11 @@ const Card = ({onClick, emoji, title, time, amount = 0}:CardProps) => {
 
             <div className="flex flex-col text-left">
                 <span className="font-bold text-[#3D2C2C]">{title}</span>
-                <span className="font-light text-[#B89090] text-sm">{time}</span>
+                <span className="font-light text-[#B89090] text-sm">{time || memo}</span>
             </div>
           </div>
 
-            <div>
+            <div className="flex flex-col text-right">
                 <span className="font-bold text-[#F47560]">-{amount.toLocaleString()} 円</span>
             </div>
         </div>
