@@ -9,6 +9,7 @@ import LoginPage from "../pages/LoginPage";
 import MainPage from "../pages/MainPage";
 import EnterDirectly from "../pages/EnterDirectly";
 import Transactions from "../pages/Transactions";
+import TransactionDetailPage from "../pages/TransactionDetailPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
       { path: "/main", element: <MainPage/>},
       { path: "/add", element: <EnterDirectly/>},
       { path: "/transactions", element: <Transactions/>},
+      { path: "/transaction/:id", element: <TransactionDetailPage/>},
     ]
   }
 ]);

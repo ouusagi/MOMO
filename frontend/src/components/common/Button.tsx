@@ -7,7 +7,7 @@ interface ButtonProps {
     disabled?: boolean                         
     fullWidth?: boolean 
     type?: 'button' | 'submit' | 'reset'
-    className: string
+    className?: string
 }
 
 const Button = ({ variant = 'primary', onClick, children, disabled = false, fullWidth = false, type = 'button', className = ''}:ButtonProps)=>{

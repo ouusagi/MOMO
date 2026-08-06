@@ -83,7 +83,7 @@ const Transactions = () => {
 
                         {expenses.map((item, index)=>(
                             <div key={index} className="mt-2 mb-3">
-                            <Card title={item.title} emoji={categoryEmoji[item.category] ?? "💰"} memo={item.memo} amount={item.amount} onClick={()=>{}}/>
+                            <Card title={item.title} emoji={categoryEmoji[item.category] ?? "💰"} memo={item.memo} amount={item.amount} onClick={()=>{navigate(`/transaction/${item.id}`)}}/>
                             </div>
                         ))}
                     </div>
