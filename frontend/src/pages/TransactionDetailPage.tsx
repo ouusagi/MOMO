@@ -1,7 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom"
 import Button from "../components/common/Button"
 import { categoryEmoji } from "../constants/categoryEmoji"
-import { useGetExpenses } from "../hooks/useExpense"
+import { useDeleteExpense, useGetExpenses } from "../hooks/useExpense"
+import ConfirmModal from "../components/common/ConfirmModal"
+import { useState } from "react"
+import toast from "react-hot-toast"
+
 
 
 
@@ -11,6 +15,15 @@ const TransactionDetailPage = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const filterExpenses = ExpensesData?.find(item => item.id === Number(id))
+    const [modalOpen, setModalOpen] = useState(false)
+    const { mutate:deleteExpense } = useDeleteExpense()
+
+    const handleDelete = () => {
+        deleteExpense(filterExpenses?.id, {
+            onSuccess:() => {toast.success("削除が完了しました。"); navigate('/transactions')},
+            onError:() => {toast.error("エラーが発生しました")},
+        })}
+
 
     if(ExpensesLoading) return <p>読み込み中...</p>
     if(ExpensesError) return <p>エラーが発生しました。</p>
@@ -67,11 +80,14 @@ const TransactionDetailPage = () => {
                 {/* button */}
                 <div className='flex gap-3 mt-auto pb-20'>
                     <Button variant='outline' fullWidth onClick={() => {}}>✏️ 修正</Button>
-                    <Button variant='primary' fullWidth onClick={() => {}}>🗑 削除</Button>
+                    <Button variant='primary' fullWidth onClick={() => setModalOpen(true)}>🗑 削除</Button>
                 </div>
             </div>
 
+            <ConfirmModal isOpen={modalOpen} title='支出を削除しますか？' message='削除した支出は元に戻せません' onConfirm={handleDelete} onCancel={() => setModalOpen(false)}/>
+
         </div>
+        
     )
 }
 
