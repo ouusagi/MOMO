@@ -6,7 +6,7 @@ import inputIcon from "../assets/inputicon.png"
 import DatePickerModal from "../components/common/DatePickerModal"
 import CategoryIcon from "../components/common/CategoryIcon"
 import { useCreateExpenses } from "../hooks/useExpense"
-
+import toast from "react-hot-toast"
 
 const categories = [
     { emoji: '☕', label: 'カフェ' },
@@ -34,8 +34,9 @@ const EnterDirectly = () => {
         setError("全ての項目を入力してください")
         return
     }
-    createExpense({ amount:Number(amount.replaceAll(',','')), title, category, memo, expenseDate:selectedDate.toISOString() }, 
-    {onSuccess: ()=> navigate('/main'), onError:()=> setError('保存に失敗しました')})
+    createExpense({ amount:Number(amount.replaceAll(',','')), title, category, memo, expenseDate:selectedDate.toISOString() }, {
+    onSuccess:()=> {toast.success('支出を追加しました。'); navigate('/transactions');}, 
+    onError:()=> {toast.error('支出の追加に失敗しました。'); setError('保存に失敗しました');}})
     setError('')
     }
 
