@@ -19,6 +19,7 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
     const [show, setShow] = useState(false)
     const [selectedDate, setSelectedDate] = useState(new Date(initialData?.date))
     const [dateModal, setDateModal] = useState(false)
+    const [error, setError] = useState('')
 
     useEffect(()=>{
         if(isOpen){
@@ -30,6 +31,12 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
     if (!isOpen) return null
 
     const handleSave = () => {
+
+        if(!title || !amount){
+        return setError('内容を入力してください')
+        }
+
+        setError('')
         onSave({title, amount: Number(amount.replaceAll(',', '')), memo, expenseDate:selectedDate.toISOString()})
     }
 
@@ -63,9 +70,11 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
                     />
                 </div>
 
-                <Input label='メモ' type='text' value={memo} onChange={(e) => setMemo(e.target.value)} placeholder='メモを入力してください'/>
+                <Input label='メモ（任意）' type='text' value={memo} onChange={(e) => setMemo(e.target.value)} placeholder='メモを入力してください'/>
 
                 {/* Date */}
+                <div className='flex flex-col mb-1'>
+                <label className='text-[#7A5555] font-bold -mb-1.5'>日付</label>
                 <div className='bg-white bg-opacity-60 rounded-2xl px-4 py-3 mt-3 flex items-center justify-between' onClick={()=> setDateModal(true)}>
                     <div>
                         <p className='text-[#B89090] text-xs'>日付 (タップして編集)</p>
@@ -73,6 +82,9 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
                     </div>
                     <img src={inputIcon} alt="input_icon" className="w-8" />
                 </div>
+                </div>
+
+                <p className='text-red-500 text-sm text-center'>{error}</p>
 
                 <Button variant='primary' fullWidth onClick={handleSave} className='mt-2 pb-4'>保存する</Button>
 

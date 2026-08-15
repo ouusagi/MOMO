@@ -94,7 +94,13 @@ const TransactionDetailPage = () => {
             </div>
 
             <ConfirmModal isOpen={modalOpen} title='支出を削除しますか？' message='削除した支出は元に戻せません' onConfirm={handleDelete} onCancel={() => setModalOpen(false)}/>
-            <EditModal isOpen={editModalOpen} onClose={()=> setEditModalOpen(false)} onSave={handleUpdate} initialData={{title:filterExpenses?.title, amount:filterExpenses?.amount, memo:filterExpenses?.memo, date:filterExpenses?.expenseDate}}></EditModal>
+            
+            <EditModal 
+            isOpen={editModalOpen} 
+            onClose={()=> setEditModalOpen(false)} 
+            onSave={handleUpdate} 
+            initialData={{title:filterExpenses?.title, amount:filterExpenses?.amount, memo:filterExpenses?.memo, date:filterExpenses?.expenseDate}}>
+            </EditModal>
 
         </div>
         
