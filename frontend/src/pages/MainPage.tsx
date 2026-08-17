@@ -14,6 +14,13 @@ const MainPage = () => {
 
     const { data:UserData, isLoading:UserLoading, error:UserError } = useGetUser()
     const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
+    const navigate = useNavigate()
+        const categories = [
+        { emoji: '🍔', label: '食費' },
+        { emoji: '☕', label: 'カフェ' },
+        { emoji: '🚇', label: '交通' },
+    ]
+
     const MonthTotalAmount = ExpensesData?.filter((expense)=> {
         const date = new Date(expense.expenseDate)
         const now = new Date()
@@ -22,6 +29,7 @@ const MainPage = () => {
             date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth()
         )
     }).reduce((total, item) => total + item.amount, 0) ?? 0;
+
     const TodayExpenses = ExpensesData?.filter((expenses)=>{
         const date = new Date(expenses.expenseDate)
         const now = new Date()
@@ -30,12 +38,17 @@ const MainPage = () => {
             date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()
         )
     })
-    const navigate = useNavigate()
-    const categories = [
-        { emoji: '🍔', label: '食費' },
-        { emoji: '☕', label: 'カフェ' },
-        { emoji: '🚇', label: '交通' },
-    ]
+
+    const CategoryTotalAmount = ExpensesData?.filter((expenses)=>{
+        const date = new Date(expenses?.expenseDate)
+        const now = new Date()
+        return(
+            date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth()
+        )
+    }).reduce((total, expense) => {
+        total[expense.category] = (total[expense.category] || 0) + expense.amount
+        return total
+    },{} as Record<string,number>)
 
     if(ExpensesLoading || UserLoading){
         return <p>Loading...</p>
@@ -82,8 +95,8 @@ const MainPage = () => {
                             key={cat.label}
                             emoji={cat.emoji}
                             label={cat.label}
-                            amount={0}
-                            onClick={() => navigate('/all')}
+                            amount={CategoryTotalAmount[cat.label] || 0}
+                            onClick={() => navigate('/transactions',{state:{category:cat.label}})}
                             className="w-24 h-20"
                         />
                     ))}
@@ -121,7 +134,7 @@ const MainPage = () => {
                                   amount={item.amount}
                                   time={item.expenseDate.slice(0,10)}
                                   emoji={categoryEmoji[item.category] ?? "💰"}
-                                  onClick={()=> {}}
+                                  onClick={()=> navigate(`/transaction/${item.id}`)}
                                 />
                         )
                         }))}

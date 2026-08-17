@@ -16,10 +16,10 @@ const CategoryIcon = ({emoji, label, onClick, active = false, amount, className}
     const activelabelColor = active ? 'text-white' : 'text-[#3D2C2C]'
 
     return(
-        <div className={`${CategoryIconBox} ${activebgColor} ${className}`} onClick={onClick}>
+        <div className={`${CategoryIconBox} ${activebgColor} ${className} overflow-hidden`} onClick={onClick}>
             <span className="text-base">{emoji}</span>
-            <span className={`${activelabelColor} font-bold text-base`}>{label}</span>
-            {amount !== undefined && (<span className="text-[#F47560] font-bold">{amount.toLocaleString()} 円</span>)}
+            <span className={`${activelabelColor} font-bold text-base text-center`}>{label}</span>
+            {amount !== undefined && (<span className="text-[#F47560] text-sm font-bold truncate w-full text-center">{amount.toLocaleString()} 円</span>)}
         </div>
     )
 }

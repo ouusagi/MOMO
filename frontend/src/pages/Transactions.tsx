@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Button from "../components/common/Button"
 import transactionsBell from "../assets/transactionsBell.png"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useGetExpenses } from "../hooks/useExpense"
 import NavBottom from "../components/common/NavBottom"
 import Card from "../components/common/Card"
@@ -12,7 +12,14 @@ const Transactions = () => {
     const navigate = useNavigate()
     const categoryfilters = ['すべて', '食費', 'カフェ', '交通', '買い物', '医薬品', '趣味' ,'その他']
     const [activeFilter, setActiveFilter] = useState('すべて')
+    const location = useLocation()
     const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
+
+    useEffect(()=>{
+        if(location.state?.category){
+            setActiveFilter(location.state?.category)
+        }
+    },[location.state])
 
     const Last30DaysExpenses = ExpensesData?.filter((expense)=>{
         const date = new Date(expense.expenseDate)
