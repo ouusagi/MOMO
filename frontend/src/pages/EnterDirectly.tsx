@@ -5,18 +5,9 @@ import { useState } from "react"
 import inputIcon from "../assets/inputicon.png"
 import DatePickerModal from "../components/common/DatePickerModal"
 import CategoryIcon from "../components/common/CategoryIcon"
+import { categories } from "../constants/categories"
 import { useCreateExpenses } from "../hooks/useExpense"
 import toast from "react-hot-toast"
-
-const categories = [
-    { emoji: '☕', label: 'カフェ' },
-    { emoji: '🍔', label: '食費' },
-    { emoji: '🛍', label: '買い物' },
-    { emoji: '🚇', label: '交通' },
-    { emoji: '🏠', label: '家賃' },
-    { emoji: '💊', label: '医薬品' },
-    { emoji: '🎮', label: '趣味' },
-]
 
 const EnterDirectly = () => {
     const navigate = useNavigate()
@@ -90,14 +81,13 @@ const EnterDirectly = () => {
                         {categories.map((cat) => (
                             <CategoryIcon
                                 key={cat.label}
-                                emoji={cat.emoji}
+                                Icon={cat.Icon}
                                 label={cat.label}
                                 active={category === cat.label}
                                 onClick={() => setCategory(cat.label)}
                                 className="w-20 h-16"
                             />
                         ))}
-                        <CategoryIcon emoji='+' label='' onClick={() => {}} className="w-20 h-16"/>
                     </div>
                 </div>
 

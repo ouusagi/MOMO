@@ -8,17 +8,17 @@ import { useGetExpenses } from "../hooks/useExpense"
 import CategoryIcon from "../components/common/CategoryIcon"
 import NavBottom from "../components/common/NavBottom"
 import Card from "../components/common/Card"
-import { categoryEmoji } from "../constants/categoryEmoji"
+import { categoryIcons } from "../constants/categoryIcons"
 
 const MainPage = () => {
 
     const { data:UserData, isLoading:UserLoading, error:UserError } = useGetUser()
     const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
     const navigate = useNavigate()
-        const categories = [
-        { emoji: '🍔', label: '食費' },
-        { emoji: '☕', label: 'カフェ' },
-        { emoji: '🚇', label: '交通' },
+    const categories = [
+        { Icon: categoryIcons['食費'], label: '食費' },
+        { Icon: categoryIcons['カフェ'], label: 'カフェ' },
+        { Icon: categoryIcons['交通'], label: '交通' },
     ]
 
     const MonthTotalAmount = ExpensesData?.filter((expense)=> {
@@ -37,7 +37,7 @@ const MainPage = () => {
         return(
             date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()
         )
-    })
+    }).sort((a,b)=> new Date(b.expenseDate).getTime() - new Date(a.expenseDate).getTime())
 
     const CategoryTotalAmount = ExpensesData?.filter((expenses)=>{
         const date = new Date(expenses?.expenseDate)
@@ -92,8 +92,8 @@ const MainPage = () => {
                 <div className='flex gap-3 overflow-x-auto pb-2'>
                     {categories.map((cat) => (
                         <CategoryIcon
+                            Icon={cat.Icon}
                             key={cat.label}
-                            emoji={cat.emoji}
                             label={cat.label}
                             amount={CategoryTotalAmount[cat.label] || 0}
                             onClick={() => navigate('/transactions',{state:{category:cat.label}})}
@@ -101,8 +101,8 @@ const MainPage = () => {
                         />
                     ))}
                     <CategoryIcon
-                        emoji='+'
-                        label='詳細'
+                        Icon={categoryIcons['その他']}
+                        label='その他'
                         onClick={() => navigate('/transactions')}
                         className="w-24 h-20"
                     />
@@ -127,13 +127,13 @@ const MainPage = () => {
                     </div>
 
                     <div className="flex flex-col gap-3 text-center">
-                    {TodayExpenses?.length === 0 ? (<p className="text-[#B89090] text-sm text-center pt-3">今日の支出はありません！</p>) : (TodayExpenses?.map((item, i)=>{
+                    {TodayExpenses?.length === 0 ? (<p className="text-[#B89090] text-sm text-center pt-3">今日の支出はありません！</p>) : (TodayExpenses?.map((item)=>{
                         return(
                                 <Card key={item.id}
                                   title={item.title}
                                   amount={item.amount}
                                   time={item.expenseDate.slice(0,10)}
-                                  emoji={categoryEmoji[item.category] ?? "💰"}
+                                  icon={categoryIcons[item.category] ?? "💰"}
                                   onClick={()=> navigate(`/transaction/${item.id}`)}
                                 />
                         )

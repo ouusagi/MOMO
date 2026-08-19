@@ -5,12 +5,12 @@ import { useEffect, useState } from "react"
 import { useGetExpenses } from "../hooks/useExpense"
 import NavBottom from "../components/common/NavBottom"
 import Card from "../components/common/Card"
-import { categoryEmoji } from "../constants/categoryEmoji"
+import { categoryIcons } from "../constants/categoryIcons"
 
 const Transactions = () => {
 
     const navigate = useNavigate()
-    const categoryfilters = ['すべて', '食費', 'カフェ', '交通', '買い物', '医薬品', '趣味' ,'その他']
+    const categoryfilters = ['すべて', '食費', 'カフェ', '交通', '買い物', '医薬品', '家賃', '趣味' ,'その他']
     const [activeFilter, setActiveFilter] = useState('すべて')
     const location = useLocation()
     const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
@@ -90,7 +90,7 @@ const Transactions = () => {
 
                         {expenses.map((item, index)=>(
                             <div key={index} className="mt-2 mb-3">
-                            <Card title={item.title} emoji={categoryEmoji[item.category] ?? "💰"} memo={item.memo} amount={item.amount} onClick={()=>{navigate(`/transaction/${item.id}`)}}/>
+                            <Card title={item.title} icon={categoryIcons[item.category] ?? "💰"} memo={item.memo} amount={item.amount} onClick={()=>{navigate(`/transaction/${item.id}`)}}/>
                             </div>
                         ))}
                     </div>

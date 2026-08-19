@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import Button from "../components/common/Button"
-import { categoryEmoji } from "../constants/categoryEmoji"
+import { categoryIcons } from "../constants/categoryIcons"
 import { useDeleteExpense, useGetExpenses, useUpdateExpense } from "../hooks/useExpense"
 import ConfirmModal from "../components/common/ConfirmModal"
 import { useState } from "react"
@@ -52,8 +52,8 @@ const TransactionDetailPage = () => {
             {/* category + expense */}
             <div className='flex flex-col gap-4 px-6'>
                 <div className='bg-white bg-opacity-65 rounded-3xl py-6 flex flex-col items-center gap-2' onClick={()=> setEditModalOpen(true)}>
-                    <span className='text-2xl bg-[#FFD9CE] py-3 px-4 rounded-2xl'>{categoryEmoji[filterExpenses?.category] || '💰'}</span>
-                    <span className='text-[#7A5555] text-sm bg-[#FFD9CE] py-1 px-4 rounded-3xl font-bold'>{filterExpenses?.category}</span>
+                    <span className="bg-[#FFD9CE] py-4 px-4 rounded-2xl"><img src={categoryIcons[filterExpenses?.category] || '💰'} alt="icon-img" width={23}/></span>
+                    <span className='text-[#7A5555] text-sm bg-[#FFD9CE] py-1 px-4 rounded-3xl font-bold'>{filterExpenses?.title}</span>
                     <span className='text-[#F47560] font-bold text-2xl'>{filterExpenses?.amount.toLocaleString()}円</span>
                 </div>
 

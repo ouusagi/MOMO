@@ -2,7 +2,7 @@
 
 interface CardProps {
     onClick?: ()=> void
-    emoji: string
+    icon: string
     title:string
     time?: string
     amount: number
@@ -10,18 +10,18 @@ interface CardProps {
 }
 
 
-const Card = ({onClick, emoji, title, time, amount = 0, memo}:CardProps) => {
+const Card = ({onClick, icon, title, time, amount = 0, memo}:CardProps) => {
 
 
     const CardBox = 'bg-[#FFFFFF] bg-opacity-65 rounded-2xl p-4 cursor-pointer flex items-center gap-4 justify-between w-full'
-    const EmojiBox = 'bg-[#FFD9CE] rounded-xl flex items-center py-2 px-3'
+    const EmojiBox = 'bg-[#FFD9CE] rounded-xl flex items-center py-3 px-3'
 
     return(
         <div className={`${CardBox}`} onClick={onClick}>
 
           <div className="flex items-center gap-3">
             <div className={`${EmojiBox} text-xl`}>
-                {emoji}
+                <img src={icon} alt="icon-img" width={21}/>
             </div>
 
             <div className="flex flex-col text-left">
