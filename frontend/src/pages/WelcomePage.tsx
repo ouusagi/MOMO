@@ -1,11 +1,18 @@
 import { useNavigate } from "react-router-dom"
 import hero from '../assets/hero.png'
 import Button from "../components/common/Button"
+import { useEffect } from "react"
 
 
 const WelcomePage = () => {
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if(token){navigate('/main')}
+        else{navigate('/')}
+    },[navigate])
 
     return(
         <div className='w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col items-center justify-center px-8 gap-8'>
