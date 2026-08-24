@@ -11,7 +11,7 @@ interface DatePickerModalProps {
   onClick: () => void;
 }
 
-const DatePickerModal = ({ open, selectedDate, onChange, onClick,}: DatePickerModalProps) => {
+const DatePickerModal = ({open, selectedDate, onChange, onClick,}: DatePickerModalProps) => {
   if (!open) return null;
 
   return (
@@ -20,7 +20,7 @@ const DatePickerModal = ({ open, selectedDate, onChange, onClick,}: DatePickerMo
             <div className="w-[340px] rounded-3xl bg-[#FFE6DE] p-6 shadow-2xl">
                 <h2 className="text-center text-xl font-bold text-[#3D2C2C] mb-4">日付を選択</h2>
                 <div className="flex justify-center">
-                <DatePicker locale={ja} inline selected={selectedDate} onChange={(date) => { if (!date) return; onChange(date);}}/>
+                <DatePicker maxDate={new Date()} locale={ja} inline selected={selectedDate} onChange={(date) => { if (!date) return; onChange(date);}}/>
                 </div>
                 <div className="flex gap-3 mt-6">
                     <button className="flex-1 rounded-2xl bg-white py-3 font-bold text-[#3D2C2C]" onClick={onClick}>キャンセル</button>
