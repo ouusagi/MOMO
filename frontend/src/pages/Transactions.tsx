@@ -21,16 +21,30 @@ const Transactions = () => {
         }
     },[location.state])
 
-    const Last30DaysExpenses = ExpensesData?.filter((expense)=>{
-        const date = new Date(expense.expenseDate)
-        const now = new Date()
-        const past = new Date()
-        past.setDate(now.getDate() - 30)
-        return date >= past && date <= now
-    }).sort((a,b)=>{
-        return new Date(b.expenseDate).getTime() - new Date(a.expenseDate).getTime()
-    })
+    // 로컬 년-월-일 문자열 생성
+    const getLocalDateString = (date:Date) => {
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2,'0')
+        const day = String(date.getDate()).padStart(2,'0')
 
+        return `${year}-${month}-${day}`
+    }
+
+    // 현재~30일전 날짜 계산
+    const now = new Date()
+    const past = new Date()
+    past.setDate(now.getDate() - 30)
+    
+    const today = getLocalDateString(now)
+    const thirtyDaysAgo = getLocalDateString(past)
+
+    const Last30DaysExpenses = ExpensesData?.filter((expense)=>{
+        const ExpenseDate = expense.expenseDate.slice(0,10)
+        return ExpenseDate >= thirtyDaysAgo &&
+               ExpenseDate <= today
+    }).sort((a,b)=> new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+    // 필터 기능 (기본값 모두)
     const FilteredExpenses = Last30DaysExpenses?.filter((expense)=>{
         if(activeFilter === 'すべて'){
             return true
@@ -38,6 +52,7 @@ const Transactions = () => {
         return expense.category === activeFilter
     })
 
+    // 날짜별 그룹화
     const groupedExpenses = FilteredExpenses?.reduce((acc, expense)=> {
         const date = expense.expenseDate.slice(0,10)
 
@@ -49,18 +64,18 @@ const Transactions = () => {
         return acc
     },{} as Record<string, typeof FilteredExpenses>)
 
+    // 오늘, 내일 라벨명 랩핑
     const getDateLabel = (dateStr: string) => {
-        const today = new Date().toISOString().slice(0,10)
+        const today = getLocalDateString(new Date())
         const yesterdayDate = new Date()
         yesterdayDate.setDate(yesterdayDate.getDate() - 1)
-        const yesterday = yesterdayDate.toISOString().slice(0,10)
+        const yesterday = getLocalDateString(yesterdayDate)
 
         if (dateStr === today) return "今日"
         if (dateStr === yesterday) return "昨日"
 
         return dateStr
     }
-
     
     return(
         <div className='w-full min-h-screen bg-[#FFC4B3] flex flex-col pb-24'>

@@ -38,7 +38,7 @@ const MainPage = () => {
         return(
             date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()
         )
-    }).sort((a,b)=> new Date(b.expenseDate).getTime() - new Date(a.expenseDate).getTime())
+    }).sort((a,b)=> new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
     const CategoryTotalAmount = ExpensesData?.filter((expenses)=>{
         const date = new Date(expenses?.expenseDate)

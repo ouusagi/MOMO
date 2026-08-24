@@ -10,6 +10,6 @@ type Expense struct {
 	Amount      int       `json:"amount"`
 	Category    string    `json:"category"`
 	Memo        string    `json:"memo"`
-	ExpenseDate time.Time `json:"expenseDate"`
+	ExpenseDate string    `json:"expenseDate"`
 	CreatedAt   time.Time `json:"createdAt"`
 }

@@ -25,9 +25,28 @@ const EnterDirectly = () => {
         setError("全ての項目を入力してください")
         return
     }
-    createExpense({ amount:Number(amount.replaceAll(',','')), title, category, memo, expenseDate:selectedDate.toISOString() }, {
-    onSuccess:()=> {toast.success('支出を追加しました。'); navigate('/transactions');}, 
-    onError:()=> {toast.error('支出の追加に失敗しました。'); setError('保存に失敗しました');}})
+
+    // 로컬 년-월-일 문자열 생성
+    const year = selectedDate.getFullYear()
+    const month = String(selectedDate.getMonth() + 1).padStart(2,'0')
+    const day = String(selectedDate.getDate()).padStart(2,'0')
+    const expenseDate = `${year}-${month}-${day}`
+
+    createExpense({ 
+        amount:Number(amount.replaceAll(',','')), 
+        title, 
+        category, 
+        memo, 
+        expenseDate 
+    }, {
+    onSuccess:()=> {
+        toast.success('支出を追加しました。'); 
+        navigate('/transactions');
+    }, 
+    onError:()=> {
+        toast.error('支出の追加に失敗しました。'); 
+        setError('保存に失敗しました');
+    }})
     setError('')
     }
 
