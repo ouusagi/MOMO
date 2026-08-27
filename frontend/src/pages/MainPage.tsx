@@ -51,25 +51,6 @@ const MainPage = () => {
         return total
     },{} as Record<string,number>)
 
-    // 일주일 지출 목록
-    const now = new Date()
-    const day = now.getDay()
-    const diff = day === 0 ? -6 : 1 - day
-
-    const monday = new Date(now)
-    monday.setDate(now.getDate() + diff)
-    monday.setHours(0,0,0,0)
-
-    const sunday = new Date(monday)
-    sunday.setDate(monday.getDate() + 6)
-    sunday.setHours(23,59,59,999)
-
-    const weeklyExpenses = ExpensesData?.filter((expense) => {
-        const date = new Date(expense.expenseDate)
-        return date >= monday && date <= sunday
-    }) ?? []
-    // 일주일 지출 목록
-
     if(ExpensesLoading || UserLoading){
         return <p>読み込み中...</p>
     }
@@ -128,17 +109,8 @@ const MainPage = () => {
                     />
                 </div>
 
-                {/* graph - add later */}
-                <div className='bg-white bg-opacity-65 rounded-3xl p-4'>
-                    <div className='flex items-center justify-between mb-4'>
-                        <span className='text-[#3D2C2C] font-bold text-sm'>📈 今週の支出グラフ</span>
-                        <span className='text-[#F47560] text-opacity-90 font-bold text-sm'>{weeklyExpenses.reduce((total, expense) => total + expense.amount, 0).toLocaleString()}円</span>
-                    </div>
-
-                    <div className="w-full h-24">
-                        <ExpenseBarChart />
-                    </div>
-                </div>
+                {/* graph - week */}
+                <ExpenseBarChart period="週間"/>
 
                 {/* today's expenses */}
                 <div className="w-full">

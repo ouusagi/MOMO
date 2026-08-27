@@ -42,7 +42,13 @@ const Transactions = () => {
         const ExpenseDate = expense.expenseDate.slice(0,10)
         return ExpenseDate >= thirtyDaysAgo &&
                ExpenseDate <= today
-    }).sort((a,b)=> new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    }).sort((a,b) => {
+        const dateDiff = b.expenseDate.localeCompare(a.expenseDate)
+        if(dateDiff !== 0){
+            return dateDiff
+        }
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
 
     // 필터 기능 (기본값 모두)
     const FilteredExpenses = Last30DaysExpenses?.filter((expense)=>{
