@@ -177,8 +177,7 @@ export const ExpenseBarChart = ({period}:ExpenseBarChartProps) => {
                     <Bar dataKey="amount" radius={[5,5,0,0]}>{chartData.map((item)=>(<Cell key={item.day} 
                     fill={item.amount === maxAmount ? '#F47560' : '#FFB8A6'}></Cell>))}</Bar>
                 </BarChart>
-            </ResponsiveContainer>
-                )}
+            </ResponsiveContainer>)}
             </div>
             </div>
 
