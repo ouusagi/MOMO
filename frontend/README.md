@@ -304,3 +304,29 @@ React.KeyboardEvent  → 키보드 입력할 때 (onKeyDown)
 
 // form onSubmit
 (e: React.FormEvent<HTMLFormElement>) => void
+
+
+#애니메이션 코드 해석
+    // 프레임 단위 카운트업 애니메이션 
+    const [displayTotal, setDisplayTotal] = useState(0)
+
+    useEffect(() => {
+    const duration = 600
+    const start = performance.now()
+
+    const animate = (time: number) => {
+        const progress = Math.min((time - start) / duration, 1)
+        const value = Math.floor(monthlyTotal * progress)
+
+        setDisplayTotal(value)
+
+        if (progress < 1) {
+            requestAnimationFrame(animate)
+        }
+    }
+
+    requestAnimationFrame(animate)
+
+    }, [monthlyTotal])
+
+    상태값 만들고 실행될 ms 변수랑 시작 시간 만들고 애니메이트란 함수 만들고 requestAnimationFrame(animate) 이 메소드로 브라우저가 화면을 그리는 프레임 단위의 시간을 애니메이트 함수에 파라미터로 보내고 애니메이트가 파라미터를 받아 프로그레스 변수에 끝나는 기준 치를 1로 잡고 진행률을 계산한 뒤 벨류 변수에선 최종금액에 진행률을 곱하면서 점점 최종 토탈 금액에 이르르게 하려는 의도로 보이고 진행되고 있는 계산값을 상태값에 넣고 화면에 보여주면서 기준값 1보다 작으면 다시 반복해서 1이 될때까지 돌아가게 하는 로직으로 보임

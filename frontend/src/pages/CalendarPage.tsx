@@ -59,7 +59,7 @@ const CalendarPage = () => {
     }
 
 
-    // 프레임 단위 카운트업 애니메이션 (너무 어렵다.. 이해가 될랑 말랑..)
+    // 프레임 단위 카운트업 애니메이션
     const [displayTotal, setDisplayTotal] = useState(0)
 
     useEffect(() => {
