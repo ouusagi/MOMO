@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import Button from './Button'
+
 
 interface ConfirmModalProps {
     isOpen: boolean
     title: string
     message: string
-    icon: string
+    icon: ReactNode
     onConfirm?: () => void
     onCancel: () => void
     confirmText?: string

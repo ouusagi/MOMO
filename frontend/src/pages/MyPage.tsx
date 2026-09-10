@@ -148,7 +148,7 @@ const MyPage = () => {
                 </div>
 
 
-                <ConfirmModal isOpen={isSignOutOpen} title="サインアウト" message="本当にサインアウトしますか？" icon="🚪" confirmText="サインアウト"
+                <ConfirmModal isOpen={isSignOutOpen} title="サインアウト" message="本当にサインアウトしますか？" icon={<img className="w-5" src={SignOutIcon} alt="SignOutIcon"/>} confirmText="サインアウト"
                  cancelText="キャンセル"
                  onCancel={() => setIsSignOutOpen(false)}
                  onConfirm={() => {localStorage.removeItem("token"); navigate("/")}}/>
