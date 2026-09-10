@@ -12,6 +12,7 @@ import Transactions from "../pages/Transactions";
 import TransactionDetailPage from "../pages/TransactionDetailPage";
 import GraphPage from "../pages/GraphPage";
 import CalendarPage from "../pages/CalendarPage";
+import MyPage from "../pages/MyPage";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
       { path: "/transaction/:id", element: <TransactionDetailPage/>},
       { path: "/graph", element: <GraphPage/>},
       { path: "/calendar", element: <CalendarPage/>},
+      { path: "/mypage", element: <MyPage/>},
     ]
   }
 ]);

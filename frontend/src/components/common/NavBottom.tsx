@@ -16,7 +16,7 @@ interface NavButtonProps {
 
 const NavBottomIcon = {
     "ホーム": mainIcon,
-    "プロフィール": profileIcon,
+    "マイページ": profileIcon,
     "追加": plusIcon,
     "カレンダー": calendarIcon,
     "グラフ": graphIcon
@@ -48,7 +48,7 @@ export default function NavBottom(){
       <nav className="w-full bg-white bg-opacity-80 pb-6 pt-4">
             <div className="mx-auto flex max-w-md items-center justify-between px-6 gap-8">
                 <NavButton label='ホーム' onClick={()=> navigate("/main")} active={location.pathname === "/main"} Icon={NavBottomIcon["ホーム"]} className='text-white'></NavButton>
-                <NavButton label='プロフィール' onClick={()=> navigate("/profile")} active={location.pathname === "/profile"} Icon={NavBottomIcon["プロフィール"]} className='text-white'></NavButton>
+                <NavButton label='マイページ' onClick={()=> navigate("/mypage")} active={location.pathname === "/mypage"} Icon={NavBottomIcon["マイページ"]} className='text-white'></NavButton>
                 <NavButton label='追加' onClick={()=> navigate("/add")} active={true} Icon={NavBottomIcon["追加"]} className='text-white'></NavButton>
                 <NavButton label='カレンダー' onClick={()=> navigate("/calendar")} active={location.pathname === "/calendar"} Icon={NavBottomIcon["カレンダー"]} className='text-white'></NavButton>
                 <NavButton label='グラフ' onClick={()=> navigate("/graph")} active={location.pathname === "/graph"} Icon={NavBottomIcon["グラフ"]} className='text-white'></NavButton>
