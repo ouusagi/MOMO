@@ -20,8 +20,18 @@ const useAuthStore = create<AuthState>((set) => ({
     },
 
     //회원가입
-    signup: async( loginID, userName, password, budget )=>{
-        await api.post('/api/signup', {loginID, userName, password, budget})
+    signup: async( loginID, userName, password, budget, profileImage )=>{
+        const formData = new FormData()
+
+        formData.append('loginID', loginID)
+        formData.append('userName', userName)
+        formData.append('password', password)
+        formData.append('budget', String(budget))
+
+        if(profileImage){
+            formData.append('profileImage', profileImage)
+        }
+        await api.post('/api/signup', formData)
     }
 
 }))

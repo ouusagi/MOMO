@@ -9,14 +9,16 @@ import api from "../../api/axios"
 interface SignUpStep2Props {
     userName: string
     budget: string
+    profileImage: File | null
     setUserName: (value:string)=> void
     setBudget: (value:string)=> void
+    setProfileImage: (value:File | null)=> void
     onSubmit:()=> void
     onBack:()=> void
 }
 
 
-const SignUpStep2 = ({userName, budget, setUserName, setBudget, onSubmit, onBack}:SignUpStep2Props) => {
+const SignUpStep2 = ({userName, budget, profileImage, setUserName, setBudget, setProfileImage, onSubmit, onBack}:SignUpStep2Props) => {
 
     const [error, seterror] = useState('')
     const [currency, setCurrency] = useState('JPY')
@@ -68,10 +70,16 @@ const SignUpStep2 = ({userName, budget, setUserName, setBudget, onSubmit, onBack
 
             <div className='flex justify-center mb-6'>
                 <div className='relative bg-[#FFB8A6] rounded-3xl'>
-                    <img src={hero} alt='momo-icon' className='w-24 h-24'/>
-                    <div className='absolute -bottom-1 -right-3 bg-[#F47560] rounded-xl w-9 h-9 flex items-center justify-center cursor-pointer'>
-                        <span className='text-white text-s'>📷</span>
-                    </div>
+                    <img src={profileImage ? URL.createObjectURL(profileImage) : hero} alt='momo-icon' className='w-24 h-24 rounded-3xl'/>
+                    <input type="file" accept="image/*" className="hidden" id="profileImage" onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (!file) return
+                    setProfileImage(file)
+                    }}/>
+
+                <label htmlFor="profileImage" className='absolute -bottom-1 -right-3 bg-[#F47560] rounded-xl w-9 h-9 flex items-center justify-center cursor-pointer'>
+                    <span className='text-white text-s'>📷</span>
+                </label>
                 </div>
             </div>
 

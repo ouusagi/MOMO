@@ -15,10 +15,11 @@ const SignUpPage = () => {
     const [password, setPassword] = useState('')
     const [userName, setUserName] = useState('')
     const [budget, setBudget] = useState('')
+    const [profileImage, setProfileImage] = useState<File | null>(null)
 
     const handleSignup = async () => {
         try {
-            await signup(loginID, userName, password, Number(budget.replaceAll(',','')))
+            await signup(loginID, userName, password, Number(budget.replaceAll(',','')), profileImage)
             console.log('회원가입 성공')
             setstep(3)
         } catch (error) {
@@ -39,7 +40,7 @@ const SignUpPage = () => {
     return(
         <div className='w-full min-h-screen'>
             {step === 1 && <SignUpStep1 loginID={loginID} password={password} setLoginID={setLoginID} setPassword={setPassword} onNext={()=> setstep(2)}/>}
-            {step === 2 && <SignUpStep2 userName={userName} budget={budget} setUserName={setUserName} setBudget={setBudget} onSubmit={handleSignup} onBack={()=> setstep(1)}/>}
+            {step === 2 && <SignUpStep2 userName={userName} budget={budget} profileImage={profileImage} setUserName={setUserName} setBudget={setBudget} onSubmit={handleSignup} setProfileImage={setProfileImage} onBack={()=> setstep(1)}/>}
             {step === 3 && <SignUpStep3 userName={userName} onNext={autoLogin}/>}
         </div>
     )

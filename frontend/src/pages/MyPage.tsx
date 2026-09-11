@@ -4,7 +4,6 @@ import { useGetExpenses } from "../hooks/useExpense"
 import Button from "../components/common/Button"
 import transactionsBell from '../assets/transactionsBell.png'
 import NavBottom from "../components/common/NavBottom"
-import hero from '../assets/hero.png'
 import { useState } from "react"
 import ConfirmModal from "../components/common/ConfirmModal"
 import MoneyPigIcon from '../assets/mypageIcons/Piggy-Bank.svg'
@@ -86,7 +85,8 @@ const MyPage = () => {
                 {/* Profile */}
                 <div className="flex flex-col items-center mt-4">
                     <div className="w-28 h-28 rounded-3xl bg-[#FFB8A6] flex items-center justify-center overflow-hidden">
-                        <img src={hero} alt="profile" className="w-24 h-24 object-contain"/>
+                        <img src={`http://localhost:8080${UserData.profileImage}`} alt="profile" className={`${UserData.profileImage === '/uploads/profiles/default.png' ? 
+                            'w-24 h-24' : 'w-28 h-28'} rounded-3xl object-cover object-center`}/>
                     </div>
                     <p className="text-[#3D2C2C] text-2xl font-bold mt-4">{UserData.username}</p>
                     <p className="text-[#B89090] text-sm mt-1">今日もコツコツ節約中 🍑</p>

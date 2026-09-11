@@ -3,19 +3,32 @@ package controllers
 import (
 	"momo/config"
 	"momo/models"
+	"momo/storage"
 	"momo/utils"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 func Signup(c *gin.Context) {
-	var input models.User
 
-	// JSON => 구조체 변환
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "입력값이 올바르지 않습니다"})
+	loginID := c.PostForm("loginID")
+	userName := c.PostForm("userName")
+	password := c.PostForm("password")
+	budgetString := c.PostForm("budget")
+
+	budget, err := strconv.Atoi(budgetString)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "예산 값이 올바르지 않습니다"})
 		return
+	}
+
+	input := models.User{
+		LoginID:  loginID,
+		UserName: userName,
+		Password: password,
+		Budget:   budget,
 	}
 
 	// 계정 중복 가입자 확인
@@ -23,6 +36,20 @@ func Signup(c *gin.Context) {
 	if err := config.DB.Where("login_id = ?", input.LoginID).First(&existingUser).Error; err == nil {
 		c.JSON(http.StatusConflict, gin.H{"error": "이미 사용중인 ID입니다"})
 		return
+	}
+
+	// 프로필 이미지 처리
+	file, err := c.FormFile("profileImage")
+
+	if err == nil {
+		imagePath, err := storage.SaveProfileImageLocal(c, file)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "프로필 이미지 저장에 실패했습니다"})
+			return
+		}
+		input.ProfileImage = imagePath
+	} else {
+		input.ProfileImage = "/uploads/profiles/default.png"
 	}
 
 	// 패스워드 암호화
@@ -86,8 +113,9 @@ func GetUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"username": user.UserName,
-		"budget":   user.Budget,
+		"username":     user.UserName,
+		"budget":       user.Budget,
+		"profileImage": user.ProfileImage,
 	})
 
 }

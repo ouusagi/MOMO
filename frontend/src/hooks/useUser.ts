@@ -4,6 +4,7 @@ import api from "../api/axios"
 interface UserGetData {
     username : string
     budget : number
+    profileImage: string
 }
 
 export const useGetUser = () => {
