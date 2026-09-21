@@ -17,7 +17,7 @@ const GraphPage = () => {
 
 
     return(
-        <div className='w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-24 overflow-hidden'>
+        <div className='w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-40 overflow-hidden'>
 
             {/* header */}
             <div className='flex items-center justify-between px-6 pt-12 pb-4'>

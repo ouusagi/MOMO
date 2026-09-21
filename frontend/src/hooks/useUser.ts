@@ -3,6 +3,7 @@ import api from "../api/axios"
 
 interface UserGetData {
     username : string
+    loginID: string
     budget : number
     profileImage: string
 }
