@@ -40,7 +40,7 @@ const EnterDirectly = () => {
         expenseDate 
     }, {
     onSuccess:()=> {
-        toast.success('支出を追加しました。'); 
+        toast.success('支出を追加しました！'); 
         navigate('/transactions');
     }, 
     onError:()=> {

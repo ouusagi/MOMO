@@ -120,3 +120,36 @@ func GetUser(c *gin.Context) {
 	})
 
 }
+
+func UpdateProfileImage(c *gin.Context) {
+	userID := c.MustGet("user_id").(uint)
+	var user models.User
+
+	if err := config.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ユーザーが見つかりません"})
+		return
+	}
+
+	file, err := c.FormFile("profileImage")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "プロフィール画像を選択してください"})
+		return
+	}
+
+	imagePath, err := storage.SaveProfileImageLocal(c, file)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "プロフィール画像の保存に失敗しました"})
+		return
+	}
+
+	user.ProfileImage = imagePath
+
+	if err := config.DB.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "プロフィール画像の変更に失敗しました"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":      "プロフィール画像が変更されました",
+		"profileImage": imagePath})
+}

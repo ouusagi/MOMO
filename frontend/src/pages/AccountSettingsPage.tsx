@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom"
-import { useGetUser } from "../hooks/useUser"
+import { useGetUser, useUpdateProfileImage } from "../hooks/useUser"
 import ConfirmModal from "../components/common/ConfirmModal"
 import React, { useState } from "react"
 import Button from "../components/common/Button"
 import transactionsBell from '../assets/transactionsBell.png'
-import api from "../api/axios"
 import NavBottom from "../components/common/NavBottom"
+import toast from "react-hot-toast"
 
 interface SettingRowProps {
     label: string
@@ -32,6 +32,7 @@ const AccountSettingsPage = () => {
 
     const navigate = useNavigate()
     const { data: UserData, isLoading, error } = useGetUser()
+    const { mutate: updateProfileImage } = useUpdateProfileImage()
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
     const [profileImage, setProfileImage] = useState<File | null>(null)
 
@@ -39,9 +40,14 @@ const AccountSettingsPage = () => {
         const file = e.target.files?.[0]
         if (!file) return
         setProfileImage(file)
-        const formData = new FormData()
-        formData.append("profileImage", file)
-        await api.put('/user/profile-image',formData) 
+        updateProfileImage(file, {
+            onSuccess:() => {
+                toast.success('プロフィール画像を変更しました！')
+            },
+            onError:() => {
+                toast.error('プロフィール画像の変更に失敗しました。')
+            }
+        }) 
     }
 
     if (isLoading) {
