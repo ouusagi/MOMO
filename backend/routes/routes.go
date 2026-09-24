@@ -37,6 +37,7 @@ func SetupRouter() *gin.Engine {
 		auth.PUT("/user/username", controllers.UpdateUserName)
 
 		auth.DELETE("/expenses/:id", controllers.DeleteExpense)
+		auth.DELETE("/user", controllers.DeleteUser)
 	}
 
 	return r

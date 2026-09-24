@@ -182,3 +182,20 @@ func UpdateUserName(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "ユーザー名が変更されました"})
 }
+
+func DeleteUser(c *gin.Context) {
+	userID := c.MustGet("user_id").(uint)
+	var user models.User
+
+	if err := config.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ユーザーが見つかりません"})
+		return
+	}
+
+	if err := config.DB.Delete(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "アカウントの削除に失敗しました"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "アカウントを削除しました..."})
+}

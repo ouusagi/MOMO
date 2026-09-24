@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { useGetUser, useUpdateProfileImage, useUpdateUserName } from "../hooks/useUser"
+import { useDeleteUser, useGetUser, useUpdateProfileImage, useUpdateUserName } from "../hooks/useUser"
 import ConfirmModal from "../components/common/ConfirmModal"
 import React, { useState } from "react"
 import Button from "../components/common/Button"
@@ -7,6 +7,7 @@ import transactionsBell from '../assets/transactionsBell.png'
 import NavBottom from "../components/common/NavBottom"
 import toast from "react-hot-toast"
 import InputModal from "../components/common/InputModal"
+import useAuthStore from "../store/authStore"
 
 interface SettingRowProps {
     label: string
@@ -35,6 +36,8 @@ const AccountSettingsPage = () => {
     const { data: UserData, isLoading, error } = useGetUser()
     const { mutate: updateProfileImage } = useUpdateProfileImage()
     const { mutate: updateUserName } = useUpdateUserName()
+    const { mutate: deleteUser } = useDeleteUser()
+    const logout = useAuthStore()
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
     const [profileImage, setProfileImage] = useState<File | null>(null)
     const [isUserNameOpen, setIsUserNameOpen] = useState(false)
@@ -47,7 +50,6 @@ const AccountSettingsPage = () => {
         updateProfileImage(file, {
             onSuccess:() => {
                 toast.success('プロフィール画像を変更しました！')
-                setIsUserNameOpen(false)
             },
             onError:() => {
                 toast.error('プロフィール画像の変更に失敗しました。')
@@ -62,13 +64,26 @@ const AccountSettingsPage = () => {
             return
         }
 
-        updateUserName(userName,{
+        updateUserName(userName.trim(),{
             onSuccess: () => {
                 toast.success("ユーザー名を変更しました！")
                 setIsUserNameOpen(false)
             },
             onError: () => {
                 toast.error("ユーザー名の変更に失敗しました")
+            }
+        })
+    }
+
+    const handleDeleteAccount = () => {
+        deleteUser(undefined,{
+            onSuccess: () => {
+                logout.logout()
+                toast.success("アカウントを削除しました...")
+                navigate('/')
+            },
+            onError: () => {
+                toast.error("アカウントの削除に失敗しました")
             }
         })
     }
@@ -147,19 +162,8 @@ const AccountSettingsPage = () => {
                 </div>
             </section>
 
-            <ConfirmModal
-                isOpen={isDeleteOpen}
-                title="アカウント削除"
-                message="アカウントを削除すると、すべてのデータが削除されます。本当に削除しますか？"
-                icon="⚠️"
-                confirmText="削除する"
-                cancelText="キャンセル"
-                onCancel={() =>
-                    setIsDeleteOpen(false)
-                }
-                onConfirm={() => {
-                    console.log("account delete")
-                }}
+            <ConfirmModal isOpen={isDeleteOpen} title="アカウント削除" message="アカウントを削除すると、すべてのデータが削除されます。本当に削除しますか？" icon="⚠️" 
+                          confirmText="削除する" cancelText="キャンセル" onCancel={() => setIsDeleteOpen(false)} onConfirm={handleDeleteAccount}
             />
 
             {/* BottomNav */}

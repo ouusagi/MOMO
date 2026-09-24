@@ -53,3 +53,12 @@ export const useUpdateUserName = () => {
         }
     })
 }
+
+export const useDeleteUser = () => {
+    return useMutation({
+        mutationFn: async () => {
+            const res = await api.delete("/api/user")
+            return res.data
+        },
+    })
+}
