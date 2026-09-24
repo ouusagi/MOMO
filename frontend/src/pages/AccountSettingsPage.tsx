@@ -56,6 +56,12 @@ const AccountSettingsPage = () => {
     }
 
     const handleUserNameChange = () => {
+
+        if(!userName.trim()){
+            toast.error("ユーザー名を入力してください")
+            return
+        }
+
         updateUserName(userName,{
             onSuccess: () => {
                 toast.success("ユーザー名を変更しました！")
