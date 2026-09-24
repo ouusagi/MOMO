@@ -34,6 +34,7 @@ func SetupRouter() *gin.Engine {
 
 		auth.PUT("/expenses/:id", controllers.UpdateExpense)
 		auth.PUT("/user/profile-image", controllers.UpdateProfileImage)
+		auth.PUT("/user/username", controllers.UpdateUserName)
 
 		auth.DELETE("/expenses/:id", controllers.DeleteExpense)
 	}

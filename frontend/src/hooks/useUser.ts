@@ -32,3 +32,24 @@ export const useUpdateProfileImage = () => {
         }
     })
 }
+
+export const useUpdateUserName = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: async (userName:string) => {
+            // 유저명 중복 검사
+            const checkRes = await api.post('/api/check-username', {"username":userName})
+            if(checkRes.data.duplicate){
+                throw new Error("duplicate")
+            }
+
+            // 변경된 유저명 수정 요청
+            const res = await api.put('/api/user/username', {userName})
+            return res.data
+        }, 
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey:['user']})
+        }
+    })
+}

@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom"
-import { useGetUser, useUpdateProfileImage } from "../hooks/useUser"
+import { useGetUser, useUpdateProfileImage, useUpdateUserName } from "../hooks/useUser"
 import ConfirmModal from "../components/common/ConfirmModal"
 import React, { useState } from "react"
 import Button from "../components/common/Button"
 import transactionsBell from '../assets/transactionsBell.png'
 import NavBottom from "../components/common/NavBottom"
 import toast from "react-hot-toast"
+import InputModal from "../components/common/InputModal"
 
 interface SettingRowProps {
     label: string
@@ -33,21 +34,37 @@ const AccountSettingsPage = () => {
     const navigate = useNavigate()
     const { data: UserData, isLoading, error } = useGetUser()
     const { mutate: updateProfileImage } = useUpdateProfileImage()
+    const { mutate: updateUserName } = useUpdateUserName()
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
     const [profileImage, setProfileImage] = useState<File | null>(null)
+    const [isUserNameOpen, setIsUserNameOpen] = useState(false)
+    const [userName, setUserName] = useState("")
 
-    const handleProfileImageChange = async (e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleProfileImageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
         setProfileImage(file)
         updateProfileImage(file, {
             onSuccess:() => {
                 toast.success('プロフィール画像を変更しました！')
+                setIsUserNameOpen(false)
             },
             onError:() => {
                 toast.error('プロフィール画像の変更に失敗しました。')
             }
         }) 
+    }
+
+    const handleUserNameChange = () => {
+        updateUserName(userName,{
+            onSuccess: () => {
+                toast.success("ユーザー名を変更しました！")
+                setIsUserNameOpen(false)
+            },
+            onError: () => {
+                toast.error("ユーザー名の変更に失敗しました")
+            }
+        })
     }
 
     if (isLoading) {
@@ -101,7 +118,7 @@ const AccountSettingsPage = () => {
                 <p className="font-bold text-[#7A5555] mb-2 ml-1">プロフィール</p>
 
                 <div className="bg-white bg-opacity-70 rounded-2xl px-4 shadow-sm font-medium">
-                    <SettingRow label="ユーザー名" value={UserData.username} onClick={() => navigate("/account/username")}/>
+                    <SettingRow label="ユーザー名" value={UserData.username} onClick={() => {setIsUserNameOpen(true); setUserName(UserData.username)}}/>
                     <SettingRow label="ログインID" value={UserData.loginID ?? "ログインID"}/>
                 </div>
             </section>
@@ -142,7 +159,11 @@ const AccountSettingsPage = () => {
             {/* BottomNav */}
              <div className="fixed bottom-0 left-0 right-0">
                 <NavBottom />
-            </div>
+            </div>     
+
+            <InputModal isOpen={isUserNameOpen} title="ユーザー名を変更" value={userName} placeholder="ユーザー名" 
+            onChange={setUserName} onCancel={() => setIsUserNameOpen(false)} onConfirm={handleUserNameChange}
+            />
         </div>
     )
 }

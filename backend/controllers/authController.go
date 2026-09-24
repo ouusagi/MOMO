@@ -153,3 +153,32 @@ func UpdateProfileImage(c *gin.Context) {
 		"message":      "プロフィール画像が変更されました",
 		"profileImage": imagePath})
 }
+
+func UpdateUserName(c *gin.Context) {
+	userID := c.MustGet("user_id").(uint)
+
+	var input struct {
+		UserName string `json:"userName"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "無効なリクエストです"})
+		return
+	}
+
+	var user models.User
+
+	if err := config.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ユーザーが見つかりません"})
+		return
+	}
+
+	user.UserName = input.UserName
+
+	if err := config.DB.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "ユーザー名の変更に失敗しました"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "ユーザー名が変更されました"})
+}
