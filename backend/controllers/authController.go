@@ -183,6 +183,40 @@ func UpdateUserName(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ユーザー名が変更されました"})
 }
 
+func UpdateBudget(c *gin.Context) {
+	userID := c.MustGet("user_id").(uint)
+	var input struct {
+		Budget int `json:"budget"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "無効なリクエストです"})
+		return
+	}
+
+	if input.Budget <= 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "予算は1円以上で入力してください"})
+		return
+	}
+
+	var user models.User
+
+	if err := config.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ユーザーが見つかりません"})
+		return
+	}
+
+	user.Budget = input.Budget
+
+	if err := config.DB.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "予算の変更に失敗しました"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "予算額が変更されました"})
+
+}
+
 func DeleteUser(c *gin.Context) {
 	userID := c.MustGet("user_id").(uint)
 	var user models.User

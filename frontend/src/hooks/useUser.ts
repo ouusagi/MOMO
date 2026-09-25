@@ -54,6 +54,19 @@ export const useUpdateUserName = () => {
     })
 }
 
+export const useUpdateBudGet = () => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: async (budget:number) => {
+            const res = await api.put('/api/user/budget', {budget})
+            return res.data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey:['user']})
+        }
+    })
+}
+
 export const useDeleteUser = () => {
     return useMutation({
         mutationFn: async () => {

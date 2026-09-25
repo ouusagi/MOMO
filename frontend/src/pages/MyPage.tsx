@@ -60,7 +60,7 @@ const MyPage = () => {
         {
             label: "予算設定",
             icon: <img className="w-5" src={MoneyPigIcon} alt="moneybank_pig_icon" />,
-            onClick: () => navigate("/budget")
+            onClick: () => navigate("/account/budget")
         },
         {
             label: "アカウント設定",
