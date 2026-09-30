@@ -8,6 +8,7 @@ import NavBottom from "../components/common/NavBottom"
 import toast from "react-hot-toast"
 import InputModal from "../components/common/InputModal"
 import useAuthStore from "../store/authStore"
+import PasswordChangeModal from "../components/common/PasswordChangeModal"
 
 interface SettingRowProps {
     label: string
@@ -39,6 +40,7 @@ const AccountSettingsPage = () => {
     const { mutate: deleteUser } = useDeleteUser()
     const logout = useAuthStore()
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+    const [isPasswordOpen, setIsPasswordOpen] = useState(false)
     const [profileImage, setProfileImage] = useState<File | null>(null)
     const [isUserNameOpen, setIsUserNameOpen] = useState(false)
     const [userName, setUserName] = useState("")
@@ -149,7 +151,7 @@ const AccountSettingsPage = () => {
                 <p className="font-bold text-[#7A5555] mb-2 ml-1">セキュリティ</p>
 
                 <div className="bg-white bg-opacity-70 rounded-2xl px-4 shadow-sm font-medium">
-                    <SettingRow label="パスワード変更" onClick={() => navigate("/account/password")}/>
+                    <SettingRow label="パスワード変更" value="••••••••" onClick={() => setIsPasswordOpen(true)}/>
                 </div>
             </section>
 
@@ -174,6 +176,8 @@ const AccountSettingsPage = () => {
             <InputModal isOpen={isUserNameOpen} title="ユーザー名を変更" value={userName} placeholder="ユーザー名" 
             onChange={setUserName} onCancel={() => setIsUserNameOpen(false)} onConfirm={handleUserNameChange}
             />
+
+            <PasswordChangeModal isOpen={isPasswordOpen} onClose={()=> setIsPasswordOpen(false)}/>
         </div>
     )
 }

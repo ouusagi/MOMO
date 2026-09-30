@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Signup(c *gin.Context) {
@@ -215,6 +216,51 @@ func UpdateBudget(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "予算額が変更されました"})
 
+}
+
+func UpdatePassword(c *gin.Context) {
+	userID := c.MustGet("user_id").(uint)
+	var input struct {
+		CurrentPassword string `json:"currentPassword"`
+		NewPassword     string `json:"newPassword"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "無効なリクエストです"})
+		return
+	}
+
+	if len(input.NewPassword) < 8 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "パスワードは8文字以上で入力してください"})
+		return
+	}
+
+	var user models.User
+
+	if err := config.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "ユーザーが見つかりません"})
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.CurrentPassword)); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "現在のパスワードが正しくありません"})
+		return
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.NewPassword), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "パスワードの変更に失敗しました"})
+		return
+	}
+
+	user.Password = string(hashedPassword)
+
+	if err := config.DB.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "パスワードの変更に失敗しました"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "パスワードを変更しました"})
 }
 
 func DeleteUser(c *gin.Context) {

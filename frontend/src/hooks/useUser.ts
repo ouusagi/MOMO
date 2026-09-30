@@ -8,6 +8,11 @@ interface UserGetData {
     profileImage: string
 }
 
+interface UpdatePasswordData {
+    currentPassword: string
+    newPassword: string
+}
+
 export const useGetUser = () => {
     return useQuery<UserGetData>({
         queryKey:['user'],
@@ -63,6 +68,15 @@ export const useUpdateBudGet = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey:['user']})
+        }
+    })
+}
+
+export const useUpdatePassword = () => {
+    return useMutation({
+        mutationFn: async (data:UpdatePasswordData) => {
+            const res = await api.put('/api/user/password', data)
+            return res.data
         }
     })
 }
