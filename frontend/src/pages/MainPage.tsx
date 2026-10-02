@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom"
-import bell from "../assets/bell.png"
 import hero from "../assets/hero.png"
 import hero2 from "../assets/minimomo.png"
 import Button from "../components/common/Button"
@@ -10,6 +9,7 @@ import NavBottom from "../components/common/NavBottom"
 import Card from "../components/common/Card"
 import { categoryIcons } from "../constants/categoryIcons"
 import { ExpenseBarChart } from "../components/graph/ExpenseBarChart"
+import NotificationButton from "../components/common/NotificationButton"
 
 const MainPage = () => {
 
@@ -70,7 +70,7 @@ const MainPage = () => {
                     </div>
                     <span className='text-[#5A2D2A] font-medium text-lg'>Hi ! {UserData?.username} !</span>
                 </div>
-                <img src={bell} alt="alert_bell" className="cursor-pointer"/>
+                <NotificationButton/>
             </div>
 
             {/*  expenses */}

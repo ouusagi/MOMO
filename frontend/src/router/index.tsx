@@ -13,6 +13,7 @@ import CalendarPage from "../pages/CalendarPage";
 import MyPage from "../pages/MyPage";
 import AccountSettingsPage from "../pages/AccountSettingsPage";
 import BudgetUpdatePage from "../pages/BudgetUpdatePage";
+import NotificationPage from "../pages/NotificationPage";
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
       { path: "/mypage", element: <MyPage/>},
       { path: "/account", element: <AccountSettingsPage/>},
       { path: "/account/budget", element: <BudgetUpdatePage/>},
+      { path: "/notifications", element: <NotificationPage/>}
     ]
   }
 ]);

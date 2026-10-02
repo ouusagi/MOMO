@@ -1,11 +1,11 @@
 import { useState } from "react"
 import Button from "../components/common/Button"
 import { useNavigate } from "react-router-dom"
-import transactionsBell from '../assets/transactionsBell.png'
 import { ExpenseBarChart } from "../components/graph/ExpenseBarChart"
 import NavBottom from "../components/common/NavBottom"
 import { CategoryDonutChart } from "../components/graph/CategoryDonutChart"
 import { TopExpenseChart } from "../components/graph/TopExpenseChart"
+import NotificationButton from "../components/common/NotificationButton"
 
 
 
@@ -23,7 +23,7 @@ const GraphPage = () => {
             <div className='flex items-center justify-between px-6 pt-12 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate('/main')}>←</Button>
                 <span className='text-[#3D2C2C] font-bold'>グラフ</span>
-                <Button className="" variant="back" onClick={() => navigate('/main')}><img src={transactionsBell} alt="bell-img" /></Button>
+                <NotificationButton/>
             </div>
 
             <div className='flex flex-col gap-4 px-6'>

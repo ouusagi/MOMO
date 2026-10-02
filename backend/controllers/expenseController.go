@@ -27,6 +27,10 @@ func CreateExpense(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "지출 추가 실패"})
 		return
 	}
+
+	// 예산 초과 여부 확인
+	CheckBudgetNotification(userID, input.ExpenseDate)
+
 	c.JSON(http.StatusOK, gin.H{"message": "지출 추가 성공 !"})
 }
 
@@ -65,6 +69,9 @@ func UpdateExpense(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "지출 내역 수정 실패"})
 		return
 	}
+
+	// 예산 초과 여부 확인
+	CheckBudgetNotification(userID, expense.ExpenseDate)
 
 	c.JSON(http.StatusOK, gin.H{"message": "지출 수정이 완료되었습니다"})
 }

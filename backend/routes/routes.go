@@ -31,12 +31,14 @@ func SetupRouter() *gin.Engine {
 
 		auth.GET("/expenses", controllers.GetExpense)
 		auth.GET("/user", controllers.GetUser)
+		auth.GET("/notifications", controllers.GetNotifications)
 
 		auth.PUT("/expenses/:id", controllers.UpdateExpense)
 		auth.PUT("/user/profile-image", controllers.UpdateProfileImage)
 		auth.PUT("/user/username", controllers.UpdateUserName)
 		auth.PUT("/user/budget", controllers.UpdateBudget)
 		auth.PUT("/user/password", controllers.UpdatePassword)
+		auth.PUT("/notifications/read", controllers.ReadNotifications)
 
 		auth.DELETE("/expenses/:id", controllers.DeleteExpense)
 		auth.DELETE("/user", controllers.DeleteUser)

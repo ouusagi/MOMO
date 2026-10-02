@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useGetUser } from "../hooks/useUser"
 import { useGetExpenses } from "../hooks/useExpense"
 import Button from "../components/common/Button"
-import transactionsBell from '../assets/transactionsBell.png'
+import NotificationButton from "../components/common/NotificationButton"
 import NavBottom from "../components/common/NavBottom"
 import { useState } from "react"
 import ConfirmModal from "../components/common/ConfirmModal"
@@ -77,7 +77,7 @@ const MyPage = () => {
             <div className="flex items-center justify-between px-6 pt-12 pb-4">
                 <Button variant="back" onClick={() => navigate("/main")}>←</Button>
                 <span className="text-[#3D2C2C] font-bold">マイページ</span>
-                <Button variant="back" onClick={() => navigate("/settings")}><img src={transactionsBell} alt="bell-img"/></Button>
+                <NotificationButton/>
             </div>
 
             <div className="flex flex-col items-center px-6">

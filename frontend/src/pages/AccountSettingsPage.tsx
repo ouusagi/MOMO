@@ -3,12 +3,12 @@ import { useDeleteUser, useGetUser, useUpdateProfileImage, useUpdateUserName } f
 import ConfirmModal from "../components/common/ConfirmModal"
 import React, { useState } from "react"
 import Button from "../components/common/Button"
-import transactionsBell from '../assets/transactionsBell.png'
 import NavBottom from "../components/common/NavBottom"
 import toast from "react-hot-toast"
 import InputModal from "../components/common/InputModal"
 import useAuthStore from "../store/authStore"
 import PasswordChangeModal from "../components/common/PasswordChangeModal"
+import NotificationButton from "../components/common/NotificationButton"
 
 interface SettingRowProps {
     label: string
@@ -115,7 +115,7 @@ const AccountSettingsPage = () => {
             <div className="flex items-center justify-between px-6 pt-12 pb-4">
                 <Button variant="back" onClick={() => navigate("/mypage")}>←</Button>
                 <span className="text-[#3D2C2C] font-bold">アカウント設定</span>
-                <Button variant="back" onClick={() => navigate("/settings")}><img src={transactionsBell} alt="bell-img"/></Button>
+                <NotificationButton/>
             </div>
 
             {/* Profile Image */}

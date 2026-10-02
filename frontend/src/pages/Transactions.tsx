@@ -1,11 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import Button from "../components/common/Button"
-import transactionsBell from "../assets/transactionsBell.png"
 import { useEffect, useState } from "react"
 import { useGetExpenses } from "../hooks/useExpense"
 import NavBottom from "../components/common/NavBottom"
 import Card from "../components/common/Card"
 import { categoryIcons } from "../constants/categoryIcons"
+import NotificationButton from "../components/common/NotificationButton"
 
 const Transactions = () => {
 
@@ -90,7 +90,7 @@ const Transactions = () => {
             <div className='flex items-center justify-between px-6 pt-12 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate('/main')}>←</Button>
                 <span className='text-[#3D2C2C] font-bold'>全履歴</span>
-                <Button className="" variant="back" onClick={() => navigate('/main')}><img src={transactionsBell} alt="bell-img" /></Button>
+                <NotificationButton/>
             </div>
 
             {/* category */}

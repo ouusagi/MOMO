@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import Button from "../components/common/Button"
 import NavBottom from "../components/common/NavBottom"
-import transactionsBell from "../assets/transactionsBell.png"
 import { useGetExpenses } from "../hooks/useExpense"
 import { useEffect, useState } from "react"
 import { useGetUser } from "../hooks/useUser"
@@ -11,6 +10,7 @@ import "../components/common/DatePickerModal.css"
 import { ja } from "date-fns/locale"
 import Card from "../components/common/Card"
 import { categoryIcons } from "../constants/categoryIcons"
+import NotificationButton from "../components/common/NotificationButton"
 
 
 
@@ -93,7 +93,7 @@ const CalendarPage = () => {
             <div className="flex items-center justify-between px-6 pt-12 pb-4">
                 <Button variant="back" onClick={() => navigate("/main")}>←</Button>
                 <span className="text-[#3D2C2C] font-bold">カレンダー</span>
-                <Button variant="back" onClick={() => navigate("/main")}><img src={transactionsBell} alt="bell-img"/></Button>
+                <NotificationButton/>
             </div>
 
             {/* 이번 달 지출 요약 */}
