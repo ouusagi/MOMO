@@ -1,13 +1,17 @@
 import { useNavigate } from "react-router-dom"
 import Button from "../components/common/Button"
 import Input from "../components/common/Input"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import inputIcon from "../assets/inputicon.png"
 import DatePickerModal from "../components/common/DatePickerModal"
 import CategoryIcon from "../components/common/CategoryIcon"
 import { categories } from "../constants/categories"
 import { useCreateExpenses } from "../hooks/useExpense"
 import toast from "react-hot-toast"
+import { runOCR } from "../components/ocr/ReceiptOCR"
+import { parseReceiptText } from "../components/ocr/ocrParser"
+import CameraIcon from "../assets/receiptIcons/Camera.svg"
+import GalleryIcon from "../assets/receiptIcons/Gallery.svg"
 
 const EnterDirectly = () => {
     const navigate = useNavigate()
@@ -19,6 +23,45 @@ const EnterDirectly = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [error, setError] = useState('')
     const { mutate: createExpense } = useCreateExpenses()
+
+    const cameraInputRef = useRef<HTMLInputElement>(null)
+    const albumInputRef = useRef<HTMLInputElement>(null)
+    const [isOCRLoading, setIsOCRLoading] = useState(false)
+
+
+    const handleReceiptChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+
+    if (!file) return
+
+    try {
+        setIsOCRLoading(true)
+
+        const text = await runOCR(file)
+        const result = parseReceiptText(text)
+
+        if (result.title){
+            setTitle(result.title)
+        }
+
+        if (result.amount){
+            setAmount(result.amount)
+        }
+
+        if (result.date){
+            setSelectedDate(result.date)
+        }
+
+        console.log("========== OCR 결과 ==========")
+        console.log(text)
+        console.log("==============================")
+
+    } catch (error) {
+        console.error("OCR 실패:", error)
+    } finally {
+        setIsOCRLoading(false)
+    }
+    }
 
     const handleSave = () => {
         if(!title || !amount || !selectedDate || !category){
@@ -112,14 +155,28 @@ const EnterDirectly = () => {
 
                 {error && <p className='text-red-500 text-sm text-center'>{error}</p>}
 
-                <Button className="mt-2" variant="primary" onClick={()=> navigate("/camera")}>レシート撮影 📸</Button>
+                <div className="flex justify-center gap-6">
+                    <Button className="mt-2 flex-1 !flex flex-row items-center justify-center gap-2 whitespace-nowrap" variant="primary" onClick={()=> cameraInputRef.current?.click()}>レシート撮影 <img src={CameraIcon} alt="CameraIcon" /></Button>
+                    <Button className="mt-2 flex-1 !flex flex-row items-center justify-center gap-2 whitespace-nowrap" variant="primary" onClick={()=> albumInputRef.current?.click()}>写真を選択 <img src={GalleryIcon} alt="GalleryIcon" /></Button>
+
+                    <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleReceiptChange} className="hidden"/>
+                    <input ref={albumInputRef} type="file" accept="image/*" onChange={handleReceiptChange} className="hidden"/>
+                </div>
+
+                <p className="mt-2 text-xs text-center text-[#857A78]">読み取り結果は正確でない場合があります。<br />保存前に内容をご確認ください。</p>
 
             </div>
 
-
-
-
-
+            {isOCRLoading && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div className="flex w-[280px] flex-col items-center rounded-2xl bg-white px-6 py-8 shadow-xl">
+                    <div className="mb-5 h-10 w-10 animate-spin rounded-full border-4 border-[#FFC4B3] border-t-[#F47560]" />
+                    <p className="text-lg font-semibold text-[#5A2D2A]">レシートを解析中...</p>
+                    <p className="mt-2 text-sm text-gray-500">少々お待ちください。</p>
+                    <p className="mt-1 text-xs text-center text-gray-400">認識結果が正確でない場合があります。<br/> 内容をご確認ください。</p>
+                </div>
+            </div>
+            )}
 
 
             <DatePickerModal open={isOpen} selectedDate={selectedDate} onChange={setSelectedDate} onClick={() => setIsOpen(false)}/>
