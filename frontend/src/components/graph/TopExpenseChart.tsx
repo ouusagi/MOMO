@@ -1,5 +1,6 @@
 import { useGetExpenses } from "../../hooks/useExpense"
 import type { Expense } from "../../types/expense"
+import { useTranslation } from "react-i18next"
 
 interface TopExpenseChartProps {
     period: string
@@ -9,9 +10,10 @@ export const TopExpenseChart = ({ period }: TopExpenseChartProps) => {
 
     const { data: ChartData, isLoading: isChartDataLoading, error: ChartDataError } = useGetExpenses()
     const now = new Date()
+    const { t } = useTranslation()
 
-    if (isChartDataLoading) return <p className="text-center">読み込み中...</p>
-    if (ChartDataError) return <p>エラーが発生しました</p>
+    if (isChartDataLoading) return <p className="text-center">{t('graphPage.loading')}</p>
+    if (ChartDataError) return <p>{t('graphPage.error')}</p>
     
 
     // =========================
@@ -96,7 +98,7 @@ export const TopExpenseChart = ({ period }: TopExpenseChartProps) => {
     // =========================
     // period에 따라 사용할 데이터
     // =========================
-    const categoryData = period === '月間' ? monthlyCategoryData : period === '年間' ? yearlyCategoryData : weeklyCategoryData
+    const categoryData = period === 'monthly' ? monthlyCategoryData : period === 'yearly' ? yearlyCategoryData : weeklyCategoryData
 
 
     // =========================
@@ -115,8 +117,8 @@ export const TopExpenseChart = ({ period }: TopExpenseChartProps) => {
     // 금액 표시
     // =========================
     const formatAmount = (amount: number) => {
-        if (amount >= 1000) return `円${Math.round(amount / 1000)}K`
-        return `円 ${amount}`
+        if (amount >= 1000) return `${t('myPage.currency')}${Math.round(amount / 1000)}K`
+        return `${t('myPage.currency')} ${amount}`
     }
 
 
@@ -125,19 +127,19 @@ export const TopExpenseChart = ({ period }: TopExpenseChartProps) => {
 
             {/* header */}
             <div className="mb-4">
-                <span className="text-[#3D2C2C] font-bold text-sm">💴 支出が多い ! TOP 3</span>
+                <span className="text-[#3D2C2C] font-bold text-sm">💴 {t('graphPage.topExpenseTitle')}</span>
             </div>
 
 
             {/* TOP 3 */}
             <div className="flex flex-col gap-2.5">
-                {topExpenses.length === 0 ? (<p className="text-center text-[#B89090]">支出データがありません</p>) : 
+                {topExpenses.length === 0 ? (<p className="text-center text-[#B89090]">{t('graphPage.noExpenseData')}</p>) : 
                 (topExpenses.map((item) => (
 
                         <div key={item.category} className="flex items-center gap-1.5">
 
                             {/* category */}
-                            <span className="w-14 shrink-0 text-[#3D2C2C] font-bold text-sm">{item.category}</span>
+                            <span className="w-14 shrink-0 text-[#3D2C2C] font-bold text-sm">{t(`main.categories.${item.category}`)}</span>
 
                             {/* bar */}
                             <div className="flex-1 h-4 bg-white rounded-full overflow-hidden">

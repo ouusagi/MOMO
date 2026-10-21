@@ -5,6 +5,8 @@ import Select from "../../components/common/Select"
 import { isValidUserName } from "../../utils/Validation"
 import { useState } from "react"
 import api from "../../api/axios"
+import { useTranslation } from "react-i18next"
+import i18n from "../../i18n"
 
 interface SignUpStep2Props {
     userName: string
@@ -20,29 +22,29 @@ interface SignUpStep2Props {
 
 const SignUpStep2 = ({userName, budget, profileImage, setUserName, setBudget, setProfileImage, onSubmit, onBack}:SignUpStep2Props) => {
 
+    const { t } = useTranslation()
     const [error, seterror] = useState('')
-    const [currency, setCurrency] = useState('JPY')
+    // const [currency, setCurrency] = useState('JPY')
     const options = [
-        { value: 'JPY', label: '🇯🇵 日本 円 (YEN)' },
-        { value: 'KRW', label: '🇰🇷 韓国 ウォン (KRW)' },
-        { value: 'USD', label: '🇺🇸 米ドル (USD)' },
+        { value: 'JPY', label: `${t('signup.currencyJPY')}` },
+        { value: 'KRW', label: `${t('signup.currencyKRW')}` },
         ]
 
     const handleSubmit = async () => {
 
         if(!userName){
-            seterror('ユーザーネームを入力してください')
+            seterror(t('signup.userNameRequired'))
             return
         }
 
         if(!isValidUserName(userName)){
-            seterror('ユーザー名は10文字以下で入力してください')
+            seterror(t('signup.userNameMaxLength'))
             return
         }
 
         const res = await api.post('/api/check-username',{userName})
         if(res.data.duplicate){
-            seterror("すでに登録されているユーザーネームです")
+            seterror(t('signup.userNameDuplicate'))
             return
         }
 
@@ -59,13 +61,13 @@ const SignUpStep2 = ({userName, budget, profileImage, setUserName, setBudget, se
             </div>
 
             <div className="w-full flex items-center justify-between mt-3 mb-3">
-                <span className="text-[#F47560] font-bold text-sm">2 / 3段階</span>
-                <span className="text-[#B89090] font-bold text-sm">プロフィールを設定</span>
+                <span className="text-[#F47560] font-bold text-sm">2 / 3{t('signup.step')}</span>
+                <span className="text-[#B89090] font-bold text-sm">{t('signup.step2Title')}</span>
             </div>
 
             <div className='text-center mb-6'>
-                <h1 className='text-2xl font-bold text-[#3D2C2C]'>あと少しです！</h1>
-                <p className='text-[#B89090] mt-1'>プロフィールを設定してください🍑</p>
+                <h1 className='text-2xl font-bold text-[#3D2C2C]'>{t('signup.step2Welcome')}</h1>
+                <p className='text-[#B89090] mt-1'>{t('signup.step2Subtitle')}</p>
             </div>
 
             <div className='flex justify-center mb-6'>
@@ -85,27 +87,27 @@ const SignUpStep2 = ({userName, budget, profileImage, setUserName, setBudget, se
 
             <div className='flex flex-col gap-4'>
                 <div className="relative">
-                    <Input type="text" label="ユーザーネーム" placeholder='MOMO01' value={userName} onChange={(e)=> setUserName(e.target.value)} />
+                    <Input type="text" label={t('signup.userNameLabel')} placeholder='MOMO01' value={userName} onChange={(e)=> setUserName(e.target.value)} />
                     <span className='absolute right-3 bottom-4 text-[#B89090] text-xs'>
                         {userName.length}/10
                     </span>
                 </div>
 
             <div className="relative">
-                <span className="absolute right-0 text-s text-[#B89090]">後で設定可能です</span>
-                <Input type="text" label="月間予算の設定" placeholder='300,000' value={budget === '' ? '' : Number(budget).toLocaleString()} onChange={(e)=>{
+                <span className="absolute right-0 text-s text-[#B89090]">{t('signup.monthlyBudgetOptional')}</span>
+                <Input type="text" label={t('signup.monthlyBudgetLabel')} placeholder='300,000' value={budget === '' ? '' : Number(budget).toLocaleString()} onChange={(e)=>{
                     const raw = e.target.value.replaceAll(',','')
                     if(/^\d*$/.test(raw)) 
                         return setBudget(raw)
                 }}/>
-                <span className="absolute bottom-4 right-3 text-[#B89090]">円</span>
+                <span className="absolute bottom-4 right-3 text-[#B89090]">{t('signup.currency')}</span>
             </div>
 
-            <Select label="通貨" value={currency} onChange={(e) => setCurrency(e.target.value)} options={options}/>
+            <Select label={t('signup.currencyLabel')} value={i18n.language.startsWith('ko') ? 'KRW' : 'JPY'} onChange={()=>{}} options={options}/>
 
             {error && <p className="text-red-500">{error}</p>}
                 
-            <Button className="mt-5" type="submit" variant="primary" fullWidth onClick={handleSubmit}>🍑 はじめる！</Button>
+            <Button className="mt-5" type="submit" variant="primary" fullWidth onClick={handleSubmit}>{t('signup.step2SubmitButton')}</Button>
             
             </div>
 

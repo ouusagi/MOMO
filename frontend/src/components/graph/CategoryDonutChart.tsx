@@ -2,6 +2,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip } from "recha
 import { useGetExpenses } from "../../hooks/useExpense"
 import type { Expense } from "../../types/expense"
 import "./ExpenseBarChartScrollBar.css"
+import { useTranslation } from "react-i18next"
 
 interface CategoryDonutChartProps {
     period:string
@@ -10,11 +11,12 @@ interface CategoryDonutChartProps {
 export const CategoryDonutChart = ({period}:CategoryDonutChartProps) => {
 
     const { data:ChartData, isLoading:isChartDataLoading, error:ChartDataError } = useGetExpenses()
+    const { t } = useTranslation()
     const now = new Date()
     const periodLabel = {
-        '週間': '今週',
-        '月間': '今月',
-        '年間': '今年'
+    weekly: t('graphPage.thisWeek'),
+    monthly: t('graphPage.thisMonth'),
+    yearly: t('graphPage.thisYear'),
     }[period]
     const COLORS = [
     '#A9C7F5', // pastel blue
@@ -31,8 +33,8 @@ export const CategoryDonutChart = ({period}:CategoryDonutChartProps) => {
     // '#C9C1E8', // periwinkle
     ]
 
-    if(isChartDataLoading) return <p className="text-center">読み込み中...</p>
-    if(ChartDataError) return <p>エラーが発生しました</p>
+    if(isChartDataLoading) return <p className="text-center">{t('graphPage.loading')}</p>
+    if(ChartDataError) return <p>{t('graphPage.error')}</p>
 
 
     // =========================
@@ -116,7 +118,8 @@ export const CategoryDonutChart = ({period}:CategoryDonutChartProps) => {
     // =========================
     // period에 따라 사용할 데이터
     // =========================
-    const categoryData = period === '月間' ? monthlyCategoryData : period === '年間' ? yearlyCategoryData : weeklyCategoryData
+    const categoryData = period === 'monthly' ? monthlyCategoryData : period === 'yearly' ? yearlyCategoryData : weeklyCategoryData
+    const translatedCategoryData = categoryData.map(item => ({...item,name: t(`main.categories.${item.category}`),}))
 
 
     // =========================
@@ -137,26 +140,26 @@ export const CategoryDonutChart = ({period}:CategoryDonutChartProps) => {
             {/* header */}
             <div className="flex items-center justify-between mb-4">
                 <span className="text-[#3D2C2C] font-bold text-sm">
-                    📊 {periodLabel}のカテゴリ別支出
+                    📊 {periodLabel}{t('graphPage.categoryExpenseTitle')}
                 </span>
 
                 <span className="text-[#F47560] font-bold text-sm">
-                    {totalAmount.toLocaleString()}円
+                    {totalAmount.toLocaleString()}{t('signup.currency')}
                 </span>
             </div>
 
             {/* chart */}
             <div className="w-full h-40">
-                {categoryData.length === 0 ? (<p className="text-center pt-12 text-[#B89090]">支出データがありません</p>) : (
+                {categoryData.length === 0 ? (<p className="text-center pt-12 text-[#B89090]">{t('graphPage.noExpenseData')}</p>) : (
                 <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                    <Pie data={categoryData} dataKey="amount" nameKey="category" cx="30%" cy="50%" paddingAngle={2} className="outline-none">
+                    <Pie data={translatedCategoryData} dataKey="amount" nameKey="name" cx="30%" cy="50%" paddingAngle={2} className="outline-none">
                         {categoryData.map((item, index) => (
                         <Cell key={item.category} fill={item.amount === maxAmount ? '#F47560' : COLORS[index % COLORS.length]}/>))}
                     </Pie>
                     <Tooltip contentStyle={{backgroundColor: '#FFF7F4', border: 'none', borderRadius: '16px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',}}
                              labelStyle={{fontWeight: 700}} itemStyle={{fontWeight: 600}}
-                             formatter={(value) => `${Number(value).toLocaleString()} 円`}/>
+                             formatter={(value) => `${Number(value).toLocaleString()} ${t('signup.currency')}`}/>
                         <Legend layout="vertical" verticalAlign="middle" align="right" 
                         wrapperStyle={{fontSize:'15px',fontWeight:600, lineHeight: '1.4'}}/>
                 </PieChart>

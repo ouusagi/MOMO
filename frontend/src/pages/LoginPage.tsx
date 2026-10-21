@@ -4,6 +4,7 @@ import Button from "../components/common/Button"
 import Input from "../components/common/Input"
 import { useNavigate } from "react-router-dom"
 import useAuthStore from "../store/authStore"
+import { useTranslation } from "react-i18next"
 
 
 const LoginPage = () => {
@@ -13,10 +14,11 @@ const LoginPage = () => {
     const [error, setError] = useState('')
     const { login } = useAuthStore()
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     const handleLogin = async () => {
         if(!loginID || !password){
-            setError("全ての項目を入力してください")
+            setError(t('signup.errorRequired'))
             return
         }
 
@@ -26,7 +28,7 @@ const LoginPage = () => {
             navigate('/main')
         } catch (error) {
             console.log("로그인 실패", error)
-            setError("IDまたはパスワードが正しくありません")
+            setError(t('signin.signinError'))
             return
         }
 
@@ -40,19 +42,19 @@ const LoginPage = () => {
             <img src={hero} alt="momo_hero_img" className="w-32 h-32 cursor-pointer" onClick={()=> navigate('/')}/>
 
             <div className="text-center">
-                <p className="text-2xl text-[#5A2D2A]">今日の支出</p>
-                <p className="text-2xl text-[#5A2D2A]">MOMOにメモしよう！</p>
+                <p className="text-2xl text-[#5A2D2A]">{t('welcome.title')}</p>
+                <p className="text-2xl text-[#5A2D2A]">{t('welcome.subtitle')}</p>
             </div>
 
             <div className="w-full flex flex-col gap-4 mt-4">
-                <Input label='ユーザーID' type="email" value={loginID} onChange={(e)=> setLoginID(e.target.value)} placeholder='momo@gmail.com'></Input>
-                <Input label='パスワード' type="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder='••••••••'></Input>
+                <Input label={t('signup.userIdLabel')} type="email" value={loginID} onChange={(e)=> setLoginID(e.target.value)} placeholder='momo@gmail.com'></Input>
+                <Input label={t('signup.passwordLabel')} type="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder='••••••••'></Input>
             </div>
 
             {error && <p className="text-red-500">{error}</p>}
 
             <div className="w-full flex flex-col gap-4">
-                <Button type="button" className="loginBtn" variant="primary" fullWidth onClick={handleLogin}>ログイン</Button>
+                <Button type="button" className="loginBtn" variant="primary" fullWidth onClick={handleLogin}>{t('signup.loginButton')}</Button>
             </div>
         </div>
     )

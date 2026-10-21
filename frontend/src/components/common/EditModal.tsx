@@ -3,6 +3,7 @@ import Button from './Button'
 import Input from './Input'
 import inputIcon from '../../assets/inputicon.png'
 import DatePickerModal from './DatePickerModal'
+import { useTranslation } from "react-i18next"
 
 interface EditModalProps {
     isOpen: boolean
@@ -20,6 +21,7 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
     const [selectedDate, setSelectedDate] = useState(new Date(initialData?.date))
     const [dateModal, setDateModal] = useState(false)
     const [error, setError] = useState('')
+    const { t } = useTranslation()
 
     useEffect(()=>{
         if(isOpen){
@@ -33,7 +35,7 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
     const handleSave = () => {
 
         if(!title || !amount){
-        return setError('内容を入力してください')
+        return setError(t('editModal.requiredFieldsError'))
         }
 
         setError('')
@@ -49,15 +51,15 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
                 {/* header */}
                 <div className='flex items-center justify-between mb-2'>
                     <Button className="" variant='back' onClick={onClose}>←</Button>
-                    <span className='text-[#3D2C2C] font-bold'>支出修正</span>
-                    <span className='text-[#F47560] font-bold cursor-pointer' onClick={handleSave}>保存</span>
+                    <span className='text-[#3D2C2C] font-bold'>{t('editModal.title')}</span>
+                    <span className='text-[#F47560] font-bold cursor-pointer' onClick={handleSave}>{t('editModal.save')}</span>
                 </div>
 
                 {/* input */}
-                <Input label='店名' type='text' value={title} onChange={(e) => setTitle(e.target.value)} placeholder='店名'/>
+                <Input label={t('editModal.shopName')} type='text' value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t('enterDirectly.shopPlaceholder')}/>
 
                 <div className='flex flex-col gap-1'>
-                    <label className='text-[#7A5555] font-bold'>金額</label>
+                    <label className='text-[#7A5555] font-bold'>{t('editModal.amount')}</label>
                     <input
                         type='text'
                         value={amount === '' ? '' : Number(amount.replaceAll(',', '')).toLocaleString()}
@@ -70,14 +72,14 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
                     />
                 </div>
 
-                <Input label='メモ（任意）' type='text' value={memo} onChange={(e) => setMemo(e.target.value)} placeholder='メモを入力してください'/>
+                <Input label={t('editModal.memoLabel')} type='text' value={memo} onChange={(e) => setMemo(e.target.value)} placeholder={t('editModal.memoPlaceholder')}/>
 
                 {/* Date */}
                 <div className='flex flex-col mb-1'>
-                <label className='text-[#7A5555] font-bold -mb-1.5'>日付</label>
+                <label className='text-[#7A5555] font-bold -mb-1.5'>{t('editModal.date')}</label>
                 <div className='bg-white bg-opacity-60 rounded-2xl px-4 py-3 mt-3 flex items-center justify-between' onClick={()=> setDateModal(true)}>
                     <div>
-                        <p className='text-[#B89090] text-xs'>日付 (タップして編集)</p>
+                        <p className='text-[#B89090] text-xs'>{t('editModal.dateEditHint')}</p>
                         <p className='text-[#3D2C2C] font-bold text-sm'>{selectedDate.toLocaleDateString('ja-JP')}</p>
                     </div>
                     <img src={inputIcon} alt="input_icon" className="w-8" />
@@ -86,7 +88,7 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
 
                 <p className='text-red-500 text-sm text-center'>{error}</p>
 
-                <Button variant='primary' fullWidth onClick={handleSave} className='mt-2 pb-4'>保存する</Button>
+                <Button variant='primary' fullWidth onClick={handleSave} className='mt-2 pb-4'>{t('editModal.saveButton')}</Button>
 
                 <DatePickerModal open={dateModal} selectedDate={selectedDate} onChange={setSelectedDate} onClick={() => setDateModal(false)}/>
             </div>

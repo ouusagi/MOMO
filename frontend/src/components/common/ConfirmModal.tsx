@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import Button from './Button'
+import { useTranslation } from "react-i18next"
 
 
 interface ConfirmModalProps {
@@ -20,12 +21,14 @@ const ConfirmModal = ({
     icon,
     onConfirm,
     onCancel,
-    confirmText = '削除する',
-    cancelText = 'キャンセル'
+    confirmText,
+    cancelText,
 }: ConfirmModalProps) => {
 
     const [show, setShow] = useState(false)
-
+    const { t } = useTranslation()
+    const displayConfirmText = confirmText ?? t('transactionDetail.delete')
+    const displayCancelText = cancelText ?? t('transactionDetail.cancel')
     useEffect(() => {
         if (isOpen) {
             setTimeout(() => setShow(true), 10)
@@ -52,12 +55,12 @@ const ConfirmModal = ({
                 <h2 className='text-[#3D2C2C] font-bold text-lg'>{title}</h2>
 
                 {/* message */}
-                <p className='text-[#B89090] text-sm text-center'>{message}</p>
+                <p className='text-[#B89090] text-sm text-center whitespace-pre-line'>{message}</p>
 
                 {/* button */}
                 <div className='flex gap-3 w-full mt-2 pb-4'>
-                    <Button variant='cancel' fullWidth onClick={onCancel}>{cancelText}</Button>
-                    <Button variant='primary' fullWidth onClick={onConfirm}>{confirmText}</Button>
+                    <Button variant='cancel' fullWidth onClick={onCancel}>{displayCancelText}</Button>
+                    <Button variant='primary' fullWidth onClick={onConfirm}>{displayConfirmText}</Button>
                 </div>
             </div>
         </div>

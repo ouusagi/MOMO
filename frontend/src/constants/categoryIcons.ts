@@ -8,12 +8,12 @@ import gameIcon from '../assets/categoryIcons/Game.svg'
 import moreIcon from '../assets/categoryIcons/More.svg'
 
 export const categoryIcons: Record<string, string> = {
-    "食費": foodIcon,
-    "カフェ": coffeeIcon,
-    "交通": trainIcon,
-    "買い物": shoppingIcon,
-    "家賃": homeIcon,
-    "医薬品": medicineIcon,
-    "趣味": gameIcon,
-    "その他": moreIcon,
+    food: foodIcon,
+    cafe: coffeeIcon,
+    transport: trainIcon,
+    shopping: shoppingIcon,
+    rent: homeIcon,
+    medicine: medicineIcon,
+    hobby: gameIcon,
+    other: moreIcon,
 }

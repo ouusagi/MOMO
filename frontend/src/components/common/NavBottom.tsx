@@ -4,6 +4,7 @@ import profileIcon from '../../assets/navbottomIcons/Profile.svg'
 import plusIcon from '../../assets/navbottomIcons/Plus.svg'
 import calendarIcon from '../../assets/navbottomIcons/Calendar.svg'
 import graphIcon from '../../assets/navbottomIcons/Graph.svg'
+import { useTranslation } from "react-i18next"
 
 
 interface NavButtonProps {
@@ -15,11 +16,11 @@ interface NavButtonProps {
 }
 
 const NavBottomIcon = {
-    "ホーム": mainIcon,
-    "マイページ": profileIcon,
-    "追加": plusIcon,
-    "カレンダー": calendarIcon,
-    "グラフ": graphIcon
+    "home": mainIcon,
+    "profile": profileIcon,
+    "add": plusIcon,
+    "calendar": calendarIcon,
+    "graph": graphIcon
 }
 
 // 네비게이션바 전용 버튼 UI 컴포넌트
@@ -43,15 +44,16 @@ export default function NavBottom(){
 
     const location = useLocation()
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     return(
       <nav className="w-full bg-white bg-opacity-80 pb-6 pt-4">
             <div className="mx-auto flex max-w-md items-center justify-between px-6 gap-8">
-                <NavButton label='ホーム' onClick={()=> navigate("/main")} active={location.pathname === "/main"} Icon={NavBottomIcon["ホーム"]} className='text-white'></NavButton>
-                <NavButton label='マイページ' onClick={()=> navigate("/mypage")} active={location.pathname === "/mypage"} Icon={NavBottomIcon["マイページ"]} className='text-white'></NavButton>
-                <NavButton label='追加' onClick={()=> navigate("/add")} active={true} Icon={NavBottomIcon["追加"]} className='text-white'></NavButton>
-                <NavButton label='カレンダー' onClick={()=> navigate("/calendar")} active={location.pathname === "/calendar"} Icon={NavBottomIcon["カレンダー"]} className='text-white'></NavButton>
-                <NavButton label='グラフ' onClick={()=> navigate("/graph")} active={location.pathname === "/graph"} Icon={NavBottomIcon["グラフ"]} className='text-white'></NavButton>
+                <NavButton label={t('nav.home')} onClick={()=> navigate("/main")} active={location.pathname === "/main"} Icon={NavBottomIcon["home"]} className='text-white'></NavButton>
+                <NavButton label={t('nav.profile')} onClick={()=> navigate("/mypage")} active={location.pathname === "/mypage"} Icon={NavBottomIcon["profile"]} className='text-white'></NavButton>
+                <NavButton label={t('nav.add')} onClick={()=> navigate("/add")} active={true} Icon={NavBottomIcon["add"]} className='text-white'></NavButton>
+                <NavButton label={t('nav.calendar')} onClick={()=> navigate("/calendar")} active={location.pathname === "/calendar"} Icon={NavBottomIcon["calendar"]} className='text-white'></NavButton>
+                <NavButton label={t('nav.graph')} onClick={()=> navigate("/graph")} active={location.pathname === "/graph"} Icon={NavBottomIcon["graph"]} className='text-white'></NavButton>
             </div>
       </nav>
     )

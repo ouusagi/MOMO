@@ -1,5 +1,6 @@
 import { ResponsiveContainer, BarChart, Bar, XAxis, Cell } from "recharts";
 import { useGetExpenses } from "../../hooks/useExpense";
+import { useTranslation } from "react-i18next"
 
 interface ExpenseBarChartProps {
     period: string
@@ -8,15 +9,17 @@ interface ExpenseBarChartProps {
 export const ExpenseBarChart = ({period}:ExpenseBarChartProps) => {
 
     const {data:ChartData, isLoading:isChartDataLoading, error:ChartDataError } = useGetExpenses()
-    const periodLabel = {
-        '週間': '今週',
-        '月間': '今月',
-        '年間': '今年'
-    }[period]
+    const { t } = useTranslation()
     const now = new Date()
+
+    const periodLabel = {
+    weekly: t('graphPage.thisWeek'),
+    monthly: t('graphPage.thisMonth'),
+    yearly: t('graphPage.thisYear'),
+    }[period]
     
-    if(isChartDataLoading) return <p className="text-center">読み込み中...</p>
-    if(ChartDataError) return <p>エラーが発生しました</p>
+    if(isChartDataLoading) return <p className="text-center">{t('main.loading')}</p>
+    if(ChartDataError) return <p>{t('main.error')}</p>
 
     // =========================
     // 주간 데이터
@@ -131,7 +134,7 @@ export const ExpenseBarChart = ({period}:ExpenseBarChartProps) => {
     // =========================
     // period에 따라 사용할 데이터 결정 + 가장 높은 금액 구하기
     // =========================
-    const chartData = period === '月間' ? monthlyData : period === '年間' ? yearlyData : weeklyData
+    const chartData = period === 'monthly' ? monthlyData : period === 'yearly' ? yearlyData : weeklyData
     const maxAmount = Math.max(...chartData.map(item => item.amount))
 
 
@@ -151,7 +154,7 @@ export const ExpenseBarChart = ({period}:ExpenseBarChartProps) => {
     // =========================
     // 총 지출
     // =========================
-    const totalAmount = (period === '月間' ? monthlyExpenses : period === '年間' ? yearlyData : weeklyExpenses)
+    const totalAmount = (period === 'monthly' ? monthlyExpenses : period === 'yearly' ? yearlyData : weeklyExpenses)
     .reduce((total,expense)=> total + expense.amount,0)
 
 
@@ -164,13 +167,13 @@ export const ExpenseBarChart = ({period}:ExpenseBarChartProps) => {
         <div className="bg-white bg-opacity-65 rounded-3xl p-4">
 
             <div className='flex items-center justify-between mb-4'>
-                <span className='text-[#3D2C2C] font-bold text-sm'>📈 {periodLabel}の支出グラフ</span>
-                <span className='text-[#F47560] text-opacity-90 font-bold text-sm'>{totalAmount.toLocaleString()}円</span>
+                <span className='text-[#3D2C2C] font-bold text-sm'>📈 {periodLabel}{t('main.weeklyExpenseGraphTitle')}</span>
+                <span className='text-[#F47560] text-opacity-90 font-bold text-sm'>{totalAmount.toLocaleString()}{t('signup.currency')}</span>
             </div>
 
             <div className="chart-scroll w-full overflow-x-auto">
-            <div className={period === '年間' ? 'min-w-[700px] h-24' : 'w-full h-24'}>
-                {!hasChartData ? (<p className="text-center pt-5 text-[#B89090]">支出データがありません</p>) : (
+            <div className={period === 'yearly' ? 'min-w-[700px] h-24' : 'w-full h-24'}>
+                {!hasChartData ? (<p className="text-center pt-5 text-[#B89090]">{t('main.weeklyExpenseGraphEmpty')}</p>) : (
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData} barCategoryGap="15%" className="pointer-events-none">
                     <XAxis dataKey="day" axisLine={false} tickLine={false} tick={<CustomTick/>}></XAxis>

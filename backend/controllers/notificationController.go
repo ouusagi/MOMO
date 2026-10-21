@@ -117,6 +117,7 @@ func CheckBudgetNotification(userID uint, expenseDate string) {
 	notification := models.Notification{
 		UserID:  userID,
 		Type:    "budget_exceeded",
+		Title:   "予算超過のお知らせ",
 		Message: "今月の予算を超過しました。\n使いすぎには注意しましょう！",
 		IsRead:  false,
 		Year:    year,

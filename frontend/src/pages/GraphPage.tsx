@@ -6,13 +6,20 @@ import NavBottom from "../components/common/NavBottom"
 import { CategoryDonutChart } from "../components/graph/CategoryDonutChart"
 import { TopExpenseChart } from "../components/graph/TopExpenseChart"
 import NotificationButton from "../components/common/NotificationButton"
+import { useTranslation } from "react-i18next"
 
 
 
 const GraphPage = () => {
 
-    const [activeTab, setActiveTab] = useState('週間')
-    const tabs = ['週間', '月間', '年間']
+    const { t } = useTranslation()
+    type Period = 'weekly' | 'monthly' | 'yearly'
+    const [activeTab, setActiveTab] = useState<Period>('weekly')
+    const tabs:{ value: Period; label: string }[] = [
+    { value: 'weekly', label: t('graphPage.weekly') },
+    { value: 'monthly', label: t('graphPage.monthly') },
+    { value: 'yearly', label: t('graphPage.yearly') },
+]
     const navigate = useNavigate()
 
 
@@ -22,7 +29,7 @@ const GraphPage = () => {
             {/* header */}
             <div className='flex items-center justify-between px-6 pt-12 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate('/main')}>←</Button>
-                <span className='text-[#3D2C2C] font-bold'>グラフ</span>
+                <span className='text-[#3D2C2C] font-bold'>{t('graphPage.title')}</span>
                 <NotificationButton/>
             </div>
 
@@ -32,12 +39,12 @@ const GraphPage = () => {
                 <div className='bg-white bg-opacity-60 rounded-2xl p-1 flex'>
                     {tabs.map(tab => (
                         <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
+                            key={tab.value}
+                            onClick={() => setActiveTab(tab.value)}
                             className={`flex-1 py-2 rounded-xl text-sm font-bold transition-colors
-                                ${activeTab === tab ? 'bg-[#F47560] text-white' : 'text-[#B89090]'}`}
+                                ${activeTab === tab.value ? 'bg-[#F47560] text-white' : 'text-[#B89090]'}`}
                         >
-                        {tab}
+                        {tab.label}
                         </button>
                     ))}
                 </div>

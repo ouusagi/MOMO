@@ -9,6 +9,7 @@ import InputModal from "../components/common/InputModal"
 import useAuthStore from "../store/authStore"
 import PasswordChangeModal from "../components/common/PasswordChangeModal"
 import NotificationButton from "../components/common/NotificationButton"
+import { useTranslation } from "react-i18next"
 
 interface SettingRowProps {
     label: string
@@ -34,6 +35,7 @@ const SettingRow = ({ label, value, onClick, danger = false, }: SettingRowProps)
 const AccountSettingsPage = () => {
 
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const { data: UserData, isLoading, error } = useGetUser()
     const { mutate: updateProfileImage } = useUpdateProfileImage()
     const { mutate: updateUserName } = useUpdateUserName()
@@ -51,10 +53,10 @@ const AccountSettingsPage = () => {
         setProfileImage(file)
         updateProfileImage(file, {
             onSuccess:() => {
-                toast.success('プロフィール画像を変更しました！')
+                toast.success(t('accountSettingsPage.profileImageUpdateSuccess'))
             },
             onError:() => {
-                toast.error('プロフィール画像の変更に失敗しました。')
+                toast.error(t('accountSettingsPage.deleteAccountFailure'))
             }
         }) 
     }
@@ -62,17 +64,17 @@ const AccountSettingsPage = () => {
     const handleUserNameChange = () => {
 
         if(!userName.trim()){
-            toast.error("ユーザー名を入力してください")
+            toast.error(t('accountSettingsPage.changeUsernameTitlesub'))
             return
         }
 
         updateUserName(userName.trim(),{
             onSuccess: () => {
-                toast.success("ユーザー名を変更しました！")
+                toast.success(t('accountSettingsPage.usernameUpdateSuccess'))
                 setIsUserNameOpen(false)
             },
             onError: () => {
-                toast.error("ユーザー名の変更に失敗しました")
+                toast.error(t('accountSettingsPage.usernameUpdateFailure'))
             }
         })
     }
@@ -81,11 +83,11 @@ const AccountSettingsPage = () => {
         deleteUser(undefined,{
             onSuccess: () => {
                 logout.logout()
-                toast.success("アカウントを削除しました...")
+                toast.success(t('accountSettingsPage.deleteAccountSuccess'))
                 navigate('/')
             },
             onError: () => {
-                toast.error("アカウントの削除に失敗しました")
+                toast.error(t('accountSettingsPage.deleteAccountFailure'))
             }
         })
     }
@@ -93,7 +95,7 @@ const AccountSettingsPage = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <p className="text-[#B89090]">読み込み中...</p>
+                <p className="text-[#B89090]">{t('accountSettingsPage.loading')}</p>
             </div>
         )
     }
@@ -101,7 +103,7 @@ const AccountSettingsPage = () => {
     if (error || !UserData) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <p className="text-[#B89090]">エラーが発生しました。</p>
+                <p className="text-[#B89090]">{t('accountSettingsPage.error')}</p>
             </div>
         )
     }
@@ -114,7 +116,7 @@ const AccountSettingsPage = () => {
             {/* Header */}
             <div className="flex items-center justify-between px-6 pt-12 pb-4">
                 <Button variant="back" onClick={() => navigate("/mypage")}>←</Button>
-                <span className="text-[#3D2C2C] font-bold">アカウント設定</span>
+                <span className="text-[#3D2C2C] font-bold">{t('accountSettingsPage.title')}</span>
                 <NotificationButton/>
             </div>
 
@@ -131,41 +133,41 @@ const AccountSettingsPage = () => {
                         </label>
                     </div>
                     <p className="text-[#3D2C2C] text-2xl font-bold mt-4">{UserData.username}</p>
-                    <p className="text-[#B89090] text-sm mt-1">ちょっと変えてみる？ ✨</p>
+                    <p className="text-[#B89090] text-sm mt-1">{t('accountSettingsPage.profileMessage')}</p>
                 </div>
 
             </div>
 
             {/* Profile */}
             <section className="mb-5 px-6">
-                <p className="font-bold text-[#7A5555] mb-2 ml-1">プロフィール</p>
+                <p className="font-bold text-[#7A5555] mb-2 ml-1">{t('accountSettingsPage.profile')}</p>
 
                 <div className="bg-white bg-opacity-70 rounded-2xl px-4 shadow-sm font-medium">
-                    <SettingRow label="ユーザー名" value={UserData.username} onClick={() => {setIsUserNameOpen(true); setUserName(UserData.username)}}/>
-                    <SettingRow label="ログインID" value={UserData.loginID ?? "ログインID"}/>
+                    <SettingRow label={t('accountSettingsPage.username')} value={UserData.username} onClick={() => {setIsUserNameOpen(true); setUserName(UserData.username)}}/>
+                    <SettingRow label={t('accountSettingsPage.loginId')} value={UserData.loginID ?? "ログインID"}/>
                 </div>
             </section>
 
             {/* Security */}
             <section className="mb-5 px-6">
-                <p className="font-bold text-[#7A5555] mb-2 ml-1">セキュリティ</p>
+                <p className="font-bold text-[#7A5555] mb-2 ml-1">{t('accountSettingsPage.security')}</p>
 
                 <div className="bg-white bg-opacity-70 rounded-2xl px-4 shadow-sm font-medium">
-                    <SettingRow label="パスワード変更" value="••••••••" onClick={() => setIsPasswordOpen(true)}/>
+                    <SettingRow label={t('accountSettingsPage.changePassword')} value="••••••••" onClick={() => setIsPasswordOpen(true)}/>
                 </div>
             </section>
 
             {/* Account */}
             <section className="px-6">
-                <p className="font-bold text-[#7A5555] mb-2 ml-1">アカウント</p>
+                <p className="font-bold text-[#7A5555] mb-2 ml-1">{t('accountSettingsPage.account')}</p>
 
                 <div className="bg-white bg-opacity-70 rounded-2xl px-4 shadow-sm">
-                    <SettingRow label="アカウント削除" danger onClick={() => setIsDeleteOpen(true)}/>
+                    <SettingRow label={t('accountSettingsPage.deleteAccount')} danger onClick={() => setIsDeleteOpen(true)}/>
                 </div>
             </section>
 
-            <ConfirmModal isOpen={isDeleteOpen} title="アカウント削除" message="アカウントを削除すると、すべてのデータが削除されます。本当に削除しますか？" icon="⚠️" 
-                          confirmText="削除する" cancelText="キャンセル" onCancel={() => setIsDeleteOpen(false)} onConfirm={handleDeleteAccount}
+            <ConfirmModal isOpen={isDeleteOpen} title={t('accountSettingsPage.deleteAccountTitle')} message={t('accountSettingsPage.deleteAccountMessage')} icon="⚠️" 
+                          confirmText={t('accountSettingsPage.deleteButton')} cancelText={t('accountSettingsPage.cancel')} onCancel={() => setIsDeleteOpen(false)} onConfirm={handleDeleteAccount}
             />
 
             {/* BottomNav */}
@@ -173,7 +175,7 @@ const AccountSettingsPage = () => {
                 <NavBottom />
             </div>     
 
-            <InputModal isOpen={isUserNameOpen} title="ユーザー名を変更" value={userName} placeholder="ユーザー名" 
+            <InputModal isOpen={isUserNameOpen} title={t('accountSettingsPage.changeUsernameTitle')} value={userName} placeholder="ユーザー名" 
             onChange={setUserName} onCancel={() => setIsUserNameOpen(false)} onConfirm={handleUserNameChange}
             />
 

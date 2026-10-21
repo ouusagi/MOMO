@@ -3,9 +3,11 @@ import Button from "../components/common/Button"
 import { useGetNotifications, useReadNotifications } from "../hooks/useNotification"
 import { useEffect } from "react"
 import { notificationIcons } from "../constants/notificationIcons"
+import { useTranslation } from "react-i18next"
 
 const NotificationPage = () => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const { data: notifications = [], isLoading, error } = useGetNotifications()
     const { mutate: readNotifications } = useReadNotifications()
 
@@ -29,7 +31,7 @@ const NotificationPage = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <p className="text-[#B89090]">読み込み中...</p>
+                <p className="text-[#B89090]">{t('notificationPage.loading')}</p>
             </div>
         )
     }
@@ -37,7 +39,7 @@ const NotificationPage = () => {
     if (error) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <p className="text-[#B89090]">エラーが発生しました。</p>
+                <p className="text-[#B89090]">{t('notificationPage.error')}</p>
             </div>
         )
     }
@@ -47,7 +49,7 @@ const NotificationPage = () => {
             {/* Header */}
             <div className="flex items-center justify-between px-6 pt-12 pb-4">
                 <Button variant="back" onClick={() => navigate(-1)}>←</Button>
-                <span className="text-[#3D2C2C] font-bold">お知らせ</span>
+                <span className="text-[#3D2C2C] font-bold">{t('notificationPage.title')}</span>
                 <div className="w-10" />
             </div>
 
@@ -68,11 +70,11 @@ const NotificationPage = () => {
                             {/* Content */}
                             <div className="flex-1">
                                 <div className="flex items-center justify-between gap-2">
-                                    <p className="text-[#3D2C2C] font-bold text-sm">予算超過のお知らせ</p>
+                                    <p className="text-[#3D2C2C] font-bold text-sm">{t("notificationPage.budgetExceeded.title")}</p>
                                     {!notification.isRead && (<span className="text-[11px] text-[#F47560] font-semibold">NEW</span>)}
                                 </div>
 
-                                <p className="mt-1 text-sm text-[#7A5555] leading-5 whitespace-pre-line">{notification.message}</p>
+                                <p className="mt-1 text-sm text-[#7A5555] leading-5 whitespace-pre-line">{t("notificationPage.budgetExceeded.message")}</p>
                                 <p className="mt-2 text-xs text-[#B89090]">{formatDate(notification.createdAt)}</p>
                             </div>
                         </div>
@@ -82,8 +84,8 @@ const NotificationPage = () => {
                             <div className="w-14 h-14 shrink-0 rounded-full bg-[#FFE6DE] flex items-center justify-center">
                                 <img src={notificationIcons["default"]} alt="notification" className="w-7 h-7" />
                             </div>
-                        <p className="mt-4 text-[#3D2C2C] font-semibold">お知らせはありません</p>
-                        <p className="mt-1 text-sm text-[#7A5555]">新しいお知らせが届くとここに表示されます</p>
+                        <p className="mt-4 text-[#3D2C2C] font-semibold">{t('notificationPage.emptyTitle')}</p>
+                        <p className="mt-1 text-sm text-[#7A5555]">{t('notificationPage.emptyMessage')}</p>
                     </div>
                 )}
             </div>

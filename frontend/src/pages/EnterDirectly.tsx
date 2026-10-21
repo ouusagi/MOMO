@@ -12,6 +12,7 @@ import { runOCR } from "../components/ocr/ReceiptOCR"
 import { parseReceiptText } from "../components/ocr/ocrParser"
 import CameraIcon from "../assets/receiptIcons/Camera.svg"
 import GalleryIcon from "../assets/receiptIcons/Gallery.svg"
+import { useTranslation } from "react-i18next"
 
 const EnterDirectly = () => {
     const navigate = useNavigate()
@@ -23,6 +24,7 @@ const EnterDirectly = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [error, setError] = useState('')
     const { mutate: createExpense } = useCreateExpenses()
+    const { t } = useTranslation()
 
     const cameraInputRef = useRef<HTMLInputElement>(null)
     const albumInputRef = useRef<HTMLInputElement>(null)
@@ -65,7 +67,7 @@ const EnterDirectly = () => {
 
     const handleSave = () => {
         if(!title || !amount || !selectedDate || !category){
-        setError("全ての項目を入力してください")
+        setError(t('enterDirectly.requiredFieldsError'))
         return
     }
 
@@ -83,12 +85,12 @@ const EnterDirectly = () => {
         expenseDate 
     }, {
     onSuccess:()=> {
-        toast.success('支出を追加しました！'); 
+        toast.success(t('enterDirectly.saveSuccess')); 
         navigate('/transactions');
     }, 
     onError:()=> {
-        toast.error('支出の追加に失敗しました。'); 
-        setError('保存に失敗しました');
+        toast.error(t('enterDirectly.saveFailure')); 
+        setError(t('enterDirectly.saveError'));
     }})
     setError('')
     }
@@ -99,14 +101,14 @@ const EnterDirectly = () => {
             {/* 헤더 */}
             <div className='flex items-center justify-between px-5 pt-5 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate('/main')}>←</Button>
-                <span className='text-[#3D2C2C] font-bold'>手動入力</span>
-                <span className='text-[#F47560] font-bold cursor-pointer' onClick={handleSave}>完了</span>
+                <span className='text-[#3D2C2C] font-bold'>{t('enterDirectly.title')}</span>
+                <span className='text-[#F47560] font-bold cursor-pointer' onClick={handleSave}>{t('enterDirectly.complete')}</span>
             </div>
 
             <div className='flex flex-col gap-4 px-4'>
                 {/* 금액 입력 */}
                 <div className='bg-white bg-opacity-60 rounded-3xl p-2 flex flex-col items-center gap-1'>
-                    <span className='text-[#B89090] text-sm'>金額</span>
+                    <span className='text-[#B89090] text-sm'>{t('enterDirectly.amountLabel')}</span>
                     <div className='flex items-center gap-1'>
                         <input type='text' value={amount === '' ? '' : Number(amount).toLocaleString()}
                             onChange={(e) => {
@@ -116,21 +118,21 @@ const EnterDirectly = () => {
                             placeholder='0'
                             className='text-3xl font-bold text-[#F47560] bg-transparent outline-none text-center w-48'
                         />
-                        {amount !== '' && (<span className="text-3xl font-bold text-[#F47560] ml-1">円</span>)}
+                        {amount !== '' && (<span className="text-3xl font-bold text-[#F47560] ml-1">{t('signup.currency')}</span>)}
                     </div>
-                    <span className='text-[#B89090] text-xs'>タップして編集</span>
+                    <span className='text-[#B89090] text-xs'>{t('enterDirectly.amountEditHint')}</span>
                 </div>
 
                 {/* 가게명 */}
-                <Input className="font-bold" label='店名' type='text' placeholder='スターバックス' value={title} onChange={(e) => setTitle(e.target.value)}/>
+                <Input className="font-bold" label={t('enterDirectly.shopLabel')} type='text' placeholder={t('enterDirectly.shopPlaceholder')} value={title} onChange={(e) => setTitle(e.target.value)}/>
 
                 {/* 메모 */}
-                <Input className="font-bold" label='メモ（任意）' type='text' placeholder='ホワイトモカアーモンドミルク変更オーダー ☕' value={memo} onChange={(e) => setMemo(e.target.value)}/>
+                <Input className="font-bold" label={t('enterDirectly.memoLabel')} type='text' placeholder={t('enterDirectly.memoPlaceholder')} value={memo} onChange={(e) => setMemo(e.target.value)}/>
 
                 {/* 날짜 */}
                 <div className='bg-white bg-opacity-60 rounded-2xl px-4 py-3 mt-3 flex items-center justify-between' onClick={()=> setIsOpen(true)}>
                     <div>
-                        <p className='text-[#B89090] text-xs'>日付 (タップして編集)</p>
+                        <p className='text-[#B89090] text-xs'>{t('enterDirectly.dateLabel')}</p>
                         <p className='text-[#3D2C2C] font-bold text-sm'>{selectedDate.toLocaleDateString('ja-JP')}</p>
                     </div>
                     <img src={inputIcon} alt="input_icon" className="w-8" />
@@ -138,15 +140,15 @@ const EnterDirectly = () => {
 
                 {/* 카테고리 */}
                 <div>
-                    <p className='text-[#7A5555] font-bold mb-3'>カテゴリを選ぶ</p>
+                    <p className='text-[#7A5555] font-bold mb-3'>{t('enterDirectly.categoryTitle')}</p>
                     <div className='grid grid-cols-4 gap-3'>
                         {categories.map((cat) => (
                             <CategoryIcon
-                                key={cat.label}
+                                key={cat.value}
                                 Icon={cat.Icon}
-                                label={cat.label}
-                                active={category === cat.label}
-                                onClick={() => setCategory(cat.label)}
+                                label={t(cat.labelKey)}
+                                active={category === cat.value}
+                                onClick={() => setCategory(cat.value)}
                                 className="w-20 h-16"
                             />
                         ))}
@@ -156,14 +158,14 @@ const EnterDirectly = () => {
                 {error && <p className='text-red-500 text-sm text-center'>{error}</p>}
 
                 <div className="flex justify-center gap-6">
-                    <Button className="mt-2 flex-1 !flex flex-row items-center justify-center gap-2 whitespace-nowrap" variant="primary" onClick={()=> cameraInputRef.current?.click()}>レシート撮影 <img src={CameraIcon} alt="CameraIcon" /></Button>
-                    <Button className="mt-2 flex-1 !flex flex-row items-center justify-center gap-2 whitespace-nowrap" variant="primary" onClick={()=> albumInputRef.current?.click()}>写真を選択 <img src={GalleryIcon} alt="GalleryIcon" /></Button>
+                    <Button className="mt-2 flex-1 !flex flex-row items-center justify-center gap-2 whitespace-nowrap" variant="primary" onClick={()=> cameraInputRef.current?.click()}>{t('enterDirectly.receiptCapture')} <img src={CameraIcon} alt="CameraIcon" /></Button>
+                    <Button className="mt-2 flex-1 !flex flex-row items-center justify-center gap-2 whitespace-nowrap" variant="primary" onClick={()=> albumInputRef.current?.click()}>{t('enterDirectly.selectPhoto')} <img src={GalleryIcon} alt="GalleryIcon" /></Button>
 
                     <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handleReceiptChange} className="hidden"/>
                     <input ref={albumInputRef} type="file" accept="image/*" onChange={handleReceiptChange} className="hidden"/>
                 </div>
 
-                <p className="mt-2 text-xs text-center text-[#857A78]">読み取り結果は正確でない場合があります。<br />保存前に内容をご確認ください。</p>
+                <p className="mt-2 text-xs text-center whitespace-pre-line text-[#857A78]">{t('enterDirectly.receiptNotice')}</p>
 
             </div>
 
@@ -171,9 +173,9 @@ const EnterDirectly = () => {
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
                 <div className="flex w-[280px] flex-col items-center rounded-2xl bg-white px-6 py-8 shadow-xl">
                     <div className="mb-5 h-10 w-10 animate-spin rounded-full border-4 border-[#FFC4B3] border-t-[#F47560]" />
-                    <p className="text-lg font-semibold text-[#5A2D2A]">レシートを解析中...</p>
-                    <p className="mt-2 text-sm text-gray-500">少々お待ちください。</p>
-                    <p className="mt-1 text-xs text-center text-gray-400">認識結果が正確でない場合があります。<br/> 内容をご確認ください。</p>
+                    <p className="text-lg font-semibold text-[#5A2D2A]">{t('enterDirectly.ocrLoadingTitle')}</p>
+                    <p className="mt-2 text-sm text-gray-500">{t('enterDirectly.ocrLoadingWait')}</p>
+                    <p className="mt-1 text-xs text-center whitespace-pre-line text-gray-400">{t('enterDirectly.ocrAccuracyNotice')}</p>
                 </div>
             </div>
             )}

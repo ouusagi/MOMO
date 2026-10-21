@@ -1,4 +1,4 @@
-
+import { useTranslation } from "react-i18next"
 
 interface CardProps {
     onClick?: ()=> void
@@ -12,7 +12,7 @@ interface CardProps {
 
 const Card = ({onClick, icon, title, time, amount = 0, memo}:CardProps) => {
 
-
+    const { t } = useTranslation()
     const CardBox = 'bg-[#FFFFFF] bg-opacity-65 rounded-2xl p-4 cursor-pointer flex items-center gap-4 justify-between w-full'
     const EmojiBox = 'bg-[#FFD9CE] rounded-xl flex items-center py-3 px-3'
 
@@ -31,7 +31,7 @@ const Card = ({onClick, icon, title, time, amount = 0, memo}:CardProps) => {
           </div>
 
             <div className="flex flex-col text-right">
-                <span className="font-bold text-[#F47560]">-{amount.toLocaleString()} 円</span>
+                <span className="font-bold text-[#F47560]">-{amount.toLocaleString()} {t('signup.currency')}</span>
             </div>
         </div>
     )

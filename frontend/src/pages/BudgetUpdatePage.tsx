@@ -4,11 +4,13 @@ import { useGetUser, useUpdateBudGet } from "../hooks/useUser"
 import Button from "../components/common/Button"
 import toast from "react-hot-toast"
 import NavBottom from "../components/common/NavBottom"
+import { useTranslation } from "react-i18next"
 
 
 const BudgetUpdatePage = () => {
 
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const { data: UserData, isLoading, error } = useGetUser()
     const { mutate: updateBudget } = useUpdateBudGet()
     const [budget, setBudget] = useState("")
@@ -23,40 +25,40 @@ const BudgetUpdatePage = () => {
     const handleUpdateBudget = () => {
 
         if (!budget) {
-            toast.error("予算を入力してください")
+            toast.error(t('budgetUpdatePage.budgetPlaceholder'))
             return
         }
 
         const budgetNumber = Number(budget)
 
         if (budgetNumber <= 0) {
-            toast.error("予算は1円以上で入力してください")
+            toast.error(t('budgetUpdatePage.minimumError'))
             return
         }
 
         updateBudget(budgetNumber,{
             onSuccess: () => {
-                toast.success("予算を変更しました！")
+                toast.success(t('budgetUpdatePage.updateSuccess'))
                 navigate('/mypage')
             },
 
             onError: () => {
-                toast.error("予算の変更に失敗しました")
+                toast.error(t('budgetUpdatePage.updateFailure'))
             },
         })
     }
 
 
     if (isLoading) {
-        return <p className="text-center">読み込み中...</p>
+        return <p className="text-center">{t('budgetUpdatePage.loading')}</p>
     }
 
     if (error) {
-        return <p className="text-center">エラーが発生しました。</p>
+        return <p className="text-center">{t('budgetUpdatePage.error')}</p>
     }
 
     if (!UserData) {
-        return <p className="text-center">ユーザー情報が見つかりません。</p>
+        return <p className="text-center">{t('budgetUpdatePage.userNotFound')}</p>
     }
 
 
@@ -66,7 +68,7 @@ const BudgetUpdatePage = () => {
             {/* Header */}
             <div className="flex items-center justify-between px-6 pt-12 pb-4">
                 <Button variant="back" onClick={() => navigate(-1)}>←</Button>
-                <span className="text-[#3D2C2C] font-bold">予算設定</span>
+                <span className="text-[#3D2C2C] font-bold">{t('budgetUpdatePage.title')}</span>
                 <div className="w-10"></div>
             </div>
 
@@ -75,18 +77,18 @@ const BudgetUpdatePage = () => {
 
                 {/* Title */}
                 <div className="mt-6">
-                    <p className="text-[#3D2C2C] text-xl font-bold">月間予算を変更</p>
-                    <p className="text-[#B89090] text-sm mt-1">新しい月間予算を入力してください</p>
+                    <p className="text-[#3D2C2C] text-xl font-bold">{t('budgetUpdatePage.pageTitle')}</p>
+                    <p className="text-[#B89090] text-sm mt-1">{t('budgetUpdatePage.pageDescription')}</p>
                 </div>
 
 
                 {/* Budget Input */}
                 <div className="bg-white bg-opacity-65 rounded-2xl p-4 mt-6">
 
-                    <p className="text-[#B89090] text-xs mb-2">月間予算</p>
+                    <p className="text-[#B89090] text-xs mb-2">{t('budgetUpdatePage.budgetLabel')}</p>
 
                     <div className="relative flex items-center">
-                        <span className="absolute left-4 text-[#3D2C2C] text-xl font-bold">¥</span>
+                        <span className="absolute left-4 text-[#3D2C2C] text-xl font-bold">{t('myPage.currency')}</span>
 
                     <input id="budget" type="text" inputMode="numeric" value={budget ? Number(budget).toLocaleString() : ""} autoComplete="off" onChange={handleBudgetChange}
                         placeholder={UserData.budget.toLocaleString()}
@@ -108,8 +110,8 @@ const BudgetUpdatePage = () => {
 
                 {/* Current Budget */}
                 <div className="bg-white bg-opacity-65 rounded-2xl px-4 py-4 mt-3 flex items-center justify-between">
-                    <span className="text-[#B89090] text-sm">現在の月間予算</span>
-                    <span className="text-[#F47560] font-bold">¥{UserData.budget.toLocaleString()}</span>
+                    <span className="text-[#B89090] text-sm">{t('budgetUpdatePage.currentBudget')}</span>
+                    <span className="text-[#F47560] font-bold">{t('myPage.currency')}{UserData.budget.toLocaleString()}</span>
                 </div>
 
 
@@ -117,12 +119,12 @@ const BudgetUpdatePage = () => {
                 <button type="button" onClick={handleUpdateBudget}
                     className="w-full bg-[#F47560] rounded-2xl py-4 mt-6 text-white font-bold active:scale-[0.98] transition-transform"
                 >
-                    変更する
+                    {t('budgetUpdatePage.updateButton')}
                 </button>
 
 
                 {/* Info */}
-                <p className="text-[#B89090] text-xs mt-4 text-center">※ 月間予算は後からいつでも変更できます</p>
+                <p className="text-[#B89090] text-xs mt-4 text-center">{t('budgetUpdatePage.info')}</p>
 
             </div>
 

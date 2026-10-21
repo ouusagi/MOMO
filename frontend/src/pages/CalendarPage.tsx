@@ -11,12 +11,14 @@ import { ja } from "date-fns/locale"
 import Card from "../components/common/Card"
 import { categoryIcons } from "../constants/categoryIcons"
 import NotificationButton from "../components/common/NotificationButton"
+import { useTranslation } from "react-i18next"
 
 
 
 const CalendarPage = () => {
 
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
     const { data:UserBudGet } = useGetUser()
     const [selectedDate, setSelectedDate] = useState(new Date())
@@ -81,9 +83,9 @@ const CalendarPage = () => {
 
     }, [monthlyTotal])
 
-    if(ExpensesLoading) return <p>読み込み中...</p>
-    if(ExpensesError) return <p>エラーが発生しました。</p>
-    if(!ExpensesData) return <p>ユーザー情報が見つかりません。</p>
+    if(ExpensesLoading) return <p>{t('calendarPage.loading')}</p>
+    if(ExpensesError) return <p>{t('calendarPage.error')}</p>
+    if(!ExpensesData) return <p>{t('userNotFound')}</p>
 
 
     return(
@@ -92,7 +94,7 @@ const CalendarPage = () => {
             {/* header */}
             <div className="flex items-center justify-between px-6 pt-12 pb-4">
                 <Button variant="back" onClick={() => navigate("/main")}>←</Button>
-                <span className="text-[#3D2C2C] font-bold">カレンダー</span>
+                <span className="text-[#3D2C2C] font-bold">{t('calendarPage.title')}</span>
                 <NotificationButton/>
             </div>
 
@@ -101,14 +103,14 @@ const CalendarPage = () => {
                 <div className="bg-[#F47560] rounded-3xl px-4 py-5 text-white">
                     <div className="flex justify-between">
                         <div>
-                            <p className="text-sm">{viewDate.getMonth()+1}月の総支出</p>
-                            <p className="text-3xl font-bold">{displayTotal.toLocaleString()}円</p>
+                            <p className="text-sm">{viewDate.getMonth()+1}{t('calendarPage.selectedDateExpenses1')}</p>
+                            <p className="text-3xl font-bold">{displayTotal.toLocaleString()}{t('signup.currency')}</p>
                         </div>
 
                         <div className="text-right text-sm">
-                            <p>予算 {UserBudGet?.budget.toLocaleString()}円</p>
-                            <p>残額</p>
-                            <p className="font-bold">¥{remainingBudget.toLocaleString()}</p>
+                            <p>{t('calendarPage.budget')} {UserBudGet?.budget.toLocaleString()}{t('myPage.currency')}</p>
+                            <p>{t('calendarPage.remainingBudget')}</p>
+                            <p className="font-bold">{t('myPage.currency')}{remainingBudget.toLocaleString()}</p>
                         </div>
                     </div>
                 </div>
@@ -138,14 +140,14 @@ const CalendarPage = () => {
             <div className="px-7">
                 <div className="flex items-center justify-between mb-3">
                     <span className="text-[#7A5555] font-bold">
-                        {selectedDate.getMonth() + 1}月
-                        {selectedDate.getDate()}日の支出
+                        {selectedDate.getMonth() + 1}{t('calendarPage.selectedDateExpenses3')}
+                        {selectedDate.getDate()}{t('calendarPage.selectedDateExpenses2')}
                     </span>
 
-                    <span onClick={()=> navigate('/transactions')} className="text-[#F47560] opacity-80 font-bold">全て見る ›</span>
+                    <span onClick={()=> navigate('/transactions')} className="text-[#F47560] opacity-80 font-bold">{t('calendarPage.viewAll')} ›</span>
                 </div>
 
-                <div className="flex flex-col gap-3">{selectedExpenses.length === 0 ? (<p className="text-[#B89090] text-sm text-center pt-10">この日の支出はありません！</p>) : 
+                <div className="flex flex-col gap-3">{selectedExpenses.length === 0 ? (<p className="text-[#B89090] text-sm text-center pt-10">{t('calendarPage.noExpenses')}</p>) : 
                 (selectedExpenses.map((item)=>(
                     <Card key={item.id} title={item.title} amount={item.amount} memo={item.memo} icon={categoryIcons[item.category]} onClick={()=> navigate(`/transaction/${item.id}`)}/>
                 )))}</div>

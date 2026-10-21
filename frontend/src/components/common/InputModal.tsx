@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 interface InputModalProps {
     isOpen: boolean
@@ -13,6 +14,7 @@ interface InputModalProps {
 const InputModal = ({isOpen,title,value,placeholder,onChange,onCancel,onConfirm}: InputModalProps) => {
 
     const [show, setShow] = useState(false)
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (isOpen) {
@@ -37,7 +39,7 @@ const InputModal = ({isOpen,title,value,placeholder,onChange,onCancel,onConfirm}
                 {/* Title */}
                 <div className="text-center">
                     <h2 className="text-lg font-bold text-[#3D2C2C]">{title}</h2>
-                    <p className="text-xs text-[#B89090] mt-1">新しいユーザー名を入力してください</p>
+                    <p className="text-xs text-[#B89090] mt-1">{t('accountSettingsPage.changeUsernameTitlesub')}</p>
                 </div>
 
                 {/* Input */}
@@ -48,8 +50,8 @@ const InputModal = ({isOpen,title,value,placeholder,onChange,onCancel,onConfirm}
 
                 {/* Buttons */}
                 <div className="flex gap-3 mt-6">
-                    <button type="button" onClick={onCancel} className="flex-1 py-3 rounded-2xl bg-[#F3E7E4] text-[#7A5555] font-bold">キャンセル</button>
-                    <button type="button" onClick={onConfirm} className="flex-1 py-3 rounded-2xl bg-[#F47560] text-white font-bold shadow-sm">保存する</button>
+                    <button type="button" onClick={onCancel} className="flex-1 py-3 rounded-2xl bg-[#F3E7E4] text-[#7A5555] font-bold">{t('accountSettingsPage.passwordChangeCancel')}</button>
+                    <button type="button" onClick={onConfirm} className="flex-1 py-3 rounded-2xl bg-[#F47560] text-white font-bold shadow-sm">{t('accountSettingsPage.passwordChangeSave')}</button>
                 </div>
 
             </div>

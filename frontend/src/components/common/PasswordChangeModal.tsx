@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useUpdatePassword } from "../../hooks/useUser"
 import toast from "react-hot-toast"
 import axios from "axios"
+import { useTranslation } from "react-i18next"
 
 interface PasswordChangeModalProps {
     isOpen: boolean
@@ -16,6 +17,7 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
     const [currentPassword, setCurrentPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (isOpen) {
@@ -34,23 +36,23 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
     const handleUpdatePassword = () => {
 
         if (!currentPassword || !newPassword || !confirmPassword) {
-            toast.error("すべての項目を入力してください")
+            toast.error(t('accountSettingsPage.passwordChangeDescriptions'))
             return
         }
 
         if (newPassword !== confirmPassword) {
-            toast.error("新しいパスワードが一致しません")
+            toast.error(t('accountSettingsPage.passwordChangeDiscrepancy'))
             return
         }
 
         if (newPassword.length < 8) {
-            toast.error("パスワードは8文字以上で入力してください")
+            toast.error(t('accountSettingsPage.passwordChangeCondition'))
             return
         }
 
         updatePassword({currentPassword, newPassword}, {
             onSuccess: () => {
-                toast.success("パスワードを変更しました")
+                toast.success(t('accountSettingsPage.passwordChangeonSuccess'))
                 setCurrentPassword("")
                 setNewPassword("")
                 setConfirmPassword("")
@@ -59,7 +61,13 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
 
             onError: (error) => {
                 if(axios.isAxiosError(error)){
-                    toast.error(error.response?.data?.error || "パスワードの変更に失敗しました")
+                    const message = error.response?.data?.error
+                    if (message === "現在のパスワードが正しくありません") {
+                        toast.error(t('accountSettingsPage.currentPasswordIncorrect'))
+                    } else{
+                        toast.error(error.response?.data?.error || t('accountSettingsPage.passwordChangeonError'))
+                    }
+                    
                 }
             }
         })
@@ -74,8 +82,8 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
 
                 {/* Title */}
                 <div className="text-center">
-                    <h2 className="text-lg font-bold text-[#3D2C2C]">パスワード変更</h2>
-                    <p className="text-xs text-[#B89090] mt-1">現在のパスワードと新しいパスワードを入力してください</p>
+                    <h2 className="text-lg font-bold text-[#3D2C2C]">{t('accountSettingsPage.passwordChangeTitle')}</h2>
+                    <p className="text-xs text-[#B89090] mt-1">{t('accountSettingsPage.passwordChangeDescription')}</p>
                 </div>
 
 
@@ -83,19 +91,19 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
                 <div className="flex flex-col gap-3 mt-6">
 
                     <input type="password" autoComplete="current-password" value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)} placeholder="現在のパスワード" autoFocus
+                        onChange={(e) => setCurrentPassword(e.target.value)} placeholder={t('accountSettingsPage.passwordChangeInputPlaceholder1')} autoFocus
                         className="w-full px-4 py-3 rounded-2xl bg-[#FFEDE8] text-[#3D2C2C] font-medium outline-none
                             border-2 border-transparent focus:border-[#8FAF9A] transition-colors"
                     />
 
                     <input type="password" autoComplete="new-password" value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)} placeholder="新しいパスワード"
+                        onChange={(e) => setNewPassword(e.target.value)} placeholder={t('accountSettingsPage.passwordChangeInputPlaceholder2')}
                         className="w-full px-4 py-3 rounded-2xl bg-[#FFEDE8] text-[#3D2C2C] font-medium outline-none
                             border-2 border-transparent focus:border-[#8FAF9A] transition-colors"
                     />
 
                     <input type="password" autoComplete="new-password" value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)} placeholder="新しいパスワード（確認）"
+                        onChange={(e) => setConfirmPassword(e.target.value)} placeholder={t('accountSettingsPage.passwordChangeInputPlaceholder3')}
                         className="w-full px-4 py-3 rounded-2xl bg-[#FFEDE8] text-[#3D2C2C] font-medium outline-none
                             border-2 border-transparent focus:border-[#8FAF9A] transition-colors"
                     />
@@ -108,13 +116,13 @@ const PasswordChangeModal = ({ isOpen, onClose }: PasswordChangeModalProps) => {
                     <button type="button" onClick={onClose}
                         className="flex-1 py-3 rounded-2xl bg-[#F3E7E4] text-[#7A5555] font-bold"
                     >
-                        キャンセル
+                        {t('accountSettingsPage.passwordChangeCancel')}
                     </button>
 
                     <button type="button" onClick={handleUpdatePassword} disabled={isPending}
                         className="flex-1 py-3 rounded-2xl bg-[#F47560] text-white font-bold shadow-sm disabled:opacity-50"
                     >
-                        {isPending ? "変更中..." : "保存する"}
+                        {isPending ? "変更中..." : t('accountSettingsPage.passwordChangeSave')}
                     </button>
                 </div>
 

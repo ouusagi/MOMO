@@ -9,25 +9,27 @@ import ConfirmModal from "../components/common/ConfirmModal"
 import MoneyPigIcon from '../assets/mypageIcons/Piggy-Bank.svg'
 import AccountIcon from '../assets/mypageIcons/AccountSettings.svg'
 import SignOutIcon from '../assets/mypageIcons/SignOut.svg'
+import { useTranslation } from "react-i18next"
 
 
 const MyPage = () => {
 
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const { data: UserData, isLoading: UserLoading, error: UserError } = useGetUser()
     const { data: ExpensesData, isLoading: ExpensesLoading, error: ExpensesError } = useGetExpenses()
     const [isSignOutOpen, setIsSignOutOpen] = useState(false)
         
     if (UserLoading || ExpensesLoading) {
-        return <p className="text-center">読み込み中...</p>
+        return <p className="text-center">{t('main.loading')}</p>
     }
 
     if (UserError || ExpensesError) {
-        return <p className="text-center">エラーが発生しました。</p>
+        return <p className="text-center">{t('main.error')}</p>
     }
 
     if (!UserData || !ExpensesData) {
-        return <p className="text-center">ユーザー情報が見つかりません。</p>
+        return <p className="text-center">{t('mypage.userNotFound')}</p>
     }
 
     const now = new Date()
@@ -58,16 +60,18 @@ const MyPage = () => {
     // 메뉴
     const menuItems = [
         {
-            label: "予算設定",
+            label: t('myPage.budgetSettings'),
             icon: <img className="w-5" src={MoneyPigIcon} alt="moneybank_pig_icon" />,
             onClick: () => navigate("/account/budget")
         },
         {
-            label: "アカウント設定",
+            label: t('myPage.accountSettings'),
             icon: <img className="w-5" src={AccountIcon} alt="AccountIcon" />,
             onClick: () => navigate("/account")
         }
     ]
+
+    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080"
 
 
     return(
@@ -76,7 +80,7 @@ const MyPage = () => {
             {/* Header */}
             <div className="flex items-center justify-between px-6 pt-12 pb-4">
                 <Button variant="back" onClick={() => navigate("/main")}>←</Button>
-                <span className="text-[#3D2C2C] font-bold">マイページ</span>
+                <span className="text-[#3D2C2C] font-bold">{t('myPage.title')}</span>
                 <NotificationButton/>
             </div>
 
@@ -85,11 +89,11 @@ const MyPage = () => {
                 {/* Profile */}
                 <div className="flex flex-col items-center mt-4">
                     <div className="w-28 h-28 rounded-3xl bg-[#FFB8A6] flex items-center justify-center overflow-hidden">
-                        <img src={`http://localhost:8080${UserData.profileImage}`} alt="profile" className={`${UserData.profileImage === '/uploads/profiles/default.png' ? 
+                        <img src={`${apiUrl}${UserData.profileImage}`} alt="profile" className={`${UserData.profileImage === '/uploads/profiles/default.png' ? 
                             'w-24 h-24' : 'w-28 h-28'} rounded-3xl object-cover object-center`}/>
                     </div>
                     <p className="text-[#3D2C2C] text-2xl font-bold mt-4">{UserData.username}</p>
-                    <p className="text-[#B89090] text-sm mt-1">今日もコツコツ節約中 🍑</p>
+                    <p className="text-[#B89090] text-sm mt-1">{t('myPage.profileMessage')}</p>
                 </div>
 
 
@@ -98,17 +102,17 @@ const MyPage = () => {
 
                     <div className="bg-white bg-opacity-65 rounded-2xl p-4 text-center">
                         <p className="text-[#F47560] text-xl font-bold">{monthlyCount}</p>
-                        <p className="text-[#B89090] text-xs mt-1">今月の件数</p>
+                        <p className="text-[#B89090] text-xs mt-1">{t('myPage.monthlyCount')}</p>
                     </div>
 
                     <div className="bg-white bg-opacity-65 rounded-2xl p-4 text-center">
-                        <p className="text-[#F47560] text-xl font-bold">¥{formatAmount(UserData.budget)}</p>
-                        <p className="text-[#B89090] text-xs mt-1">今月の予算</p>
+                        <p className="text-[#F47560] text-xl font-bold">{t('myPage.currency')}{formatAmount(UserData.budget)}</p>
+                        <p className="text-[#B89090] text-xs mt-1">{t('myPage.monthlyBudget')}</p>
                     </div>
 
                     <div className="bg-white bg-opacity-65 rounded-2xl p-4 text-center">
                         <p className="text-[#F47560] text-xl font-bold">{totalExpenseCount}</p>
-                        <p className="text-[#B89090] text-xs mt-1">累計記録数</p>
+                        <p className="text-[#B89090] text-xs mt-1">{t('myPage.totalExpenseCount')}</p>
                     </div>
 
                 </div>
@@ -139,7 +143,7 @@ const MyPage = () => {
                             <div className="w-10 h-10 bg-[#F47560] bg-opacity-20 rounded-xl flex items-center justify-center">
                                 <img src={SignOutIcon} alt="SignOutIcon" />
                             </div>
-                            <span className="text-[#F47560] font-bold">サインアウト</span>
+                            <span className="text-[#F47560] font-bold">{t('myPage.signOut')}</span>
                         </div>
 
                         <span className="text-[#F47560]">›</span>
@@ -148,8 +152,8 @@ const MyPage = () => {
                 </div>
 
 
-                <ConfirmModal isOpen={isSignOutOpen} title="サインアウト" message="本当にサインアウトしますか？" icon={<img className="w-5" src={SignOutIcon} alt="SignOutIcon"/>} confirmText="サインアウト"
-                 cancelText="キャンセル"
+                <ConfirmModal isOpen={isSignOutOpen} title={t('myPage.signOut')} message={t('myPage.signOutConfirmMessage')} icon={<img className="w-5" src={SignOutIcon} alt="SignOutIcon"/>} confirmText={t('myPage.signOut')}
+                 cancelText={t('myPage.cancel')}
                  onCancel={() => setIsSignOutOpen(false)}
                  onConfirm={() => {localStorage.removeItem("token"); navigate("/")}}/>
 

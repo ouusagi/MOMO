@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import hero2 from '../../assets/hero2.png'
 import Button from '../../components/common/Button'
+import { useTranslation } from "react-i18next"
 
 interface SignUpStep3Props {
     userName:string
@@ -11,6 +12,7 @@ interface SignUpStep3Props {
 const SignUpStep3 = ({userName, onNext}:SignUpStep3Props) => {
 
     const [show, setshow] = useState(false)
+    const { t } = useTranslation()
 
     useEffect(()=>{
         setTimeout(() => {
@@ -41,28 +43,28 @@ const SignUpStep3 = ({userName, onNext}:SignUpStep3Props) => {
             
 
             <div className={`text-center flex flex-col gap-3 transition-all duration-1000 delay-500 ${show ? 'opacity-100' : 'opacity-0'}`}>
-                <h1 className="text-3xl font-bold text-[#FFFFFF]">登録完了 !</h1>
-                <p className="text-xl text-[#FFFFFF]">{userName}さん、歓迎します 🎉</p>
-                <p className='text-sm text-center text-[#FFFFFF] text-opacity-75'>さあ、MOMOと一緒に<br/>節約の消費習慣を作ってみましょう！</p>
+                <h1 className="text-3xl font-bold text-[#FFFFFF]">{t('signup.step3Title')}</h1>
+                <p className="text-xl text-[#FFFFFF]">{userName}{t('signup.step3Welcome')}</p>
+                <p className='text-sm text-center text-[#FFFFFF] text-opacity-75'>{t('signup.step3Subtitle')}</p>
 
                 <div className='flex flex-col gap-2 mt-4 text-left bg-[#FFFFFF] bg-opacity-20 px-10 py-6 rounded-3xl'>
                     <div className='flex items-center gap-3'>
                         <span>📷</span>
-                        <span className='text-[#FFFFFF] text-sm font-bold'>レシートを撮影すると自動で記録</span>
+                        <span className='text-[#FFFFFF] text-sm font-bold'>{t('signup.featureReceipt')}</span>
                     </div>
                     <div className='flex items-center gap-3'>
                         <span>📅</span>
-                        <span className='text-[#FFFFFF] text-sm font-bold'>カレンダーで一目で支出を確認</span>
+                        <span className='text-[#FFFFFF] text-sm font-bold'>{t('signup.featureCalendar')}</span>
                     </div>
                     <div className='flex items-center gap-3'>
                         <span>📊</span>
-                        <span className='text-[#FFFFFF] text-sm font-bold'>統計で消費パターンを分析</span>
+                        <span className='text-[#FFFFFF] text-sm font-bold'>{t('signup.featureStatistics')}</span>
                     </div>
                 </div>
             </div>
 
             <div className={`w-full transition-all duration-1000 delay-700 ${show ? 'opacity-100' : 'opacity-0'}`}>
-                <Button variant='outline' fullWidth onClick={onNext} className=''>メイン画面へ移動 🍑</Button>
+                <Button variant='outline' fullWidth onClick={onNext} className=''>{t('signup.step3HomeButton')}</Button>
             </div>
 
         </div>

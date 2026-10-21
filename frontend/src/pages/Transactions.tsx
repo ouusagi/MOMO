@@ -6,12 +6,24 @@ import NavBottom from "../components/common/NavBottom"
 import Card from "../components/common/Card"
 import { categoryIcons } from "../constants/categoryIcons"
 import NotificationButton from "../components/common/NotificationButton"
+import { useTranslation } from "react-i18next"
 
 const Transactions = () => {
 
     const navigate = useNavigate()
-    const categoryfilters = ['すべて', '食費', 'カフェ', '交通', '買い物', '医薬品', '家賃', '趣味' ,'その他']
-    const [activeFilter, setActiveFilter] = useState('すべて')
+    const { t } = useTranslation()
+    const categoryfilters = [
+    { value: 'all', label: t('transactions.all') },
+    { value: 'food', label: t('main.categories.food') },
+    { value: 'cafe', label: t('main.categories.cafe') },
+    { value: 'transport', label: t('main.categories.transport') },
+    { value: 'shopping', label: t('main.categories.shopping') },
+    { value: 'medicine', label: t('main.categories.medicine') },
+    { value: 'rent', label: t('main.categories.rent') },
+    { value: 'hobby', label: t('main.categories.hobby') },
+    { value: 'other', label: t('main.categories.other') },
+    ]
+    const [activeFilter, setActiveFilter] = useState('all')
     const location = useLocation()
     const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
 
@@ -52,7 +64,7 @@ const Transactions = () => {
 
     // 필터 기능 (기본값 모두)
     const FilteredExpenses = Last30DaysExpenses?.filter((expense)=>{
-        if(activeFilter === 'すべて'){
+        if(activeFilter === 'all'){
             return true
         }
         return expense.category === activeFilter
@@ -77,8 +89,8 @@ const Transactions = () => {
         yesterdayDate.setDate(yesterdayDate.getDate() - 1)
         const yesterday = getLocalDateString(yesterdayDate)
 
-        if (dateStr === today) return "今日"
-        if (dateStr === yesterday) return "昨日"
+        if (dateStr === today) return t('transactions.today')
+        if (dateStr === yesterday) return t('transactions.yesterday')
 
         return dateStr
     }
@@ -89,7 +101,7 @@ const Transactions = () => {
             {/* header */}
             <div className='flex items-center justify-between px-6 pt-12 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate('/main')}>←</Button>
-                <span className='text-[#3D2C2C] font-bold'>全履歴</span>
+                <span className='text-[#3D2C2C] font-bold'>{t('transactions.title')}</span>
                 <NotificationButton/>
             </div>
 
@@ -97,14 +109,14 @@ const Transactions = () => {
             <div className="flex gap-2 px-6 py-3 overflow-x-auto">
                 {categoryfilters?.map((filter)=> {
                     return(
-                        <Button variant="filter" key={filter} className={`${activeFilter === filter ? 'bg-[#F47560] text-white' : 'bg-white bg-opacity-65 text-[#7A5555]'}`} onClick={()=> {setActiveFilter(filter)}}>{filter}</Button>
+                        <Button variant="filter" key={filter.value} className={`${activeFilter === filter.value ? 'bg-[#F47560] text-white' : 'bg-white bg-opacity-65 text-[#7A5555]'}`} onClick={()=> {setActiveFilter(filter.value)}}>{filter.label}</Button>
                     )
                 })}
             </div>
 
             {/* CardBox */}
             <div className="flex flex-col gap-4 px-6 py-3">
-                {ExpensesLoading ? (<p className='text-center text-[#B89090]'>読み込み中...</p>) : ExpensesError ? (<p className='text-center text-[#B89090]'>エラーが発生しました</p>) : 
+                {ExpensesLoading ? (<p className='text-center text-[#B89090]'>{t('transactions.loading')}</p>) : ExpensesError ? (<p className='text-center text-[#B89090]'>{t('transactions.error')}</p>) : 
                 ( Object.entries(groupedExpenses ?? {}).map(([date, expenses])=>(
                     <div key={date}>
                         <p className="text-[#7A5555] font-bold">{getDateLabel(date)}</p>

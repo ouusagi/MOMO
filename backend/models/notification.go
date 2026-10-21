@@ -11,4 +11,5 @@ type Notification struct {
 	Year      int       `json:"year"`
 	Month     int       `json:"month"`
 	CreatedAt time.Time `json:"createdAt"`
+	Title     string    `json:"title"`
 }

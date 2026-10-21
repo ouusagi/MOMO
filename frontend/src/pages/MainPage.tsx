@@ -10,16 +10,30 @@ import Card from "../components/common/Card"
 import { categoryIcons } from "../constants/categoryIcons"
 import { ExpenseBarChart } from "../components/graph/ExpenseBarChart"
 import NotificationButton from "../components/common/NotificationButton"
+import { useTranslation } from "react-i18next"
 
 const MainPage = () => {
 
     const { data:UserData, isLoading:UserLoading, error:UserError } = useGetUser()
     const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const categories = [
-        { Icon: categoryIcons['食費'], label: '食費' },
-        { Icon: categoryIcons['カフェ'], label: 'カフェ' },
-        { Icon: categoryIcons['交通'], label: '交通' },
+    {
+        value: 'food',
+        Icon: categoryIcons['food'],
+        label: t('enterDirectly.categories.food')
+    },
+    {
+        value: 'cafe',
+        Icon: categoryIcons['cafe'],
+        label: t('enterDirectly.categories.cafe')
+    },
+    {
+        value: 'transport',
+        Icon: categoryIcons['transport'],
+        label: t('enterDirectly.categories.transport')
+    },
     ]
 
     const MonthTotalAmount = ExpensesData?.filter((expense)=> {
@@ -52,11 +66,11 @@ const MainPage = () => {
     },{} as Record<string,number>)
 
     if(ExpensesLoading || UserLoading){
-        return <p>読み込み中...</p>
+        return <p>{t('main.loading')}</p>
     }
 
     if(ExpensesError || UserError){
-        return <p>エラーが発生しました</p>
+        return <p>{t('main.error')}</p>
     }
 
     return (
@@ -79,8 +93,8 @@ const MainPage = () => {
                     <img src={hero} alt='momo' className='absolute -top-10 -left-4 w-30 h-30' />
                     <img src={hero2} alt='momo' className='absolute -top-7 -right-4 w-30 h-30' />
                     <div className='text-center mt-4'>
-                        <p className='text-[#5A2D2A] font-bold'>今月の支出額</p>
-                        <p className='text-[#5A2D2A] font-bold text-3xl mt-1'>{MonthTotalAmount.toLocaleString()}円</p>
+                        <p className='text-[#5A2D2A] font-bold'>{t('main.monthlyExpenseTitle')}</p>
+                        <p className='text-[#5A2D2A] font-bold text-3xl mt-1'>{MonthTotalAmount.toLocaleString()}{t('signup.currency')}</p>
                     </div>
                     <div className='border-t border-[#F0D0C8] my-4'></div>
                     <div className='flex gap-3'>
@@ -94,33 +108,33 @@ const MainPage = () => {
                     {categories.map((cat) => (
                         <CategoryIcon
                             Icon={cat.Icon}
-                            key={cat.label}
+                            key={cat.value}
                             label={cat.label}
-                            amount={CategoryTotalAmount[cat.label] || 0}
-                            onClick={() => navigate('/transactions',{state:{category:cat.label}})}
+                            amount={CategoryTotalAmount[cat.value] || 0}
+                            onClick={() => navigate('/transactions',{state:{category:cat.value}})}
                             className="w-24 h-20"
                         />
                     ))}
                     <CategoryIcon
-                        Icon={categoryIcons['その他']}
-                        label='その他'
+                        Icon={categoryIcons['other']}
+                        label={t('enterDirectly.categories.other')}
                         onClick={() => navigate('/transactions')}
                         className="w-24 h-20"
                     />
                 </div>
 
                 {/* graph - week */}
-                <ExpenseBarChart period="週間"/>
+                <ExpenseBarChart period="weekly"/>
 
                 {/* today's expenses */}
                 <div className="w-full">
                     <div className='flex items-center justify-between mb-3 px-2'>
-                        <span className='text-[#7A5555] font-bold'>今日の支出</span>
-                        <span className='text-[#F47560] text-sm cursor-pointer' onClick={() => navigate('/transactions')}>全て見る ›</span>
+                        <span className='text-[#7A5555] font-bold'>{t('main.todayExpenseTitle')}</span>
+                        <span className='text-[#F47560] text-sm cursor-pointer' onClick={() => navigate('/transactions')}>{t('main.viewAll')}</span>
                     </div>
 
                     <div className="flex flex-col gap-3 text-center">
-                    {TodayExpenses?.length === 0 ? (<p className="text-[#B89090] text-sm text-center pt-3">今日の支出はありません！</p>) : (TodayExpenses?.map((item)=>{
+                    {TodayExpenses?.length === 0 ? (<p className="text-[#B89090] text-sm text-center pt-3">{t('main.todayExpenseEmpty')}</p>) : (TodayExpenses?.map((item)=>{
                         return(
                                 <Card key={item.id}
                                   title={item.title}
