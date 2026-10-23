@@ -17,7 +17,7 @@ const ko = {
 
   welcome: {
     title: "오늘의 지출",
-    subtitle: "MOMO에 기록해 봐요!",
+    subtitle: "MOMO에 기록해 봐요 !",
     signin: "로그인",
     signup: "회원가입",
   },
@@ -186,7 +186,7 @@ const ko = {
     // 오늘의 지출
     todayExpenseTitle: "오늘의 지출",
     viewAll: "전체 보기 ›",
-    todayExpenseEmpty: "오늘은 지출 내역이 없어요!",
+    todayExpenseEmpty: "오늘은 지출 내역이 없어요 !",
 
     // 로딩 및 오류
     loading: "불러오는 중...",

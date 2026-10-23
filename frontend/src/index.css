@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 ::-webkit-scrollbar { display: none; }
 .chart-scroll::-webkit-scrollbar {
     display: block;
@@ -16,3 +17,29 @@
     background: #F47560;
     border-radius: 10px;
 }
+
+/* 기본 폰트 */
+@font-face {
+  font-family: 'Cafe24 Ssurround Air';
+  src: url('./assets/fonts/Cafe24SsurroundAir-v1.1.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Kosugi Maru';
+  src: url('./assets/fonts/KosugiMaru-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+html[lang="ko"] .font-rounded {
+  font-family: 'Cafe24 Ssurround Air', sans-serif;
+}
+
+html[lang="ja"] .font-rounded {
+  font-family: 'Kosugi Maru', sans-serif;
+}
+/* 기본 폰트 */

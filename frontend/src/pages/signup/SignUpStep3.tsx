@@ -43,22 +43,22 @@ const SignUpStep3 = ({userName, onNext}:SignUpStep3Props) => {
             
 
             <div className={`text-center flex flex-col gap-3 transition-all duration-1000 delay-500 ${show ? 'opacity-100' : 'opacity-0'}`}>
-                <h1 className="text-3xl font-bold text-[#FFFFFF]">{t('signup.step3Title')}</h1>
-                <p className="text-xl text-[#FFFFFF]">{userName}{t('signup.step3Welcome')}</p>
-                <p className='text-sm text-center text-[#FFFFFF] text-opacity-75'>{t('signup.step3Subtitle')}</p>
+                <h1 className="text-3xl font-bold text-[#FFFFFF] font-rounded font-rounded">{t('signup.step3Title')}</h1>
+                <p className="text-xl text-[#FFFFFF] font-rounded">{userName}{t('signup.step3Welcome')}</p>
+                <p className='text-sm text-center text-[#FFFFFF] text-opacity-75 font-rounded'>{t('signup.step3Subtitle')}</p>
 
                 <div className='flex flex-col gap-2 mt-4 text-left bg-[#FFFFFF] bg-opacity-20 px-10 py-6 rounded-3xl'>
                     <div className='flex items-center gap-3'>
                         <span>📷</span>
-                        <span className='text-[#FFFFFF] text-sm font-bold'>{t('signup.featureReceipt')}</span>
+                        <span className='text-[#FFFFFF] text-sm font-bold font-rounded'>{t('signup.featureReceipt')}</span>
                     </div>
                     <div className='flex items-center gap-3'>
                         <span>📅</span>
-                        <span className='text-[#FFFFFF] text-sm font-bold'>{t('signup.featureCalendar')}</span>
+                        <span className='text-[#FFFFFF] text-sm font-bold font-rounded'>{t('signup.featureCalendar')}</span>
                     </div>
                     <div className='flex items-center gap-3'>
                         <span>📊</span>
-                        <span className='text-[#FFFFFF] text-sm font-bold'>{t('signup.featureStatistics')}</span>
+                        <span className='text-[#FFFFFF] text-sm font-bold font-rounded'>{t('signup.featureStatistics')}</span>
                     </div>
                 </div>
             </div>

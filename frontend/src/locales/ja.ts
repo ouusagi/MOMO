@@ -133,7 +133,7 @@ const ja = {
     step3Subtitle: "さあ、MOMOと一緒に\n節約習慣を身につけましょう！",
 
     // 主な機能紹介
-    featureReceipt: "レシートを撮影すると自動で記録",
+    featureReceipt: "レシートを撮影すると自動記録",
     featureCalendar: "カレンダーで一目で支出を確認",
     featureStatistics: "統計で消費パターンを分析",
 

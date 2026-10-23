@@ -42,8 +42,8 @@ const LoginPage = () => {
             <img src={hero} alt="momo_hero_img" className="w-32 h-32 cursor-pointer" onClick={()=> navigate('/')}/>
 
             <div className="text-center">
-                <p className="text-2xl text-[#5A2D2A]">{t('welcome.title')}</p>
-                <p className="text-2xl text-[#5A2D2A]">{t('welcome.subtitle')}</p>
+                <p className="text-2xl text-[#5A2D2A] font-rounded">{t('welcome.title')}</p>
+                <p className="text-2xl text-[#5A2D2A] font-rounded">{t('welcome.subtitle')}</p>
             </div>
 
             <div className="w-full flex flex-col gap-4 mt-4">
