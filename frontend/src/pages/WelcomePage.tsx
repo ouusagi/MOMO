@@ -12,8 +12,15 @@ const WelcomePage = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-        if(token){navigate('/main')}
-        else{navigate('/')}
+        if(token){
+            navigate('/main', {replace: true})
+            return
+        }
+
+        const language = localStorage.getItem('language')
+        if(!language){
+            navigate('/language', {replace: true})
+        }
     },[navigate])
 
     return(

@@ -40,7 +40,7 @@ export const ExpenseBarChart = ({period}:ExpenseBarChartProps) => {
     const weeklyExpenses = ChartData?.filter((expense) => {
         const date = new Date(expense.expenseDate)
         return date >= monday && date <= sunday
-    })
+    }) ?? []
     // 일주일 지출 목록
 
 

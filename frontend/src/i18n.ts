@@ -4,7 +4,12 @@ import { initReactI18next } from 'react-i18next'
 import ja from './locales/ja'
 import ko from './locales/ko'
 
-const language = navigator.language.startsWith('ko') ? 'ko' : 'ja'
+
+const savedLanguage = localStorage.getItem('language')
+const language: 'ja' | 'ko' =
+  savedLanguage === 'ja' || savedLanguage === 'ko'
+    ? savedLanguage
+    : 'ja'
 
 i18n.use(initReactI18next).init({
     resources: {

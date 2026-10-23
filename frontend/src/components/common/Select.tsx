@@ -8,7 +8,7 @@ interface SelectProps {
     className?: string
 }
 
-const Select = ({ label, value, onChange, options, className }: SelectProps) => {
+const Select = ({ label, value, onChange, options = [], className }: SelectProps) => {
 
     const baseStyle = 'rounded-xl outline-none border-none py-4 px-3 bg-[#FFFFFF] bg-opacity-75 text-[#3D2C2C] w-full appearance-none cursor-pointer'
 

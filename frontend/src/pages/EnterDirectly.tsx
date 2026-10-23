@@ -96,10 +96,10 @@ const EnterDirectly = () => {
     }
 
     return(
-        <div className="w-full min-h-screen bg-[#FFC4B3] flex flex-col">
+        <div className="w-full min-h-screen bg-[#FFC4B3] flex flex-col pb-32">
 
             {/* 헤더 */}
-            <div className='flex items-center justify-between px-5 pt-5 pb-4'>
+            <div className='flex items-center justify-between px-5 pt-20 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate('/main')}>←</Button>
                 <span className='text-[#3D2C2C] font-bold'>{t('enterDirectly.title')}</span>
                 <span className='text-[#F47560] font-bold cursor-pointer' onClick={handleSave}>{t('enterDirectly.complete')}</span>

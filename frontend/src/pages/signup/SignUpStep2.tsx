@@ -53,7 +53,7 @@ const SignUpStep2 = ({userName, budget, profileImage, setUserName, setBudget, se
     }
 
     return(
-        <div className='w-full min-h-screen flex flex-col px-6 pt-5 pb-8 bg-[#FFC4B3]'>
+        <div className='w-full min-h-screen flex flex-col px-6 pt-20 pb-10 bg-[#FFC4B3]'>
             <Button variant="back" className="" onClick={onBack}>←</Button>
 
             <div className="w-full bg-white bg-opacity-50 h-2 rounded-xl mt-4">

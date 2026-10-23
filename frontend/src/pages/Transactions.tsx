@@ -96,10 +96,10 @@ const Transactions = () => {
     }
     
     return(
-        <div className='w-full min-h-screen bg-[#FFC4B3] flex flex-col pb-24'>
+        <div className='w-full min-h-screen bg-[#FFC4B3] flex flex-col pb-36'>
             
             {/* header */}
-            <div className='flex items-center justify-between px-6 pt-12 pb-4'>
+            <div className='flex items-center justify-between px-6 pt-20 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate('/main')}>←</Button>
                 <span className='text-[#3D2C2C] font-bold'>{t('transactions.title')}</span>
                 <NotificationButton/>

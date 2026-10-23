@@ -21,7 +21,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
-    <Toaster position='top-center' toastOptions={{duration: 2000, style:{borderRadius:'12px'}}}/>
+    <Toaster position='top-center' containerStyle={{ top: 70 }} toastOptions={{duration: 2000, style:{borderRadius:'12px'}}}/>
   </QueryClientProvider>
   </StrictMode>
 )

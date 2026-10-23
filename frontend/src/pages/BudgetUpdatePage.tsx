@@ -63,10 +63,10 @@ const BudgetUpdatePage = () => {
 
 
     return(
-        <div className="w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col">
+        <div className="w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-36">
 
             {/* Header */}
-            <div className="flex items-center justify-between px-6 pt-12 pb-4">
+            <div className="flex items-center justify-between px-6 pt-20 pb-4">
                 <Button variant="back" onClick={() => navigate(-1)}>←</Button>
                 <span className="text-[#3D2C2C] font-bold">{t('budgetUpdatePage.title')}</span>
                 <div className="w-10"></div>

@@ -74,10 +74,10 @@ const MainPage = () => {
     }
 
     return (
-        <div className='w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-24'>
+        <div className='w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-36'>
 
             {/* header */}
-            <div className='flex items-center justify-between px-6 pt-12 pb-4'>
+            <div className='flex items-center justify-between px-6 pt-20 pb-4'>
                 <div className='flex items-center gap-3'>
                     <div className='w-10 h-10 bg-[#FFB8A6] bg-opacity-50 rounded-full flex items-center justify-center'>
                         <img className="cursor-pointer" src={hero} alt="default_profile" />
@@ -110,7 +110,7 @@ const MainPage = () => {
                             Icon={cat.Icon}
                             key={cat.value}
                             label={cat.label}
-                            amount={CategoryTotalAmount[cat.value] || 0}
+                            amount={CategoryTotalAmount?.[cat.value] || 0}
                             onClick={() => navigate('/transactions',{state:{category:cat.value}})}
                             className="w-24 h-20"
                         />

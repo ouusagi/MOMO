@@ -37,7 +37,7 @@ const LoginPage = () => {
 
     return(
         <div className='relative w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col items-center justify-center px-8 gap-8'>
-            <Button variant="back" className="absolute top-5 left-5" onClick={()=> navigate('/')}>←</Button>
+            <Button variant="back" className="absolute top-16 left-5" onClick={()=> navigate('/')}>←</Button>
 
             <img src={hero} alt="momo_hero_img" className="w-32 h-32 cursor-pointer" onClick={()=> navigate('/')}/>
 

@@ -14,11 +14,11 @@ interface EditModalProps {
 
 const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => {
 
-    const [title, setTitle] = useState(initialData.title)
-    const [amount, setAmount] = useState(initialData.amount.toString())
-    const [memo, setMemo] = useState(initialData.memo || '')
+    const [title, setTitle] = useState(initialData?.title ?? '')
+    const [amount, setAmount] = useState(initialData?.amount.toString() ?? '')
+    const [memo, setMemo] = useState(initialData?.memo ?? '')
     const [show, setShow] = useState(false)
-    const [selectedDate, setSelectedDate] = useState(new Date(initialData?.date))
+    const [selectedDate, setSelectedDate] = useState(() => new Date(initialData?.date ?? new Date().toISOString()))
     const [dateModal, setDateModal] = useState(false)
     const [error, setError] = useState('')
     const { t } = useTranslation()
@@ -37,6 +37,8 @@ const EditModal = ({ isOpen, onClose, onSave, initialData }: EditModalProps) => 
         if(!title || !amount){
         return setError(t('editModal.requiredFieldsError'))
         }
+
+        if (!onSave) return
 
         setError('')
         onSave({title, amount: Number(amount.replaceAll(',', '')), memo, expenseDate:selectedDate.toISOString()})

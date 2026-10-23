@@ -24,13 +24,15 @@ const TransactionDetailPage = () => {
     const { t } = useTranslation()
 
     const handleDelete = () => {
-        deleteExpense(filterExpenses?.id, {
+        if (!filterExpenses) return
+        deleteExpense(filterExpenses.id, {
             onSuccess:() => {toast.success(t('transactionDetail.deleteSuccess')); navigate('/transactions')},
             onError:() => {toast.error(t('transactionDetail.loadError'))},
         })}
 
     const handleUpdate = (data: { title: string; amount: number; memo: string; expenseDate:string; }) => {
-        updateExpense({id:Number(id), data:{title:data?.title, amount:data?.amount, memo:data?.memo, expenseDate:data?.expenseDate, category:filterExpenses?.category}},{
+        if (!filterExpenses) return
+        updateExpense({id:Number(id), data:{title:data.title, amount:data.amount, memo:data.memo, expenseDate:data.expenseDate, category:filterExpenses.category}},{
         onSuccess:()=>{toast.success(t('transactionDetail.updateSuccess')); navigate('/transactions')},
         onError:()=>{toast.error(t('transactionDetail.loadError'))}
         })}
@@ -42,10 +44,10 @@ const TransactionDetailPage = () => {
     
 
     return(
-        <div className='w-full min-h-screen bg-[#FFC4B3] flex flex-col'>
+        <div className='w-full min-h-screen bg-[#FFC4B3] flex flex-col pb-40'>
 
             {/* header */}
-            <div className='flex items-center justify-between px-6 pt-12 pb-4'>
+            <div className='flex items-center justify-between px-6 pt-20 pb-4'>
                 <Button className="" variant='back' onClick={() => navigate(-1)}>←</Button>
                 <span className='text-[#3D2C2C] font-bold'>{t('transactionDetail.title')}</span>
                 <button onClick={()=> navigate('/transactions')} className='font-bold cursor-pointer text-[#F47560]'>{t('transactionDetail.complete')}</button>
@@ -101,7 +103,7 @@ const TransactionDetailPage = () => {
             isOpen={editModalOpen} 
             onClose={()=> setEditModalOpen(false)} 
             onSave={handleUpdate} 
-            initialData={{title:filterExpenses?.title, amount:filterExpenses?.amount, memo:filterExpenses?.memo, date:filterExpenses?.expenseDate}}>
+            initialData={{title:filterExpenses.title, amount:filterExpenses.amount, memo:filterExpenses.memo ?? '', date:filterExpenses.expenseDate}}>
             </EditModal>
 
         </div>

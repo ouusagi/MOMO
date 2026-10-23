@@ -44,14 +44,14 @@ const CalendarPage = () => {
     const monthlyTotal = monthlyExpenses.reduce((total, expense)=> total + expense.amount, 0)
 
     // 이번 달 예산 잔액 계산
-    const remainingBudget = UserBudGet?.budget - monthlyTotal
+    const remainingBudget = (UserBudGet?.budget ?? 0) - monthlyTotal
 
 
     // 선택한 날짜의 문자열 변환 & 선택한 날짜만 필터링
     const selectedDateString = getLocalDateString(selectedDate)
     const selectedExpenses = ExpensesData?.filter((expense) => {
         return expense.expenseDate.slice(0,10) === selectedDateString
-    })
+    }) ?? []
 
 
     // 해당 날짜에 지출 있는지 확인
@@ -89,10 +89,10 @@ const CalendarPage = () => {
 
 
     return(
-        <div className="w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-24">
+        <div className="w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-40">
             
             {/* header */}
-            <div className="flex items-center justify-between px-6 pt-12 pb-4">
+            <div className="flex items-center justify-between px-6 pt-20 pb-4">
                 <Button variant="back" onClick={() => navigate("/main")}>←</Button>
                 <span className="text-[#3D2C2C] font-bold">{t('calendarPage.title')}</span>
                 <NotificationButton/>
@@ -119,7 +119,7 @@ const CalendarPage = () => {
             {/* Calendar */}
             <div className="px-6 py-4">
                 <div className="bg-[#FFE6DE] rounded-3xl p-6 flex justify-center">
-                    <DatePicker inline locale={ja} selected={selectedDate} onChange={(date)=>{
+                    <DatePicker inline locale={ja} selected={selectedDate} onChange={(date: Date | null)=>{
                         if(!date) return 
                         setSelectedDate(date)}}
                         onMonthChange={(date)=>{setViewDate(date)}}

@@ -68,7 +68,7 @@ const SignUpStep1 = ({loginID, password, setLoginID, setPassword, onNext}:SignUp
     }
 
     return(
-        <div className="w-full min-h-screen flex flex-col px-6 pt-5 pb-8 bg-[#FFC4B3]">
+        <div className="w-full min-h-screen flex flex-col px-6 pt-20 pb-10 bg-[#FFC4B3]">
             <Button variant="back" onClick={()=> navigate('/')} className="">←</Button>
 
             <div className="w-full bg-white bg-opacity-50 h-2 rounded-xl mt-4">
