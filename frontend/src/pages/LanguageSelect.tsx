@@ -73,7 +73,7 @@ const LanguageSelect = () => {
           disabled={!selectedLanguage}
           className="mt-8 w-full rounded-2xl bg-[#F47560] py-4 font-semibold text-white transition hover:bg-[#E96853] disabled:cursor-not-allowed disabled:opacity-40"
         >
-          다음
+          다음 / 次へ
         </button>
       </div>
     </main>
