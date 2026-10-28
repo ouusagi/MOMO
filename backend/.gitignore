@@ -3,3 +3,4 @@
 .DS_Store
 uploads/profiles/*
 !uploads/profiles/default.png
+.dockerignore

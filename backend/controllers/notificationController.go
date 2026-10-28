@@ -84,7 +84,7 @@ func CheckBudgetNotification(userID uint, expenseDate string) {
 		Where("EXTRACT(MONTH FROM expense_date) = ?", month).
 		Select("COALESCE(SUM(amount), 0)").
 		Scan(&monthlyTotal).Error; err != nil {
-		log.Fatalln("월 지출 금액 계산 실패:", err)
+		log.Println("월 지출 금액 계산 실패:", err)
 		return
 	}
 
