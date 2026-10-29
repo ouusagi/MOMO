@@ -80,8 +80,8 @@ func CheckBudgetNotification(userID uint, expenseDate string) {
 
 	if err := config.DB.Model(&models.Expense{}).
 		Where("user_id = ?", userID).
-		Where("EXTRACT(YEAR FROM expense_date) = ?", year).
-		Where("EXTRACT(MONTH FROM expense_date) = ?", month).
+		Where("EXTRACT(YEAR FROM CAST(expense_date AS DATE)) = ?", year).
+		Where("EXTRACT(MONTH FROM CAST(expense_date AS DATE)) = ?", month).
 		Select("COALESCE(SUM(amount), 0)").
 		Scan(&monthlyTotal).Error; err != nil {
 		log.Println("월 지출 금액 계산 실패:", err)
