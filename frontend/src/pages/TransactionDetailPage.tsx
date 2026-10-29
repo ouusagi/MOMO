@@ -34,7 +34,7 @@ const TransactionDetailPage = () => {
         if (!filterExpenses) return
         updateExpense({id:Number(id), data:{title:data.title, amount:data.amount, memo:data.memo, expenseDate:data.expenseDate, category:filterExpenses.category}},{
         onSuccess:()=>{toast.success(t('transactionDetail.updateSuccess')); navigate('/transactions')},
-        onError:()=>{toast.error(t('transactionDetail.loadError'))}
+        onError:(error)=>{console.error("지출 수정 실패:", error); toast.error(t('transactionDetail.loadError'))}
         })}
 
 

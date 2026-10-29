@@ -65,7 +65,13 @@ func UpdateExpense(c *gin.Context) {
 	}
 
 	// 지출 내역 수정
-	if err := config.DB.Save(&expense).Error; err != nil {
+	if err := config.DB.Model(&expense).Updates(map[string]interface{}{
+		"title":        expense.Title,
+		"amount":       expense.Amount,
+		"category":     expense.Category,
+		"memo":         expense.Memo,
+		"expense_date": expense.ExpenseDate[:10],
+	}).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "지출 내역 수정 실패"})
 		return
 	}
