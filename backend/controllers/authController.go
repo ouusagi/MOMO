@@ -1,15 +1,20 @@
 package controllers
 
 import (
+	"log"
 	"momo/config"
 	"momo/models"
 	"momo/storage"
 	"momo/utils"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func Signup(c *gin.Context) {
@@ -272,9 +277,42 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	if err := config.DB.Delete(&user).Error; err != nil {
+	err := config.DB.Transaction(func(tx *gorm.DB) error {
+
+		// ① 해당 유저의 지출 데이터 삭제
+		if err := tx.Where("user_id = ?", userID).Delete(&models.Notification{}).Error; err != nil {
+			return err
+		}
+
+		// ② 해당 유저의 알림 데이터 삭제
+		if err := tx.Where("user_id = ?", userID).Delete(&models.Expense{}).Error; err != nil {
+			return err
+		}
+
+		// ③ 유저 데이터 삭제
+		if err := tx.Delete(&user).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "アカウントの削除に失敗しました"})
 		return
+	}
+
+	// DB 삭제 성공 후 프로필 이미지 파일 정리
+	imagePath := strings.TrimPrefix(user.ProfileImage, "/")
+
+	if strings.HasPrefix(imagePath, "uploads/profiles/") {
+		cleanPath := filepath.Clean(imagePath)
+
+		if cleanPath == imagePath && cleanPath != "uploads/profiles/default.png" {
+			if err := os.Remove(cleanPath); err != nil && !os.IsNotExist(err) {
+				log.Printf("プロファイル画像削除失敗: %v", err)
+			}
+		}
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "アカウントを削除しました..."})
