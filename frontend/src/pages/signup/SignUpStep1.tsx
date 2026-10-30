@@ -101,7 +101,7 @@ const SignUpStep1 = ({loginID, password, setLoginID, setPassword, onNext}:SignUp
                 <div className="flex gap-2 items-center">
                     <input onChange={(e)=> setchecked(e.target.checked)} className="w-5 h-7 rounded-3xl accent-[#F47560]" type="checkbox" />
                     <span className="text-[#7A5555]">{t('signup.termsAgreement')}</span>
-                    <span className="text-s text-[#B89090] cursor-pointer" onClick={()=> setModalOpen(true)}>{t('signup.termsView')}</span>
+                    <span className="text-s text-[#B89090] cursor-pointer" onClick={()=> {navigate('/privacy-policy')}}>{t('signup.termsView')}</span>
                 </div>
 
                 <div className="flex gap-2 items-center">
