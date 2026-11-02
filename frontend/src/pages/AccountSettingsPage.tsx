@@ -56,7 +56,7 @@ const AccountSettingsPage = () => {
                 toast.success(t('accountSettingsPage.profileImageUpdateSuccess'))
             },
             onError:() => {
-                toast.error(t('accountSettingsPage.deleteAccountFailure'))
+                toast.error(t('accountSettingsPage.profileImageUpdateFailure'))
             }
         }) 
     }
