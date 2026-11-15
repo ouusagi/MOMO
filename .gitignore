@@ -2,3 +2,7 @@ node_modules/
 .DS_Store
 .env
 dist/
+# Android release files
+android/app/release/
+*.jks
+*.keystore
