@@ -4,12 +4,13 @@ import { useTranslation } from "react-i18next"
 import ConsumptionTypeSelector from "./ConsumptionTypeSelector"
 import ConsumptionEmotionSelector from "./ConsumptionEmotionSelector"
 import ThinkingIcon from "../../assets/consumptionIcons/Thinking.svg"
+import type { ConsumptionType, ConsumptionEmotion } from '../../types/expense'
 
 interface Props {
-    consumptionType: string
-    setConsumptionType: (value: string) => void
-    consumptionEmotion: string
-    setConsumptionEmotion: (value: string) => void
+    consumptionType: ConsumptionType
+    setConsumptionType: (value: ConsumptionType | undefined) => void
+    consumptionEmotion: ConsumptionEmotion
+    setConsumptionEmotion: (value: ConsumptionEmotion | undefined) => void
 }
 
 const ConsumptionRecordSection = ({

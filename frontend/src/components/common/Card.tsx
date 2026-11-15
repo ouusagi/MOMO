@@ -19,18 +19,18 @@ const Card = ({onClick, icon, title, time, amount = 0, memo}:CardProps) => {
     return(
         <div className={`${CardBox}`} onClick={onClick}>
 
-          <div className="flex items-center gap-3">
-            <div className={`${EmojiBox} text-xl`}>
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className={`${EmojiBox} text-xl shrink-0`}>
                 <img src={icon} alt="icon-img" width={21}/>
             </div>
 
-            <div className="flex flex-col text-left">
+            <div className="flex flex-col text-left min-w-0">
                 <span className="font-bold text-[#3D2C2C]">{title}</span>
-                <span className="font-light text-[#B89090] text-sm">{time || memo}</span>
+                <span className="font-light text-[#B89090] text-sm truncate">{time || memo}</span>
             </div>
           </div>
 
-            <div className="flex flex-col text-right">
+            <div className="flex flex-col text-right shrink-0">
                 <span className="font-bold text-[#F47560]">-{amount.toLocaleString()} {t('signup.currency')}</span>
             </div>
         </div>
