@@ -16,6 +16,7 @@ import BudgetUpdatePage from "../pages/BudgetUpdatePage";
 import NotificationPage from "../pages/NotificationPage";
 import LanguageSelect from "../pages/LanguageSelect";
 import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
+import DeleteAccountPage from "../pages/DeleteAccountPage";
 
 export const router = createBrowserRouter([
   {
@@ -35,7 +36,8 @@ export const router = createBrowserRouter([
       { path: "/account/budget", element: <BudgetUpdatePage/>},
       { path: "/notifications", element: <NotificationPage/>},
       { path: "/language", element: <LanguageSelect/>},
-      { path: "/privacy-policy", element: <PrivacyPolicyPage/>}
+      { path: "/privacy-policy", element: <PrivacyPolicyPage/>},
+      { path: "/delete-account", element: <DeleteAccountPage />,},
     ]
   }
 ]);

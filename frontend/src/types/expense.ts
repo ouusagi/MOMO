@@ -5,6 +5,8 @@ export interface ExpenseInput {
     category: string
     memo?: string
     expenseDate: string
+    consumptionType?: string
+    consumptionEmotion?: string
 }
 
 // backend → frontend: GET

@@ -26,3 +26,9 @@ dist-ssr
 
 # Environment files
 .env
+
+
+# Android release files
+android/app/release/
+*.jks
+*.keystore

@@ -237,6 +237,30 @@ const ja = {
     ocrLoadingWait: "少々お待ちください。",
     ocrAccuracyNotice:
       "認識結果が正確でない場合があります。\n内容をご確認ください。",
+
+    consumptionRecordTitle: '消費の記録を追加',
+    consumptionRecordDescription: 'そのときの感情を記録しましょう！',
+    recordSelected: '記録済み',
+
+    consumptionTypeTitle: '消費タイプ',
+    consumptionEmotionTitle: '消費したときの感情',
+    optional: '（任意）',
+
+  consumptionTypes: {
+    mood: '気分転換',
+    impulse: '衝動買い',
+    necessary: '必要な買い物',
+    reward: '自分へのご褒美',
+  },
+
+  consumptionEmotions: {
+    happy: '幸せ',
+    satisfied: '満足',
+    relaxed: 'リラックス',
+    excited: 'ワクワク',
+    sad: '悲しい',
+    stressed: 'ストレス',
+  },
   },
 
   transactions: {

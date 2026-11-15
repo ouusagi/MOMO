@@ -13,6 +13,7 @@ import { parseReceiptText } from "../components/ocr/ocrParser"
 import CameraIcon from "../assets/receiptIcons/Camera.svg"
 import GalleryIcon from "../assets/receiptIcons/Gallery.svg"
 import { useTranslation } from "react-i18next"
+import ConsumptionRecordSection from "../components/common/ConsumptionRecordSection"
 
 const EnterDirectly = () => {
     const navigate = useNavigate()
@@ -21,6 +22,8 @@ const EnterDirectly = () => {
     const [category, setCategory] = useState('')
     const [memo, setMemo] = useState('')
     const [selectedDate, setSelectedDate] = useState(new Date())
+    const [consumptionType, setConsumptionType] = useState('')
+    const [consumptionEmotion, setConsumptionEmotion] = useState('')
     const [isOpen, setIsOpen] = useState(false)
     const [error, setError] = useState('')
     const { mutate: createExpense } = useCreateExpenses()
@@ -82,9 +85,13 @@ const EnterDirectly = () => {
         title, 
         category, 
         memo, 
-        expenseDate 
+        expenseDate,
+        consumptionType,
+        consumptionEmotion,
     }, {
     onSuccess:()=> {
+        console.log("소비 유형:", consumptionType)
+console.log("소비 감정:", consumptionEmotion)
         toast.success(t('enterDirectly.saveSuccess')); 
         navigate('/transactions');
     }, 
@@ -154,6 +161,14 @@ const EnterDirectly = () => {
                         ))}
                     </div>
                 </div>
+
+                {/* 소비 기록 */}
+                <ConsumptionRecordSection
+                consumptionType={consumptionType}
+                setConsumptionType={setConsumptionType}
+                consumptionEmotion={consumptionEmotion}
+                setConsumptionEmotion={setConsumptionEmotion}
+                />
 
                 {error && <p className='text-red-500 text-sm text-center'>{error}</p>}
 

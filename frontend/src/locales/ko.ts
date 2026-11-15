@@ -237,6 +237,30 @@ const ko = {
     ocrLoadingWait: "잠시만 기다려 주세요.",
     ocrAccuracyNotice:
       "인식 결과가 정확하지 않을 수 있습니다.\n내용을 확인해 주세요.",
+
+  consumptionRecordTitle: '소비 기록 추가',
+  consumptionRecordDescription: '소비 이유와 당시 감정을 기록해 보세요.',
+  recordSelected: '기록됨',
+
+  consumptionTypeTitle: '소비 유형',
+  consumptionEmotionTitle: '소비 당시 감정',
+  optional: '(선택)',
+
+  consumptionTypes: {
+    mood: '기분 전환',
+    impulse: '충동 구매',
+    necessary: '필요한 소비',
+    reward: '나를 위한 보상',
+  },
+
+  consumptionEmotions: {
+    happy: '행복함',
+    satisfied: '만족스러움',
+    relaxed: '편안함',
+    excited: '설렘',
+    sad: '우울함',
+    stressed: '스트레스',
+  },
   },
 
   transactions: {
