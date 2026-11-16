@@ -1,6 +1,7 @@
 import { useGetExpenses } from "../../hooks/useExpense"
 import type { Expense } from "../../types/expense"
 import { useTranslation } from "react-i18next"
+import Coins from "../../assets/transactionDetailIcons/Coins.svg";
 
 interface TopExpenseChartProps {
     period: string
@@ -126,8 +127,9 @@ export const TopExpenseChart = ({ period }: TopExpenseChartProps) => {
         <div className="bg-white bg-opacity-65 rounded-3xl p-5">
 
             {/* header */}
-            <div className="mb-4">
-                <span className="text-[#80544E] font-bold text-sm">💴 {t('graphPage.topExpenseTitle')}</span>
+            <div className="mb-4 flex gap-2">
+                <img src={Coins} width={20} height={20} />
+                <span className="text-[#80544E] font-bold text-sm">{t('graphPage.topExpenseTitle')}</span>
             </div>
 
 

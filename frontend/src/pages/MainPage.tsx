@@ -1,161 +1,252 @@
-import { useNavigate } from "react-router-dom"
-import hero from "../assets/hero.png"
-import hero2 from "../assets/minimomo.png"
-import Button from "../components/common/Button"
-import { useGetUser } from "../hooks/useUser"
-import { useGetExpenses } from "../hooks/useExpense"
-import CategoryIcon from "../components/common/CategoryIcon"
-import NavBottom from "../components/common/NavBottom"
-import Card from "../components/common/Card"
-import { categoryIcons } from "../constants/categoryIcons"
-import { ExpenseBarChart } from "../components/graph/ExpenseBarChart"
-import NotificationButton from "../components/common/NotificationButton"
-import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom";
+import hero from "../assets/hero.png";
+// import hero2 from "../assets/minimomo.png"
+import momocoin from "../assets/MomoCoin.png";
+import histroyicon from "../assets/HistoryIcon.svg";
+import Button from "../components/common/Button";
+import { useGetUser } from "../hooks/useUser";
+import { useGetExpenses } from "../hooks/useExpense";
+import CategoryIcon from "../components/common/CategoryIcon";
+import NavBottom from "../components/common/NavBottom";
+import Card from "../components/common/Card";
+import { categoryIcons } from "../constants/categoryIcons";
+import { ExpenseBarChart } from "../components/graph/ExpenseBarChart";
+import NotificationButton from "../components/common/NotificationButton";
+import { useTranslation } from "react-i18next";
 
 const MainPage = () => {
-
-    const { data:UserData, isLoading:UserLoading, error:UserError } = useGetUser()
-    const { data:ExpensesData, isLoading:ExpensesLoading, error:ExpensesError } = useGetExpenses()
-    const navigate = useNavigate()
-    const { t } = useTranslation()
-    const categories = [
+  const {
+    data: UserData,
+    isLoading: UserLoading,
+    error: UserError,
+  } = useGetUser();
+  const {
+    data: ExpensesData,
+    isLoading: ExpensesLoading,
+    error: ExpensesError,
+  } = useGetExpenses();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const categories = [
     {
-        value: 'food',
-        Icon: categoryIcons['food'],
-        label: t('enterDirectly.categories.food')
+      value: "food",
+      Icon: categoryIcons["food"],
+      label: t("enterDirectly.categories.food"),
     },
     {
-        value: 'cafe',
-        Icon: categoryIcons['cafe'],
-        label: t('enterDirectly.categories.cafe')
+      value: "cafe",
+      Icon: categoryIcons["cafe"],
+      label: t("enterDirectly.categories.cafe"),
     },
     {
-        value: 'transport',
-        Icon: categoryIcons['transport'],
-        label: t('enterDirectly.categories.transport')
+      value: "transport",
+      Icon: categoryIcons["transport"],
+      label: t("enterDirectly.categories.transport"),
     },
-    ]
+  ];
 
-    const MonthTotalAmount = ExpensesData?.filter((expense)=> {
-        const date = new Date(expense.expenseDate)
-        const now = new Date()
+  const MonthTotalAmount =
+    ExpensesData?.filter((expense) => {
+      const date = new Date(expense.expenseDate);
+      const now = new Date();
 
-        return(
-            date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth()
-        )
+      return (
+        date.getFullYear() === now.getFullYear() &&
+        date.getMonth() === now.getMonth()
+      );
     }).reduce((total, item) => total + item.amount, 0) ?? 0;
 
-    const TodayExpenses = ExpensesData?.filter((expenses)=>{
-        const date = new Date(expenses.expenseDate)
-        const now = new Date()
-
-        return(
-            date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()
-        )
-    }).sort((a,b)=> new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-
-    const CategoryTotalAmount = ExpensesData?.filter((expenses)=>{
-        const date = new Date(expenses?.expenseDate)
-        const now = new Date()
-        return(
-            date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth()
-        )
-    }).reduce((total, expense) => {
-        total[expense.category] = (total[expense.category] || 0) + expense.amount
-        return total
-    },{} as Record<string,number>)
-
-    if(ExpensesLoading || UserLoading){
-        return <p>{t('main.loading')}</p>
-    }
-
-    if(ExpensesError || UserError){
-        return <p>{t('main.error')}</p>
-    }
+  const TodayExpenses = ExpensesData?.filter((expenses) => {
+    const date = new Date(expenses.expenseDate);
+    const now = new Date();
 
     return (
-        <div className='w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-36'>
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate()
+    );
+  }).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 
-            {/* header */}
-            <div className='flex items-center justify-between px-6 pt-20 pb-4'>
-                <div className='flex items-center gap-3'>
-                    <div className='w-10 h-10 bg-[#FFB8A6] bg-opacity-50 rounded-full flex items-center justify-center'>
-                        <img className="cursor-pointer" src={hero} alt="default_profile" />
-                    </div>
-                    <span className='text-[#5A2D2A] font-medium text-lg'>Hi ! {UserData?.username} !</span>
-                </div>
-                <NotificationButton/>
-            </div>
+  const CategoryTotalAmount = ExpensesData?.filter((expenses) => {
+    const date = new Date(expenses?.expenseDate);
+    const now = new Date();
+    return (
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth()
+    );
+  }).reduce(
+    (total, expense) => {
+      total[expense.category] = (total[expense.category] || 0) + expense.amount;
+      return total;
+    },
+    {} as Record<string, number>,
+  );
 
-            {/*  expenses */}
-            <div className='flex flex-col gap-4 px-6 mt-6'>
-                <div className='bg-[#FFE6E0] rounded-3xl p-6 relative'>
-                    <img src={hero} alt='momo' className='absolute -top-10 -left-4 w-30 h-30' />
-                    <img src={hero2} alt='momo' className='absolute -top-7 -right-4 w-30 h-30' />
-                    <div className='text-center mt-4'>
-                        <p className='text-[#5A2D2A] font-bold'>{t('main.monthlyExpenseTitle')}</p>
-                        <p className='text-[#5A2D2A] font-bold text-3xl mt-1'>{MonthTotalAmount.toLocaleString()}{t('signup.currency')}</p>
-                    </div>
-                    <div className='border-t border-[#F0D0C8] my-4'></div>
-                    <div className='flex gap-3'>
-                        <Button className="" variant='primary' fullWidth onClick={() => navigate('/add')}>+ Add</Button>
-                        <Button className="" variant="history" fullWidth onClick={() => navigate('/transactions')}>🕐 History</Button>
-                    </div>
-                </div>
+  if (ExpensesLoading || UserLoading) {
+    return <p>{t("main.loading")}</p>;
+  }
 
-                {/* categories */}
-                <div className='flex gap-3 overflow-x-auto pb-2'>
-                    {categories.map((cat) => (
-                        <CategoryIcon
-                            Icon={cat.Icon}
-                            key={cat.value}
-                            label={cat.label}
-                            amount={CategoryTotalAmount?.[cat.value] || 0}
-                            onClick={() => navigate('/transactions',{state:{category:cat.value}})}
-                            className="w-24 h-20"
-                        />
-                    ))}
-                    <CategoryIcon
-                        Icon={categoryIcons['other']}
-                        label={t('enterDirectly.categories.other')}
-                        onClick={() => navigate('/transactions')}
-                        className="w-24 h-20"
-                    />
-                </div>
+  if (ExpensesError || UserError) {
+    return <p>{t("main.error")}</p>;
+  }
 
-                {/* graph - week */}
-                <ExpenseBarChart period="weekly"/>
+  // 사용자 예산
+  const budget = UserData?.budget;
+  const budgetPercent =
+    budget > 0 ? Math.round((MonthTotalAmount / budget) * 100) : 0;
+  const progressWidth = Math.min(Math.max(budgetPercent, 0), 100);
 
-                {/* today's expenses */}
-                <div className="w-full">
-                    <div className='flex items-center justify-between mb-3 px-2'>
-                        <span className='text-[#7A5555] font-bold'>{t('main.todayExpenseTitle')}</span>
-                        <span className='text-[#F47560] text-sm cursor-pointer' onClick={() => navigate('/transactions')}>{t('main.viewAll')}</span>
-                    </div>
-
-                    <div className="flex flex-col gap-3 text-center">
-                    {TodayExpenses?.length === 0 ? (<p className="text-[#B89090] text-sm text-center pt-3">{t('main.todayExpenseEmpty')}</p>) : (TodayExpenses?.map((item)=>{
-                        return(
-                                <Card key={item.id}
-                                  title={item.title}
-                                  amount={item.amount}
-                                  time={item.expenseDate.slice(0,10)}
-                                  icon={categoryIcons[item.category] ?? "💰"}
-                                  onClick={()=> navigate(`/transaction/${item.id}`)}
-                                />
-                        )
-                        }))}
-                    </div>
-                </div>
-
-            </div>    
-
-            {/* bottomNav */}
-            <div className='fixed bottom-0 left-0 right-0'>
-                <NavBottom />
-            </div>
+  return (
+    <div className="w-full min-h-screen bg-gradient-to-b from-[#FFC3B6] to-[#F8A1A1CC] flex flex-col pb-36">
+      {/* header */}
+      <div className="flex items-center justify-between px-6 pt-20 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-[#FFB8A6] bg-opacity-50 rounded-full flex items-center justify-center">
+            <img className="cursor-pointer" src={hero} alt="default_profile" />
+          </div>
+          <span className="text-[#5A2D2A] font-medium text-lg">
+            Hi ! {UserData?.username} !
+          </span>
         </div>
-    )
-}
+        <NotificationButton />
+      </div>
 
-export default MainPage
+      {/*  expenses */}
+      <div className="flex flex-col gap-4 px-6 mt-6">
+        <div className="flex flex-col bg-[#FFE6E0] rounded-3xl p-6 relative">
+          {/* <img src={hero} alt='momo' className='absolute -top-10 -left-4 w-30 h-30' />
+                    <img src={hero2} alt='momo' className='absolute -top-7 -right-4 w-30 h-30' /> */}
+          <div className="flex justify-between">
+            <div className="text-left mt-4">
+              <p className="text-[#5A2D2A] bg-[#FFC4B3] rounded-full px-3 py-1 font-bold">
+                {t("main.monthlyExpenseTitle")}
+              </p>
+              <p className="text-[#5A2D2A] font-bold text-3xl mt-1">
+                {MonthTotalAmount.toLocaleString()}
+                {t("signup.currency")}
+              </p>
+            </div>
+
+            <div className="relative w-28 h-28 shrink-0">
+              <img src={momocoin} className="absolute w-40 h-40 max-w-none object-contain -top-6 -right-7"/>
+            </div>
+          </div>
+
+          {/* 예산 사용률 */}
+          <div className="mt-3">
+            <p className="text-[#7A5555] text-sm mb-3 bg-[#FFD0C2] rounded-full px-3 py-1.5">
+              {budget > 0
+                ? t("main.budgetUsage", {
+                    budget: budget.toLocaleString(),
+                    percent: budgetPercent,
+                  })
+                : t("main.budgetNotSet")}
+            </p>
+
+            {/* 프로그레스 바 */}
+            <div className="w-full h-3 bg-[#FFD9CE] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#F47560] rounded-full transition-all duration-500"
+                style={{ width: `${progressWidth}%` }}
+              />
+            </div>
+          </div>
+
+          <div className="border-t border-[#F0D0C8] my-4"></div>
+          <div className="flex gap-3">
+            <Button
+              className=""
+              variant="primary"
+              fullWidth
+              onClick={() => navigate("/add")}
+            >
+              + Add
+            </Button>
+
+            <Button
+              className="text-[#FFFFFF]"
+              variant="history"
+              fullWidth
+              onClick={() => navigate("/transactions")}
+            >
+            <span className="flex items-center justify-center gap-2">
+            <img src={histroyicon}className="w-5 h-5"/>
+            History
+            </span>
+            </Button>
+          </div>
+        </div>
+
+        {/* categories */}
+        <div className="flex gap-3 overflow-x-auto pb-2">
+          {categories.map((cat) => (
+            <CategoryIcon
+              Icon={cat.Icon}
+              key={cat.value}
+              label={cat.label}
+              amount={CategoryTotalAmount?.[cat.value] || 0}
+              onClick={() =>
+                navigate("/transactions", { state: { category: cat.value } })
+              }
+              className="w-24 h-20"
+            />
+          ))}
+          <CategoryIcon
+            Icon={categoryIcons["other"]}
+            label={t("enterDirectly.categories.other")}
+            onClick={() => navigate("/transactions")}
+            className="w-24 h-20"
+          />
+        </div>
+
+        {/* graph - week */}
+        <ExpenseBarChart period="weekly" />
+
+        {/* today's expenses */}
+        <div className="w-full">
+          <div className="flex items-center justify-between mb-3 px-2">
+            <span className="text-[#7A5555] font-bold">
+              {t("main.todayExpenseTitle")}
+            </span>
+            <span
+              className="text-[#F47560] text-sm cursor-pointer"
+              onClick={() => navigate("/transactions")}
+            >
+              {t("main.viewAll")}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-3 text-center">
+            {TodayExpenses?.length === 0 ? (
+              <p className="text-[#B89090] text-sm text-center pt-3">
+                {t("main.todayExpenseEmpty")}
+              </p>
+            ) : (
+              TodayExpenses?.map((item) => {
+                return (
+                  <Card
+                    key={item.id}
+                    title={item.title}
+                    amount={item.amount}
+                    time={item.expenseDate.slice(0, 10)}
+                    icon={categoryIcons[item.category] ?? "💰"}
+                    onClick={() => navigate(`/transaction/${item.id}`)}
+                  />
+                );
+              })
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* bottomNav */}
+      <div className="fixed bottom-0 left-0 right-0">
+        <NavBottom />
+      </div>
+    </div>
+  );
+};
+
+export default MainPage;

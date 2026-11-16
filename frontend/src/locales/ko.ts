@@ -191,6 +191,9 @@ const ko = {
     // 로딩 및 오류
     loading: "불러오는 중...",
     error: "오류가 발생했습니다",
+
+    budgetUsage: '예산 {{budget}}원 중 {{percent}}% 사용 !',
+    budgetNotSet: '예산을 설정해 주세요',
   },
 
   enterDirectly: {

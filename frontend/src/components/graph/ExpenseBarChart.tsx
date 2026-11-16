@@ -1,6 +1,7 @@
 import { ResponsiveContainer, BarChart, Bar, XAxis, Cell } from "recharts";
 import { useGetExpenses } from "../../hooks/useExpense";
 import { useTranslation } from "react-i18next"
+import GraphBar from "../../assets/transactionDetailIcons/GraphBarIcon.svg";
 
 interface ExpenseBarChartProps {
     period: string
@@ -167,7 +168,10 @@ export const ExpenseBarChart = ({period}:ExpenseBarChartProps) => {
         <div className="bg-white bg-opacity-65 rounded-3xl p-4">
 
             <div className='flex items-center justify-between mb-4'>
-                <span className='text-[#80544E] font-semibold text-sm'>📈 {periodLabel}{t('main.weeklyExpenseGraphTitle')}</span>
+              <div className="flex gap-2">
+                <img src={GraphBar} width={16} height={16}/>
+                <span className='text-[#80544E] font-semibold text-sm'>{periodLabel}{t('main.weeklyExpenseGraphTitle')}</span>
+              </div>
                 <span className='text-[#F47560] text-opacity-90 font-bold text-sm'>{totalAmount.toLocaleString()}{t('signup.currency')}</span>
             </div>
 

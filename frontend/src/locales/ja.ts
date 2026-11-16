@@ -191,6 +191,9 @@ const ja = {
     // ローディング・エラー
     loading: "読み込み中...",
     error: "エラーが発生しました",
+
+    budgetUsage: '予算{{budget}}円のうち{{percent}}%を使用！',
+    budgetNotSet: '予算を設定してください',
   },
 
   enterDirectly: {

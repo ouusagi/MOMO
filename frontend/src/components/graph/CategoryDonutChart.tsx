@@ -3,6 +3,8 @@ import { useGetExpenses } from "../../hooks/useExpense"
 import type { Expense } from "../../types/expense"
 import "./ExpenseBarChartScrollBar.css"
 import { useTranslation } from "react-i18next"
+import Category from "../../assets/transactionDetailIcons/Category.svg";
+
 
 interface CategoryDonutChartProps {
     period:string
@@ -139,10 +141,12 @@ export const CategoryDonutChart = ({period}:CategoryDonutChartProps) => {
         <div className="bg-white bg-opacity-65 rounded-3xl p-4">
             {/* header */}
             <div className="flex items-center justify-between mb-4">
+              <div className="flex gap-2">
+                <img src={Category} width={17} height={17} />
                 <span className="text-[#80544E] font-semibold text-sm">
-                    📊 {periodLabel}{t('graphPage.categoryExpenseTitle')}
+                    {periodLabel}{t('graphPage.categoryExpenseTitle')}
                 </span>
-
+              </div>
                 <span className="text-[#F47560] font-bold text-sm">
                     {totalAmount.toLocaleString()}{t('signup.currency')}
                 </span>
