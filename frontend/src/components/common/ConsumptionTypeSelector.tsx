@@ -1,13 +1,14 @@
 
 import { useTranslation } from "react-i18next"
 import { consumptionTypeIcons } from "../../constants/consumption"
+import type { ConsumptionType } from '../../types/expense'
 
 interface Props {
-    value: string
-    onChange: (value: string) => void
+    value: ConsumptionType | undefined
+    onChange: (value: ConsumptionType | undefined) => void
 }
 
-const consumptionTypes = [
+const consumptionTypes: { value: ConsumptionType; label: string }[] = [
     { value: 'mood', label: 'mood' },
     { value: 'impulse', label: 'impulse' },
     { value: 'necessary', label: 'necessary' },
@@ -34,7 +35,7 @@ const ConsumptionTypeSelector = ({ value, onChange }: Props) => {
                         <button
                             key={item.value}
                             type="button"
-                            onClick={() => onChange(active ? '' : item.value)}
+                            onClick={() => onChange(active ? undefined : item.value)}
                             className={`
                                 h-16 rounded-2xl flex items-center justify-center gap-2
                                 transition-all duration-200

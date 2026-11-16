@@ -1,13 +1,14 @@
 
 import { useTranslation } from "react-i18next"
 import { consumptionEmotionIcons } from "../../constants/consumption"
+import type { ConsumptionEmotion } from '../../types/expense'
 
 interface Props {
-    value: string
-    onChange: (value: string) => void
+    value: ConsumptionEmotion | undefined
+    onChange: (value: ConsumptionEmotion | undefined) => void
 }
 
-const emotions = [
+const emotions: { value: ConsumptionEmotion; label: string }[] = [
     { value: 'happy', label: 'happy' },
     { value: 'satisfied', label: 'satisfied' },
     { value: 'relaxed', label: 'relaxed' },
@@ -36,7 +37,7 @@ const ConsumptionEmotionSelector = ({ value, onChange }: Props) => {
                         <button
                             key={item.value}
                             type="button"
-                            onClick={() => onChange(active ? '' : item.value)}
+                            onClick={() => onChange(active ? undefined : item.value)}
                             className={`
                                 h-20 rounded-2xl flex flex-col items-center justify-center gap-1
                                 transition-all duration-200

@@ -7,9 +7,9 @@ import ThinkingIcon from "../../assets/consumptionIcons/Thinking.svg"
 import type { ConsumptionType, ConsumptionEmotion } from '../../types/expense'
 
 interface Props {
-    consumptionType: ConsumptionType
+    consumptionType: ConsumptionType | undefined
     setConsumptionType: (value: ConsumptionType | undefined) => void
-    consumptionEmotion: ConsumptionEmotion
+    consumptionEmotion: ConsumptionEmotion | undefined
     setConsumptionEmotion: (value: ConsumptionEmotion | undefined) => void
 }
 
