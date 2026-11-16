@@ -127,7 +127,7 @@ export const TopExpenseChart = ({ period }: TopExpenseChartProps) => {
 
             {/* header */}
             <div className="mb-4">
-                <span className="text-[#3D2C2C] font-bold text-sm">💴 {t('graphPage.topExpenseTitle')}</span>
+                <span className="text-[#80544E] font-bold text-sm">💴 {t('graphPage.topExpenseTitle')}</span>
             </div>
 
 
@@ -139,7 +139,7 @@ export const TopExpenseChart = ({ period }: TopExpenseChartProps) => {
                         <div key={item.category} className="flex items-center gap-1.5">
 
                             {/* category */}
-                            <span className="w-14 shrink-0 text-[#3D2C2C] font-bold text-sm">{t(`main.categories.${item.category}`)}</span>
+                            <span className="w-14 shrink-0 text-[#B98276] font-semibold text-sm">{t(`main.categories.${item.category}`)}</span>
 
                             {/* bar */}
                             <div className="flex-1 h-4 bg-white rounded-full overflow-hidden">

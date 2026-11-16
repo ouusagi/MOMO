@@ -447,7 +447,25 @@ const ja = {
     loading: "読み込み中...",
     error: "エラーが発生しました",
     noExpenseData: "支出データがありません",
+    retrospective: '振り返り',
   },
+
+  retrospective: {
+    thisMonthYou: '今月のあなたは...',
+    mostSpent: 'への支出が最も多かったです！',
+    typeDescription: '{{type}}に使った金額は、消費タイプを記録した支出の{{percent}}%を占めています。',
+
+    typeAnalysis: '消費タイプ別分析',
+    emotionAnalysis: '消費感情の分析',
+    thisMonth: '今月',
+
+    momoMessageTitle: 'MOMOからのひとこと',
+    momoMessage: '今月は「{{type}}」への支出が最も多く、「{{emotion}}」という感情が一番多く記録されました。来月も自分だけの消費ストーリーを残してみましょう！',
+    momoEmptyMessage: 'まだ消費の記録が少ないようです。支出するときに消費タイプや感情も一緒に記録してみましょう！',
+
+    noTypeData: 'まだ消費タイプの記録がありません。',
+    noData: '記録なし',
+},
 
 
     privacyPolicy: {

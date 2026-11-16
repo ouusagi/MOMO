@@ -139,7 +139,7 @@ export const CategoryDonutChart = ({period}:CategoryDonutChartProps) => {
         <div className="bg-white bg-opacity-65 rounded-3xl p-4">
             {/* header */}
             <div className="flex items-center justify-between mb-4">
-                <span className="text-[#3D2C2C] font-bold text-sm">
+                <span className="text-[#80544E] font-semibold text-sm">
                     📊 {periodLabel}{t('graphPage.categoryExpenseTitle')}
                 </span>
 

@@ -445,7 +445,25 @@ const ko = {
     loading: "불러오는 중...",
     error: "오류가 발생했습니다",
     noExpenseData: "지출 데이터가 없습니다",
+    retrospective: '회고',
   },
+
+  retrospective: {
+    thisMonthYou: '이번 달, 당신은...',
+    mostSpent: '소비가 가장 많았어요!',
+    typeDescription: '{{type}}에 사용한 금액이 기록된 소비 유형 지출의 {{percent}}%를 차지했어요.',
+
+    typeAnalysis: '소비 유형별 분석',
+    emotionAnalysis: '소비 감정 분석',
+    thisMonth: '이번 달',
+
+    momoMessageTitle: 'MOMO의 한마디',
+    momoMessage: '이번 달에는 {{type}} 소비가 가장 많았고, {{emotion}} 감정이 가장 자주 기록되었어요. 다음 달에는 조금 더 여유로운 소비를 해볼까요?',
+    momoEmptyMessage: '아직 소비 기록이 부족해요. 지출할 때 소비 유형과 감정을 함께 기록해 보세요!',
+
+    noTypeData: '아직 기록된 소비 유형이 없어요.',
+    noData: '기록 없음',
+},
 
 
   privacyPolicy: {

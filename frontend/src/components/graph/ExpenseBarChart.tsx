@@ -167,7 +167,7 @@ export const ExpenseBarChart = ({period}:ExpenseBarChartProps) => {
         <div className="bg-white bg-opacity-65 rounded-3xl p-4">
 
             <div className='flex items-center justify-between mb-4'>
-                <span className='text-[#3D2C2C] font-bold text-sm'>📈 {periodLabel}{t('main.weeklyExpenseGraphTitle')}</span>
+                <span className='text-[#80544E] font-semibold text-sm'>📈 {periodLabel}{t('main.weeklyExpenseGraphTitle')}</span>
                 <span className='text-[#F47560] text-opacity-90 font-bold text-sm'>{totalAmount.toLocaleString()}{t('signup.currency')}</span>
             </div>
 

@@ -7,18 +7,20 @@ import { CategoryDonutChart } from "../components/graph/CategoryDonutChart"
 import { TopExpenseChart } from "../components/graph/TopExpenseChart"
 import NotificationButton from "../components/common/NotificationButton"
 import { useTranslation } from "react-i18next"
+import RetrospectiveSection from "../components/graph/RetrospectiveSection"
 
 
 
 const GraphPage = () => {
 
     const { t } = useTranslation()
-    type Period = 'weekly' | 'monthly' | 'yearly'
+    type Period = 'weekly' | 'monthly' | 'yearly' | 'retrospective'
     const [activeTab, setActiveTab] = useState<Period>('weekly')
     const tabs:{ value: Period; label: string }[] = [
     { value: 'weekly', label: t('graphPage.weekly') },
     { value: 'monthly', label: t('graphPage.monthly') },
     { value: 'yearly', label: t('graphPage.yearly') },
+    { value: 'retrospective', label: t('graphPage.retrospective') },
 ]
     const navigate = useNavigate()
 
@@ -50,11 +52,15 @@ const GraphPage = () => {
                 </div>
                 
                 {/* Graph */}
+                {activeTab === 'retrospective' ? (
+                <RetrospectiveSection />
+                ) : (
                 <div className="flex flex-col gap-5">
                 <ExpenseBarChart period={activeTab}/>
                 <CategoryDonutChart period={activeTab}/>
                 <TopExpenseChart period={activeTab}/>
                 </div>
+                )}
                 
             </div> 
 
