@@ -93,7 +93,7 @@ const MainPage = () => {
   }
 
   // 사용자 예산
-  const budget = UserData?.budget;
+  const budget = UserData?.budget ?? 0;
   const budgetPercent =
     budget > 0 ? Math.round((MonthTotalAmount / budget) * 100) : 0;
   const progressWidth = Math.min(Math.max(budgetPercent, 0), 100);
